@@ -83,10 +83,17 @@ R::setup('mysql:host=sql2.njit.edu;dbname=glh4', 'glh4', file_get_contents('./db
 if(!R::testConnection())
     Error("Could not connect to database");
 
-# Authentication utility function
+# Utility function
 function must_be_instructor()
 {
     if(!isset($_SESSION["authenticated"]) || !$_SESSION["authenticated"] ||
        !isset($_SESSION["permission"]) || $_SESSION["permission"] != "instructor")
         Error("Method can only be called by an instructor");
+}
+
+function verify_params($params)
+{
+    foreach($params as $param)
+        if(!isset($_REQUEST[$param]))
+            Error("Missing parameter: " . $param);
 }
