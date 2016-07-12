@@ -1,6 +1,5 @@
 <?php
-
-require 'database.php';
+require 'common.php';
 
 if(session_status() == PHP_SESSION_ACTIVE)
 {

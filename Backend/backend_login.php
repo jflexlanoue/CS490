@@ -15,7 +15,7 @@ Returns
     }
 */
 
-require 'database.php';
+require 'common.php';
 
 $response["authenticated"] = false;
 

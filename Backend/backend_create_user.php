@@ -14,7 +14,7 @@ Returns
     }
 */
 
-require 'database.php';
+require 'common.php';
 
 if (!isset($_REQUEST['username']) ||
     !isset($_REQUEST['password']) ||
