@@ -17,7 +17,7 @@ if ( basename(__FILE__) == basename($_SERVER["SCRIPT_FILENAME"]) )
 }
 
 # DB connection
-$db = new mysqli('sql2.njit.edu', 'glh4', '', 'glh4');
+$db = new mysqli('sql2.njit.edu', 'glh4', file_get_contents('db.auth'), 'glh4');
 
 if($db->connect_errno > 0){
     $response['success'] = false;
