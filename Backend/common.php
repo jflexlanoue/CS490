@@ -9,6 +9,20 @@ $response["success"] = true;
 session_start();
 header('Content-Type: application/json');
 
+# REST methods
+$_DELETE = array();
+$_PATCH = array();
+if($_SERVER['REQUEST_METHOD'] == "DELETE")
+{
+    str_parse(file_get_contents('php://input'), $_DELETE);
+    $_REQUEST = array_merge($_REQUEST, $_DELETE);
+}
+if($_SERVER['REQUEST_METHOD'] == "PATCH")
+{
+    str_parse(file_get_contents('php://input'), $_PATCH);
+    $_REQUEST = array_merge($_REQUEST, $_PATCH);
+}
+
 # Reports failure reason an exits
 function Error($msg)
 {
