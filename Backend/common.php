@@ -9,20 +9,6 @@ $response["success"] = true;
 session_start();
 header('Content-Type: application/json');
 
-# REST methods
-$_DELETE = array();
-$_PATCH = array();
-if($_SERVER['REQUEST_METHOD'] == "DELETE")
-{
-    str_parse(file_get_contents('php://input'), $_DELETE);
-    $_REQUEST = array_merge($_REQUEST, $_DELETE);
-}
-if($_SERVER['REQUEST_METHOD'] == "PATCH")
-{
-    str_parse(file_get_contents('php://input'), $_PATCH);
-    $_REQUEST = array_merge($_REQUEST, $_PATCH);
-}
-
 # Reports failure reason an exits
 function Error($msg)
 {
@@ -31,19 +17,6 @@ function Error($msg)
     $response["error"] = $msg;
     exit();
 }
-
-# Don't allow script to be loaded directly
-if(basename(__FILE__) == basename($_SERVER["SCRIPT_FILENAME"]))
-{
-    header($_SERVER["SERVER_PROTOCOL"]." 404 Not Found", true, 404); # Meh, this doesn't work
-    Error('This file cannot be accessed directly');
-}
-
-# DB connection (via RedBeanPHP)
-require "dependencies/rb.php";
-R::setup('mysql:host=sql2.njit.edu;dbname=glh4', 'glh4', file_get_contents('./db.auth'));
-if(!R::testConnection())
-    Error("Could not connect to database");
 
 # Handles API response and cleanup
 function Shutdown()
@@ -73,3 +46,47 @@ function exception_error_handler($errno, $errstr, $errfile, $errline ) {
 }
 
 set_error_handler("exception_error_handler");
+
+# REST methods
+$_DELETE = array();
+$_PATCH = array();
+if($_SERVER['REQUEST_METHOD'] == "PATCH" || $_SERVER['REQUEST_METHOD'] == "DELETE")
+{
+    try
+    {
+        $body = '';
+        $handle = fopen('php://input', 'r');
+        while(!feof($handle)) {
+            $body .= fread($handle, 1024);
+        }
+
+        if($_SERVER['REQUEST_METHOD'] == "PATCH") {
+            parse_str($body, $_PATCH);
+            $_REQUEST = array_merge($_REQUEST, $_PATCH);
+        } else if($_SERVER['REQUEST_METHOD'] == "DELETE") {
+            parse_str($body, $_DELETE);
+            $_REQUEST = array_merge($_REQUEST, $_DELETE);
+        }
+    } catch (Exception $e2) { echo "Error"; }
+}
+
+# Don't allow script to be loaded directly
+if(basename(__FILE__) == basename($_SERVER["SCRIPT_FILENAME"]))
+{
+    header($_SERVER["SERVER_PROTOCOL"]." 404 Not Found", true, 404); # Meh, this doesn't work
+    Error('This file cannot be accessed directly');
+}
+
+# DB connection (via RedBeanPHP)
+require "dependencies/rb.php";
+R::setup('mysql:host=sql2.njit.edu;dbname=glh4', 'glh4', file_get_contents('./db.auth'));
+if(!R::testConnection())
+    Error("Could not connect to database");
+
+# Authentication utility function
+function must_be_instructor()
+{
+    if(!isset($_SESSION["authenticated"]) || !$_SESSION["authenticated"] ||
+       !isset($_SESSION["permission"]) || $_SESSION["permission"] != "instructor")
+        Error("Method can only be called by an instructor");
+}
