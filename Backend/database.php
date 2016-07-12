@@ -5,24 +5,54 @@ Creates database connection, sets up minimal 'API framework'
 
 # API setup
 $response = array();
+$response["success"] = true;
 header('Content-Type: application/json');
 
+# Reports failure reason an exits
+function Error($msg)
+{
+    global $response;
+    $response["success"] = false;
+    $response["error"] = $msg;
+    exit();
+}
+
 # Don't allow script to be loaded directly
-if ( basename(__FILE__) == basename($_SERVER["SCRIPT_FILENAME"]) ) 
+if(basename(__FILE__) == basename($_SERVER["SCRIPT_FILENAME"]))
 {
     header($_SERVER["SERVER_PROTOCOL"]." 404 Not Found", true, 404); # Meh, this doesn't work
-    $response['success'] = false;
-    $response['error'] = 'This file cannot be accessed directly';
-    die(json_encode($response));
+    Error('This file cannot be accessed directly');
 }
 
-# DB connection
-$db = new mysqli('sql2.njit.edu', 'glh4', file_get_contents('./db.auth'), 'glh4');
+# DB connection (via RedBeanPHP)
+require "dependencies/rb.php";
+R::setup('mysql:host=sql2.njit.edu;dbname=glh4', 'glh4', file_get_contents('./db.auth'));
 
-if($db->connect_errno > 0){
-    $response['success'] = false;
-    $response['error'] = 'Unable to connect to database [' . $db->connect_error . ']';
-    die(json_encode($response));
+# Handles API response and cleanup
+function Shutdown()
+{
+    global $response;
+
+    try
+    {
+        R::close();
+    } catch (Exception $e)
+    {
+        // Not reported in "error" field because there may be another error there already
+        // Also if the call succeeded, we don't really care about this
+        $response["devError"] = "Failed to close database";
+    }
+
+    // API response
+    echo(json_encode($response));
 }
 
-?>
+register_shutdown_function('Shutdown');
+
+# Reports uncaught exceptions
+function exception_error_handler($errno, $errstr, $errfile, $errline ) {
+    Error("Error " . $errno . ': ' . $errstr . "\r"
+        . $errline . ': ' . $errfile);
+}
+
+set_error_handler("exception_error_handler");

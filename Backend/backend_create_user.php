@@ -25,44 +25,27 @@ CREATE TABLE Users (
 )
 */
 
-include('database.php');
+require 'database.php';
 
-if (isset($_GET['username']) && isset($_GET['password']))
-{
-    $username = $_GET['username'];
-    $password = $_GET['password'];
+if (!isset($_GET['username']) || !isset($_GET['password']))
+    Error("Expected GET with username and password");
 
-    # Username already in db
-    $ret = $db->query("SELECT * FROM Users WHERE username='".$username."'");
-    if($ret->num_rows > 0)
-    {
-        $response["success"] = false;
-        $response["error"] = "Username already in database";
-    }
-    else
-    {
-        $hash = password_hash($password, PASSWORD_BCRYPT, ['cost' => 13]);
+$username = $_GET['username'];
+$password = $_GET['password'];
 
-        # Store user
-        $ret = $db->query("INSERT INTO Users (username, hash) VALUES('".$username."', '".$hash."')");
+# Username already in db
+$ret = $db->query("SELECT * FROM Users WHERE username='".$username."'");
+if($ret->num_rows > 0)
+    Error("Username already in database");
 
-        if($ret)
-        {
-            $response["success"] = true;
-        }
-        else
-        {
-            $response["success"] = false;
-            $response["error"] = "Error saving user to database: " . $db->error;
-        }
-    }
-}
-else
-{
-    $response["success"] = false;
-    $response["error"] = "Expected GET with username and password";
-}
+$hash = password_hash($password, PASSWORD_BCRYPT, ['cost' => 13]);
 
-echo(json_encode($response));
+# Store user
+$ret = $db->query("INSERT INTO Users (username, hash) VALUES('".$username."', '".$hash."')");
+
+if(!$ret)
+    Error("Error saving user to database: " . $db->error);
+
+$response["success"] = true;
 
 ?>

@@ -15,44 +15,28 @@ Returns
     }
 */
 
-include('database.php');
+require 'database.php';
 
-if (isset($_POST['username']) && isset($_POST['password']))
-{
-    $username = $_POST['username'];
-    $password = $_POST['password'];
-    
-    # Retrieve hash from database
-    $ret = $db->query("SELECT username, hash FROM Users WHERE username='" . $username ."'");
+$response["authenticated"] = false;
 
-    # Username not in db
-    if($ret->num_rows == 0)
-    {
-        $response["authenticated"] = false;
-        $response["success"] = false;
-        $response["error"] = "Username not in database";
-    }
-    else
-    {
-        $row = $ret->fetch_assoc();
-        $hash = $row['hash'];
+if (!isset($_POST['username']) || !isset($_POST['password']))
+    Error("Expected POST with username and password");
 
-        if (password_verify($password, $hash)) {
-            $response["success"] = true;
-            $response["authenticated"] = true;
-        } else {
-            $response["success"] = true;
-            $response["authenticated"] = false;
-        }
-    }
+$username = $_POST['username'];
+$password = $_POST['password'];
+
+# Retrieve hash from database
+$ret = $db->query("SELECT username, hash FROM Users WHERE username='" . $username ."'");
+
+# Username not in db
+if($ret->num_rows == 0)
+    Error("Username not in database");
+
+$row = $ret->fetch_assoc();
+$hash = $row['hash'];
+
+if (password_verify($password, $hash)) {
+    $response["authenticated"] = true;
 }
-else
-{
-    $response["authenticated"] = false;
-    $response["success"] = false;
-    $response["error"] = "Expected POST with username and password";
-}
-
-echo(json_encode($response));
 
 ?>
