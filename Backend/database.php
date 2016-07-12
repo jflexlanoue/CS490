@@ -6,6 +6,7 @@ Creates database connection, sets up minimal 'API framework'
 # API setup
 $response = array();
 $response["success"] = true;
+session_start();
 header('Content-Type: application/json');
 
 # Reports failure reason an exits
@@ -27,6 +28,8 @@ if(basename(__FILE__) == basename($_SERVER["SCRIPT_FILENAME"]))
 # DB connection (via RedBeanPHP)
 require "dependencies/rb.php";
 R::setup('mysql:host=sql2.njit.edu;dbname=glh4', 'glh4', file_get_contents('./db.auth'));
+if(!R::testConnection())
+    Error("Could not connect to database");
 
 # Handles API response and cleanup
 function Shutdown()
@@ -52,7 +55,7 @@ register_shutdown_function('Shutdown');
 # Reports uncaught exceptions
 function exception_error_handler($errno, $errstr, $errfile, $errline ) {
     Error("Error " . $errno . ': ' . $errstr . "\r"
-        . $errline . ': ' . $errfile);
+        . 'Line ' . $errline . ': ' . $errfile);
 }
 
 set_error_handler("exception_error_handler");

@@ -25,18 +25,20 @@ if (!isset($_POST['username']) || !isset($_POST['password']))
 $username = $_POST['username'];
 $password = $_POST['password'];
 
-# Retrieve hash from database
-$ret = $db->query("SELECT username, hash FROM Users WHERE username='" . $username ."'");
+$user = R::findOne('user', " username = ? ", [ $username ]);
 
 # Username not in db
-if($ret->num_rows == 0)
+if(!count($user))
     Error("Username not in database");
 
-$row = $ret->fetch_assoc();
-$hash = $row['hash'];
-
-if (password_verify($password, $hash)) {
+if (password_verify($password, $user->hash)) {
     $response["authenticated"] = true;
-}
+    $response["permission"] = strtolower($user->permission->name);
 
-?>
+    $_SESSION["authenticated"] = true;
+    $_SESSION["username"] = $username;
+    $_SESSION["permission"] = strtolower($user->permission->name);;
+
+    // Generate new session ID (avoids session fixation)
+    session_regenerate_id();
+}
