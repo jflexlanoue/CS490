@@ -39,6 +39,7 @@ if (password_verify($password, $user->hash)) {
 
     $_SESSION["authenticated"] = true;
     $_SESSION["username"] = $username;
+    $_SESSION["userID"] = $user->id;
     $_SESSION["permission"] = strtolower($user->permission->name);;
 
     // Generate new session ID (avoids session fixation)

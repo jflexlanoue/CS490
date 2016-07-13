@@ -83,10 +83,18 @@ if (!R::testConnection()) {
 }
 
 # Utility function
-function must_be_instructor()
+function is_instructor()
 {
     if (!isset($_SESSION["authenticated"]) || !$_SESSION["authenticated"] ||
         !isset($_SESSION["permission"]) || $_SESSION["permission"] != "instructor") {
+        return false;
+    }
+    return true;
+}
+
+function must_be_instructor()
+{
+    if (!is_instructor()) {
         Error("Method can only be called by an instructor");
     }
 }
