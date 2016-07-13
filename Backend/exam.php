@@ -17,9 +17,8 @@ switch ($_SERVER['REQUEST_METHOD']) {
 
         $exam = R::dispense('exam');
         $exam->title = $_REQUEST["title"];
-        $exam->released = $_REQUEST["released"];
+        $exam->released = filter_var($_REQUEST["released"], FILTER_VALIDATE_BOOLEAN);
 
-        $exam->questionIDs = array();
         if (isset($_REQUEST["questionIDs"]))
             $exam->questionIDs = $_REQUEST["questionIDs"]; // TODO: parse IDs, verify questions exist
         $response["result"] = R::store($exam);
@@ -33,7 +32,7 @@ switch ($_SERVER['REQUEST_METHOD']) {
         if (isset($_REQUEST["title"]))
             $exam->title = $_REQUEST["title"];
         if (isset($_REQUEST["released"]))
-            $exam->released = $_REQUEST["released"];
+            $exam->released = filter_var($_REQUEST["released"], FILTER_VALIDATE_BOOLEAN);
         if (isset($_REQUEST["questionIDs"]))
             $exam->questionIDs = $_REQUEST["questionIDs"]; // TODO: parse IDs, verify questions exist
         R::store($exam);
