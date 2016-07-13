@@ -3,15 +3,12 @@ require 'common.php';
 
 must_be_instructor();
 
-switch($_SERVER['REQUEST_METHOD'])
-{
+switch ($_SERVER['REQUEST_METHOD']) {
     case "GET":
-        if(isset($_REQUEST["id"]))
-        {
+        if (isset($_REQUEST["id"])) {
             $response["result"] = R::load('exam', $_REQUEST["id"]);
 
-            if($response["result"]["id"] == 0)
-            {
+            if ($response["result"]["id"] == 0) {
                 unset($response["result"]);
                 Error("Exam not found");
             }
@@ -28,7 +25,7 @@ switch($_SERVER['REQUEST_METHOD'])
         $exam->released = $_REQUEST["released"];
 
         $exam->questionIDs = array();
-        if(isset($_REQUEST["questionIDs"]))
+        if (isset($_REQUEST["questionIDs"]))
             $exam->questionIDs = $_REQUEST["questionIDs"]; // TODO: parse IDs, verify questions exist
         $response["result"] = R::store($exam);
         break;
@@ -38,15 +35,15 @@ switch($_SERVER['REQUEST_METHOD'])
 
         $exam = R::load('exam', $_REQUEST["id"]);
 
-        if($exam["id"] == 0) {
+        if ($exam["id"] == 0) {
             Error("Exam not found");
         }
 
-        if(isset($_REQUEST["title"]))
+        if (isset($_REQUEST["title"]))
             $exam->title = $_REQUEST["title"];
-        if(isset($_REQUEST["released"]))
+        if (isset($_REQUEST["released"]))
             $exam->released = $_REQUEST["released"];
-        if(isset($_REQUEST["questionIDs"]))
+        if (isset($_REQUEST["questionIDs"]))
             $exam->questionIDs = $_REQUEST["questionIDs"]; // TODO: parse IDs, verify questions exist
         R::store($exam);
         break;
@@ -56,7 +53,7 @@ switch($_SERVER['REQUEST_METHOD'])
 
         $exam = R::load('exam', $_REQUEST["id"]);
 
-        if($exam["id"] == 0) {
+        if ($exam["id"] == 0) {
             Error("Exam not found");
         }
         R::trash($exam);

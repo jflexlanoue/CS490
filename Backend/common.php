@@ -23,11 +23,9 @@ function Shutdown()
 {
     global $response;
 
-    try
-    {
+    try {
         R::close();
-    } catch (Exception $e)
-    {
+    } catch (Exception $e) {
         // Not reported in "error" field because there may be another error there already
         // Also if the call succeeded, we don't really care about this
         $response["devError"] = "Failed to close database";
@@ -40,7 +38,8 @@ function Shutdown()
 register_shutdown_function('Shutdown');
 
 # Reports uncaught exceptions
-function exception_error_handler($errno, $errstr, $errfile, $errline ) {
+function exception_error_handler($errno, $errstr, $errfile, $errline)
+{
     Error("Error " . $errno . ': ' . $errstr . "\r"
         . 'Line ' . $errline . ': ' . $errfile);
 }
@@ -50,50 +49,53 @@ set_error_handler("exception_error_handler");
 # REST methods
 $_DELETE = array();
 $_PATCH = array();
-if($_SERVER['REQUEST_METHOD'] == "PATCH" || $_SERVER['REQUEST_METHOD'] == "DELETE")
-{
-    try
-    {
+if ($_SERVER['REQUEST_METHOD'] == "PATCH" || $_SERVER['REQUEST_METHOD'] == "DELETE") {
+    try {
         $body = '';
         $handle = fopen('php://input', 'r');
-        while(!feof($handle)) {
+        while (!feof($handle)) {
             $body .= fread($handle, 1024);
         }
 
-        if($_SERVER['REQUEST_METHOD'] == "PATCH") {
+        if ($_SERVER['REQUEST_METHOD'] == "PATCH") {
             parse_str($body, $_PATCH);
             $_REQUEST = array_merge($_REQUEST, $_PATCH);
-        } else if($_SERVER['REQUEST_METHOD'] == "DELETE") {
+        } else if ($_SERVER['REQUEST_METHOD'] == "DELETE") {
             parse_str($body, $_DELETE);
             $_REQUEST = array_merge($_REQUEST, $_DELETE);
         }
-    } catch (Exception $e2) { echo "Error"; }
+    } catch (Exception $e2) {
+        echo "Error";
+    }
 }
 
 # Don't allow script to be loaded directly
-if(basename(__FILE__) == basename($_SERVER["SCRIPT_FILENAME"]))
-{
-    header($_SERVER["SERVER_PROTOCOL"]." 404 Not Found", true, 404); # Meh, this doesn't work
+if (basename(__FILE__) == basename($_SERVER["SCRIPT_FILENAME"])) {
+    header($_SERVER["SERVER_PROTOCOL"] . " 404 Not Found", true, 404); # Meh, this doesn't work
     Error('This file cannot be accessed directly');
 }
 
 # DB connection (via RedBeanPHP)
 require "dependencies/rb.php";
 R::setup('mysql:host=sql2.njit.edu;dbname=glh4', 'glh4', file_get_contents('./db.auth'));
-if(!R::testConnection())
+if (!R::testConnection()) {
     Error("Could not connect to database");
+}
 
 # Utility function
 function must_be_instructor()
 {
-    if(!isset($_SESSION["authenticated"]) || !$_SESSION["authenticated"] ||
-       !isset($_SESSION["permission"]) || $_SESSION["permission"] != "instructor")
+    if (!isset($_SESSION["authenticated"]) || !$_SESSION["authenticated"] ||
+        !isset($_SESSION["permission"]) || $_SESSION["permission"] != "instructor") {
         Error("Method can only be called by an instructor");
+    }
 }
 
 function verify_params($params)
 {
-    foreach($params as $param)
-        if(!isset($_REQUEST[$param]))
+    foreach ($params as $param) {
+        if (!isset($_REQUEST[$param])) {
             Error("Missing parameter: " . $param);
+        }
+    }
 }

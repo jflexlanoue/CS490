@@ -19,17 +19,19 @@ require 'common.php';
 
 $response["authenticated"] = false;
 
-if (!isset($_POST['username']) || !isset($_POST['password']))
+if (!isset($_POST['username']) || !isset($_POST['password'])) {
     Error("Expected POST with username and password");
+}
 
 $username = $_POST['username'];
 $password = $_POST['password'];
 
-$user = R::findOne('user', " username = ? ", [ $username ]);
+$user = R::findOne('user', " username = ? ", [$username]);
 
 # Username not in db
-if(!count($user))
+if (!count($user)) {
     Error("Username not in database");
+}
 
 if (password_verify($password, $user->hash)) {
     $response["authenticated"] = true;

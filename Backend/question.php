@@ -1,15 +1,12 @@
 <?php
 require 'common.php';
 
-switch($_SERVER['REQUEST_METHOD'])
-{
+switch ($_SERVER['REQUEST_METHOD']) {
     case "GET":
-        if(isset($_REQUEST["id"]))
-        {
+        if (isset($_REQUEST["id"])) {
             $response["result"] = R::load('question', $_REQUEST["id"]);
 
-            if($response["result"]["id"] == 0)
-            {
+            if ($response["result"]["id"] == 0) {
                 unset($response["result"]);
                 Error("Question not found");
             }
@@ -35,13 +32,13 @@ switch($_SERVER['REQUEST_METHOD'])
 
         $question = R::load('question', $_REQUEST["id"]);
 
-        if($question["id"] == 0) {
+        if ($question["id"] == 0) {
             Error("Question not found");
         }
 
-        if(isset($_REQUEST["question"]))
+        if (isset($_REQUEST["question"]))
             $question->question = $_REQUEST["question"];
-        if(isset($_REQUEST["answer"]))
+        if (isset($_REQUEST["answer"]))
             $question->answer = $_REQUEST["answer"];
         R::store($question);
         break;
@@ -52,7 +49,7 @@ switch($_SERVER['REQUEST_METHOD'])
 
         $question = R::load('question', $_REQUEST["id"]);
 
-        if($question["id"] == 0) {
+        if ($question["id"] == 0) {
             Error("Question not found");
         }
         R::trash($question);
