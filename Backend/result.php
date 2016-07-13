@@ -11,20 +11,32 @@ switch ($_SERVER['REQUEST_METHOD']) {
 
         if (isset($_REQUEST["studentID"])) {
             // All results for studentID
-            $response["result"] = R::find('user', "studentID=:id", [":id" => $_REQUEST["studentID"]]);
+            $response["result"] = R::find('result', "student_id=:id", [":id" => $_REQUEST["studentID"]]);
         } else if (isset($_REQUEST["questionID"])) {
             // All results for questionID
-            $response["result"] = R::find('user', "questionID=:id", [":id" => $_REQUEST["questionID"]]);
+            $response["result"] = R::find('result', "question_id=:id", [":id" => $_REQUEST["questionID"]]);
         } else if (isset($_REQUEST["examID"])) {
             // All results for examID
-            $response["result"] = R::find('user', "examID=:id", [":id" => $_REQUEST["examID"]]);
+            $response["result"] = R::find('result', "exam_id=:id", [":id" => $_REQUEST["examID"]]);
         } else {
-            Error("Requires one of: id, studentID, questionID, or examID");
+            $response["result"] = R::findAll('result');
+            //Error("Requires one of: id, studentID, questionID, or examID");
         }
 
+        // Common error handling for studentID, questionID, and examID
         if (!count($response["result"])) {
             unset($response["result"]);
             Error("No results found");
+        }
+
+        // Expand linked fields
+        if (isset($_REQUEST["expand"]) && filter_var($_REQUEST["expand"], FILTER_VALIDATE_BOOLEAN)) {
+            foreach($response["result"] as $item) {
+                $user = load_or_error('user', $item->student_id);
+                $item->student = scrub_user($user);
+                $item->exam;
+                $item->question;
+            }
         }
         break;
 
@@ -32,9 +44,9 @@ switch ($_SERVER['REQUEST_METHOD']) {
         verify_params(['studentID', 'examID', 'questionID', 'score', 'studentAnswer', 'feedback']);
 
         $result = R::dispense('result');
-        $result->studentID = $_REQUEST["studentID"];
-        $result->examID = $_REQUEST["examID"];
-        $result->questionID = $_REQUEST["questionID"];
+        $result->student = load_or_error('user', $_REQUEST["studentID"]);
+        $result->exam = load_or_error('exam', $_REQUEST["examID"]);
+        $result->question = load_or_error('question', $_REQUEST["questionID"]);
         $result->score = $_REQUEST["score"];
         $result->studentAnswer = $_REQUEST["studentAnswer"];
         $result->feedback = $_REQUEST["feedback"];
@@ -46,16 +58,12 @@ switch ($_SERVER['REQUEST_METHOD']) {
         verify_params(['id']);
         $result = load_or_error('result', $_REQUEST["id"]);
 
-        $result->score = $_REQUEST["score"];
-        $result->studentAnswer = $_REQUEST["studentAnswer"];
-        $result->feedback = $_REQUEST["feedback"];
-
         if (isset($_REQUEST["studentID"]))
-            $result->studentID = $_REQUEST["studentID"];
+            $result->student = load_or_error('user', $_REQUEST["studentID"]);
         if (isset($_REQUEST["examID"]))
-            $result->examID = $_REQUEST["examID"];
+            $result->exam = load_or_error('exam', $_REQUEST["examID"]);
         if (isset($_REQUEST["questionID"]))
-            $result->questionID = $_REQUEST["questionID"];
+            $result->question = load_or_error('question', $_REQUEST["questionID"]);
         if (isset($_REQUEST["score"]))
             $result->score = $_REQUEST["score"];
         if (isset($_REQUEST["studentAnswer"]))
@@ -68,10 +76,6 @@ switch ($_SERVER['REQUEST_METHOD']) {
     case "DELETE":
         verify_params(['id']);
         $result = load_or_error('result', $_REQUEST["id"]);
-
-        if ($result["id"] == 0) {
-            Error("result not found");
-        }
         R::trash($result);
         break;
 }
