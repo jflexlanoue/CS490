@@ -115,7 +115,7 @@ function load_or_error($table, $id, $message = "") {
         if($message != "") {
             Error($message);
         }
-        Error("ID " . $id . " not found in " . $table);
+        Error("ID " . $id . " not found in " . $table . " table");
     }
     return $return;
 }
