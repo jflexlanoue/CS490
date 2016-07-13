@@ -4,20 +4,19 @@ require 'common.php';
 switch ($_SERVER['REQUEST_METHOD']) {
     case "GET":
         if (isset($_REQUEST["id"])) {
-            $response["result"] = R::load('result', $_REQUEST["id"]);
-
-            if ($response["result"]["id"] == 0) {
-                unset($response["result"]);
-                Error("result not found");
-            }
+            // Return single result
+            $response["result"] = load_or_error('result', $_REQUEST["id"]);
             exit();
         }
 
         if (isset($_REQUEST["studentID"])) {
+            // All results for studentID
             $response["result"] = R::find('user', "studentID=:id", [":id" => $_REQUEST["studentID"]]);
         } else if (isset($_REQUEST["questionID"])) {
+            // All results for questionID
             $response["result"] = R::find('user', "questionID=:id", [":id" => $_REQUEST["questionID"]]);
         } else if (isset($_REQUEST["examID"])) {
+            // All results for examID
             $response["result"] = R::find('user', "examID=:id", [":id" => $_REQUEST["examID"]]);
         } else {
             Error("Requires one of: id, studentID, questionID, or examID");
@@ -45,12 +44,7 @@ switch ($_SERVER['REQUEST_METHOD']) {
 
     case "PATCH":
         verify_params(['id']);
-
-        $result = R::load('result', $_REQUEST["id"]);
-
-        if ($result["id"] == 0) {
-            Error("result not found");
-        }
+        $result = load_or_error('result', $_REQUEST["id"]);
 
         $result->score = $_REQUEST["score"];
         $result->studentAnswer = $_REQUEST["studentAnswer"];
@@ -73,8 +67,7 @@ switch ($_SERVER['REQUEST_METHOD']) {
 
     case "DELETE":
         verify_params(['id']);
-
-        $result = R::load('result', $_REQUEST["id"]);
+        $result = load_or_error('result', $_REQUEST["id"]);
 
         if ($result["id"] == 0) {
             Error("result not found");

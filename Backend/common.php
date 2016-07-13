@@ -99,3 +99,15 @@ function verify_params($params)
         }
     }
 }
+
+function load_or_error($table, $id, $message = "") {
+    $return = R::load($table, $id);
+
+    if ($return["id"] == 0) {
+        if($message != "") {
+            Error($message);
+        }
+        Error("ID " . $id . " not found in " . $table);
+    }
+    return $return;
+}

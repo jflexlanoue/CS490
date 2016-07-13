@@ -4,12 +4,7 @@ require 'common.php';
 switch ($_SERVER['REQUEST_METHOD']) {
     case "GET":
         if (isset($_REQUEST["id"])) {
-            $response["result"] = R::load('question', $_REQUEST["id"]);
-
-            if ($response["result"]["id"] == 0) {
-                unset($response["result"]);
-                Error("Question not found");
-            }
+            $response["result"] = load_or_error('question', $_REQUEST["id"]);
         } else {
             $response["result"] = R::findAll('question');
         }
@@ -30,11 +25,7 @@ switch ($_SERVER['REQUEST_METHOD']) {
         must_be_instructor();
         verify_params(['id']);
 
-        $question = R::load('question', $_REQUEST["id"]);
-
-        if ($question["id"] == 0) {
-            Error("Question not found");
-        }
+        $question = load_or_error('question', $_REQUEST["id"]);
 
         if (isset($_REQUEST["question"]))
             $question->question = $_REQUEST["question"];
@@ -47,11 +38,7 @@ switch ($_SERVER['REQUEST_METHOD']) {
         must_be_instructor();
         verify_params(['id']);
 
-        $question = R::load('question', $_REQUEST["id"]);
-
-        if ($question["id"] == 0) {
-            Error("Question not found");
-        }
+        $question = load_or_error('question', $_REQUEST["id"]);
         R::trash($question);
         break;
 }

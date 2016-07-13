@@ -6,12 +6,7 @@ must_be_instructor();
 switch ($_SERVER['REQUEST_METHOD']) {
     case "GET":
         if (isset($_REQUEST["id"])) {
-            $response["result"] = R::load('exam', $_REQUEST["id"]);
-
-            if ($response["result"]["id"] == 0) {
-                unset($response["result"]);
-                Error("Exam not found");
-            }
+            $response["result"] = load_or_error('exam', $_REQUEST["id"]);
         } else {
             $response["result"] = R::findAll('exam');
         }
@@ -33,11 +28,7 @@ switch ($_SERVER['REQUEST_METHOD']) {
     case "PATCH":
         verify_params(['id']);
 
-        $exam = R::load('exam', $_REQUEST["id"]);
-
-        if ($exam["id"] == 0) {
-            Error("Exam not found");
-        }
+        $exam = load_or_error('exam', $_REQUEST["id"]);
 
         if (isset($_REQUEST["title"]))
             $exam->title = $_REQUEST["title"];
@@ -51,11 +42,7 @@ switch ($_SERVER['REQUEST_METHOD']) {
     case "DELETE":
         verify_params(['id']);
 
-        $exam = R::load('exam', $_REQUEST["id"]);
-
-        if ($exam["id"] == 0) {
-            Error("Exam not found");
-        }
+        $exam = load_or_error('exam', $_REQUEST["id"]);
         R::trash($exam);
         break;
 }
