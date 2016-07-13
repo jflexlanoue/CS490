@@ -21,14 +21,15 @@ switch($_SERVER['REQUEST_METHOD'])
         break;
 
     case "POST":
-        verify_params(['id', 'released']);
+        verify_params(['title', 'released']);
 
         $exam = R::dispense('exam');
         $exam->title = $_REQUEST["title"];
         $exam->released = $_REQUEST["released"];
 
+        $exam->questionIDs = array();
         if(isset($_REQUEST["questionIDs"]))
-            $exam->questionIDs = $_REQUEST["questionIDs"]; // TODO
+            $exam->questionIDs = $_REQUEST["questionIDs"]; // TODO: parse IDs, verify questions exist
         $response["result"] = R::store($exam);
         break;
 
@@ -46,7 +47,7 @@ switch($_SERVER['REQUEST_METHOD'])
         if(isset($_REQUEST["released"]))
             $exam->released = $_REQUEST["released"];
         if(isset($_REQUEST["questionIDs"]))
-            $exam->questionIDs = $_REQUEST["questionIDs"]; // TODO
+            $exam->questionIDs = $_REQUEST["questionIDs"]; // TODO: parse IDs, verify questions exist
         R::store($exam);
         break;
 
