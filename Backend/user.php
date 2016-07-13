@@ -1,17 +1,6 @@
 <?php
 require 'common.php';
 
-function scrub_user(&$user){
-    // Convert permission from database enum to a plain string
-    $permission = strtolower($user->permission->name);
-    unset($user->permission_id);
-    unset($user->permission);
-    $user->permission = $permission;
-
-    // Don't expose hash
-    unset($user->hash);
-}
-
 if(!is_instructor()) {
     if ($_SERVER['REQUEST_METHOD'] != "POST") { // Anyone can create an account
         if (!isset($_REQUEST["id"]) || ($_SESSION["userID"] != $_REQUEST["id"])) {

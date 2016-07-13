@@ -119,3 +119,15 @@ function load_or_error($table, $id, $message = "") {
     }
     return $return;
 }
+
+function scrub_user(&$user){
+    // Convert permission from database enum to a plain string
+    $permission = strtolower($user->permission->name);
+    unset($user->permission_id);
+    unset($user->permission);
+    $user->permission = $permission;
+
+    // Don't expose hash
+    unset($user->hash);
+    return $user;
+}
