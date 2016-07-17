@@ -22,8 +22,7 @@ class util {
         $res = self::httpPost($url, array());
         $dec_res = json_decode($res);
         
-        var_dump($dec_res);
-
+        return $dec_res;
     }
     
     static function LogInUser($Username, $Password){
