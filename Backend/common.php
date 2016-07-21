@@ -46,6 +46,11 @@ function exception_error_handler($errno, $errstr, $errfile, $errline)
 
 set_error_handler("exception_error_handler");
 
+if (isset($_REQUEST["method"]))
+{
+    $_SERVER['REQUEST_METHOD'] = strtoupper($_REQUEST["method"]);
+}
+
 # REST methods
 $_DELETE = array();
 $_PATCH = array();
@@ -65,7 +70,8 @@ if ($_SERVER['REQUEST_METHOD'] == "PATCH" || $_SERVER['REQUEST_METHOD'] == "DELE
             $_REQUEST = array_merge($_REQUEST, $_DELETE);
         }
     } catch (Exception $e2) {
-        echo "Error";
+        $response["exception_object"] =  $e2;
+        Error("Error reading request body");
     }
 }
 
