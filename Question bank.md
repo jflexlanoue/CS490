@@ -115,6 +115,6 @@ Write a method named **skipElement** that accepts an array **arr** and prints in
 ```java
 public static void skipElement (int[] arr){
   for (int i=0; i<arr.length; i+=2)
-    System.out.print (ar[i] + " ");
+    System.out.print (arr[i] + " ");
 }
 ```
