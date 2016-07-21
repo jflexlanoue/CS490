@@ -78,25 +78,29 @@ Solution:
 Math.random();
 ```
 
-# 6 Write a line of code which creates a Student object "stu" with the name "John Smith" and the grade "B". 
+# 6 
+Write a line of code which creates a Student object "stu" with the name "John Smith" and the grade "B". 
 
 Solution:
 ```java
 Student st = new Student("John Smith", 'C');
 ```
-# 7 Write a for-loop that prints a list of the countdown from thirty to zero by threes. Use the variable **i**, and assume that **i** is already declared as an integer.
+# 7
+Write a for-loop that prints a list of the countdown from thirty to zero by threes. Use the variable **i**, and assume that **i** is already declared as an integer.
 ```java
 for (i = 30; i >=0; i-= 3){
   System.out.println(i);
 }
 ```
-# 8 Write a line of code to return the square root of 121. 
+# 8 
+Write a line of code to return the square root of 121. 
 
 Solution:
 ```java
 Math.sqrt(121);
 ```
-# 9 Write an if-else statement to determine whether or not an integer **i** is divisible by 7, printing either "divisble" or "not divisible".
+# 9 
+Write an if-else statement to determine whether or not an integer **i** is divisible by 7, printing either "divisble" or "not divisible".
 
 Solution:
 ```java
@@ -106,7 +110,8 @@ else
   System.out.println("not divisible");
 ```
 
-# 10 Write a method named **skipElement** that accepts an array **arr** and prints in a single line every other element, starting with the first element.
+# 10 
+Write a method named **skipElement** that accepts an array **arr** and prints in a single line every other element, starting with the first element.
 ```java
 public static void skipElement (int[] arr){
   for (int i=0; i<arr.length; i+=2)
