@@ -79,11 +79,11 @@ Math.random();
 ```
 
 # 6 
-Write a line of code which creates a Student object "stu" with the name "John Smith" and the grade "B". 
+Write a line of code which creates a Student object **stu** with the name **"John Smith"** and the grade *'B'*. 
 
 Solution:
 ```java
-Student st = new Student("John Smith", 'C');
+Student stu = new Student("John Smith", 'B');
 ```
 # 7
 Write a for-loop that prints a list of the countdown from thirty to zero by threes. Use the variable **i**, and assume that **i** is already declared as an integer.
@@ -100,7 +100,7 @@ Solution:
 Math.sqrt(121);
 ```
 # 9 
-Write an if-else statement to determine whether or not an integer **i** is divisible by 7, printing either "divisble" or "not divisible".
+Write an if-else statement to determine whether or not an integer **i** is divisible by 7, printing either "**divisble**" or "**not divisible**".
 
 Solution:
 ```java
