@@ -14,17 +14,17 @@ echo $TripleBR;
 //Login
 $LoginPOST = array( "username" => "admin", "password" => "admin");
 
-echo util::ForwardPostRequest("backend_login.php", $LoginPOST);
+var_dump(util::ForwardPostRequest("backend_login.php", $LoginPOST));
 
 
 echo $TripleBR;
 
 
-echo util::ForwardPostRequest("session_info.php", array());
+var_dump(util::ForwardPostRequest("session_info.php", array()));
 
 
 echo $TripleBR;
 
 
-echo util::ForwardGetRequest("exam.php", array());
+var_dump(util::ForwardGetRequest("exam.php", array()));
 
