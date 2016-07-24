@@ -1,60 +1,70 @@
+<?php
+session_start();
+include("Garyutil.class.php");
+
+$failedLogin = false;
+
+if(isset($_GET['logout'])){
+    $_SESSION = array();
+    session_destroy();
+ 
+}
+
+
+if (isset($_POST["username"])) {
+    $username = $_POST["username"];
+    $password = $_POST["password"];
+
+    $response = util::ForwardPostRequest("backend_login.php", $_POST);
+    
+    if ($response['authenticated']) {
+        $_SESSION['role'] = $response["permission"];
+    } else{
+        
+        $failedLogin = true;
+    }
+}
+?>
+
 <!DOCTYPE html>
 <html>
     <head>
-    <title>CS 490</title>
-    <script>
-        function ajax_post(url, callback) {
-            var xhr;
-            var username = document.getElementById("username").value;
-            var password = document.getElementById("password").value;
-            if(typeof XMLHttpRequest !== 'undefined') 
-                xhr = new XMLHttpRequest();
-            else {
-                var versions = ["Microsoft.XmlHttp",    // Support for older Internet Explorer versions (older than IE7)...
-                                "MSXML2.XmlHttp",
-                                "MSXML2.XmlHttp.3.0",
-                                "MSXML2.XmlHttp.4.0",
-                                "MSXML2.XmlHttp.5.0"];
-                for(var i = 0; i < versions.length; i++){
-                    try {
-                        xhr = new ActiveXObject(versions[i]);
-                        break;
-                    }
-                    catch(e){}
+        <title>CS 490</title>
+        <script>
+
+            <?php
+            
+            if (isset($_SESSION['role'])) {
+                if($_SESSION['role'] == "instructor"){
+                    echo "window.location = 'instructor.php';";
+                } else if($_SESSION['role'] == "student") {
+                     echo "window.location = 'student.php';";
                 }
-            }         
-            xhr.onreadystatechange = function(){         
-                if((xhr.status !== 200) || (xhr.readyState < 4)) 
-                    return;
-                callback(xhr);
-            };         
-            xhr.open('post', url, true);
-            xhr.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
-            xhr.send("username="+username+"&password="+password);
-            document.getElementById("message").innerHTML = ".................";         // indication of processing        
-        }             
-    </script>
+            }
+            ?>
+        </script>
     </head>
     <body>
-    <a href="create_user.php">Create an account</a><br>
     <center>
         <h1>CS 490</h1>
         <h2>Login</h2>
-        <input id="username" type="text" name="username" placeholder="username" autofocus><br><br>
-        <input id= "password" type="password" name="password" placeholder="password"><br><br>
-        <input name="loginButton" type="submit" value="Login" onclick="
-            ajax_post('login.php', function(xhr){
-                // var response = JSON.parse(xhr.responseText);
-                response = xhr.responseText;
-                // alert(response);
-                if (response == 'instructor')
-                    document.location.replace('instructor.php');
-                else if (response == 'student')
-                    document.location.replace('student.php');
-                else
-                    document.getElementById('message').innerHTML = 'The username and password you entered do not match.';
-            })"><br><br> 
-        <div id="message"></div>
+
+        <form action="index.php" method="POST">
+            <input id="username" type="text" name="username" placeholder="username" autofocus><br><br>
+            <input id= "password" type="password" name="password" placeholder="password"><br><br>
+            <input name="loginButton" type="submit" value="Login"><br><br>
+            <a href="create_user.php">Create an account</a><br><br>
+    
+            <div><span style="color: red;">
+               <?php
+               if($failedLogin){
+                   echo "The username and password you entered do not match.";
+               }
+               ?>
+            </span>
+            </div><br>
+        </form>
+
     </center>
-    </body>
+</body>
 </html>

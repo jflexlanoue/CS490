@@ -1,103 +1,120 @@
+<?php
+ini_set('display_errors', 1);
+ini_set('display_startup_errors', 1);
+error_reporting(E_ALL);
+
+
+session_start();
+include("Garyutil.class.php");
+
+$redirectToLogin = false;
+
+
+if (!isset($_SESSION['role']) || $_SESSION['role'] != "instructor") {
+    $redirectToLogin = true;
+}
+
+$message = "";
+
+if (isset($_POST['question'])) {
+    
+    $question = $_POST['question'];
+    $answer = $_POST['answer'];
+
+    if ($question == "") {
+        $message = 'Question cannot be left blank.';
+    } else if ($answer == "") {
+        $message = 'Answer cannot be left blank.';
+    } else {
+
+        $response = util::ForwardPostRequest("question.php", $_POST);
+        
+        if($response['success']){
+            $message = 'Question and answer added successfully.';
+            
+        } else{
+            
+            $message = $response['result'];
+        }
+    }
+}
+
+?>
 <html>
     <head>
         <title>Question Creation</title>
         <script>
-            function ajax_get(url, callback) {
-                var xhr;
-                if(typeof XMLHttpRequest !== 'undefined') 
-                    xhr = new XMLHttpRequest();
-                else {
-                var versions = ["Microsoft.XmlHttp",    // Support for older Internet Explorer versions (versions older than IE7)...
-                                "MSXML2.XmlHttp",
-                                "MSXML2.XmlHttp.3.0",
-                                "MSXML2.XmlHttp.4.0",
-                                "MSXML2.XmlHttp.5.0"];
-                    for(var i = 0; i < versions.length; i++){
-                        try {
-                            xhr = new ActiveXObject(versions[i]);
-                            break;
-                        }
-                        catch(e){}
-                    }
-                }
-                xhr.onreadystatechange = function(){
-                    if((xhr.status !== 200) || (xhr.readyState < 4)) 
-                        return;
-                    callback(xhr);
-                }; 
-                xhr.open('get', url, true);
-                xhr.send();   
-            }
-           
-            function ajax_post(url, callback) {
-                var xhr;
-                var question = document.getElementById("question").value;
-                var answer = document.getElementById("answer").value;
-                if(typeof XMLHttpRequest !== 'undefined') 
-                    xhr = new XMLHttpRequest();
-                else {
-                    var versions = ["Microsoft.XmlHttp",    // Support for older Internet Explorer versions (older than IE7)...
-                                    "MSXML2.XmlHttp",
-                                    "MSXML2.XmlHttp.3.0",
-                                    "MSXML2.XmlHttp.4.0",
-                                    "MSXML2.XmlHttp.5.0"];
-                    for(var i = 0; i < versions.length; i++){
-                        try {
-                            xhr = new ActiveXObject(versions[i]);
-                            break;
-                        }
-                        catch(e){}
-                    }
-                }         
-                xhr.onreadystatechange = function(){         
-                    if((xhr.status !== 200) || (xhr.readyState < 4)) 
-                        return;
-                    callback(xhr);
-                };         
-                xhr.open('post', url, true);
-                xhr.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
-                xhr.send("question="+question+"&answer="+answer);
-                document.getElementById("message").innerHTML = ".................";         // indication of processing        
-            }             
+<?php
+if ($redirectToLogin) {
+
+    echo "window.location = 'index.php';";
+}
+?>
         </script>
     </head>
     <body>
-        <a href="instructor.php">Return to main page</a><br>
-        <center>
-            <h1>Question Creation</h1>
-            <br>
-                <label for="question">Question</label><br>
-                <textarea id="question" rows="10" cols="60" form="form" placeholder="Enter question..." autofocus></textarea><br><br>
-                <label for="answer">Answer</label><br>
-                <textarea id = "answer" rows="10" cols="60" form="form" placeholder="Enter answer..."></textarea><br><br>
-                <input type = "submit" name="btn" value="Add" onclick="
 
-                ajax_post('question_creation_frontback.php', function(xhr){
-                    response = xhr.responseText;
-                        document.getElementById('message').innerHTML = response;
+        <a href="instructor.php" style="float:left">Return to main page</a>
+        <a href="edit_user.php" style="float:right">Account settings</a><br>
+        <a href="index.php?logout=1" style="float:right">Logout</a>
+    <center>
+        <h1>Question Creation</h1>
+        <br>
+        <div id="message"> 
+            <?php
+            
+            if ($message != "") {
+                echo $message;
+            }
+            ?>
+        </div><br>
+        <form action = "question_creation.php" method="POST">
 
-                });
 
+            <label for="question">Question</label><br>
+            <textarea name="question" value="question" rows="8" cols="40"  placeholder="Enter question..." autofocus></textarea><br><br>
+            <label for="answer">Answer</label><br>
+            
+            
+            <textarea name = "answer" value="answer" rows="8" cols="40"  placeholder="Enter answer..."></textarea><br><br>
+            <input type = "submit" name="btn" value="Add" ><br><br>
 
-                ajax_get('https://web.njit.edu/~glh4/question.php', function(xhr){
-                    var response = JSON.parse(xhr.responseText);       
-                    var list = document.getElementById('defaultList');
-                    var results = Object.keys(response.result);
-                    list.innerHTML = '';                                    // Clear list; otherwise, updated list appends to older list--needs testing
-                    for (var i = 1 ; i <= results.length; i++) {
-                        list.innerHTML += '<li>' + response.result[i].question + ' --- ' + response.result[i].answer + '</li>';
-                    }      
-                });"><br><br>
-            <!--
-                <form method="POST">
-                    <input id = 'questions' type="text" name="question" placeholder="Enter question..." autofocus>
-                    <input type="text" name="answer" placeholder="Enter answer..."></input>
-                    <input id = 'add' type="button" value="Add"></input>
-                      -->
-            <div id="message"></div>          
-            <h2>Questions/Answers Bank</h2>
-            <ol id = 'defaultList'></ol>
+        </form>
 
-        </center>
-    </body>
+        <h2>Questions/Answers Bank</h2>
+
+        <?php 
+            
+        $QuestionBank = util::ForwardGETRequest("question.php", array());
+        
+        if( !$QuestionBank['success']) {
+            
+            echo 'error';
+            //return;
+        }
+            ?>
+        
+        <table>
+            <tr>
+                <td></td>
+                <td>id</td>
+                <td>Question</td>
+                <td>Answer</td>
+                </tr>
+                <?php
+            $i = 1;
+            foreach ( $QuestionBank['result'] as $q ){       // $q is an array    
+                echo '<tr>';
+                echo '<td><input type="button" value="Delete" onclick="deleteRow('.$i.')"></td>';
+                echo '<td>' . $q['id'] . '</td>';
+                echo '<td>' . $q['question'] . '</td>'; 
+                echo '<td>' . $q['answer'] . '</td>';
+                echo '</tr>';
+                $i++;
+            }
+        ?>
+        </table>
+
+    </center>
+</body>
 </html>

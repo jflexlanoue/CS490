@@ -10,6 +10,8 @@ else if ($password == "")
 else{
 	$_POST = ['username' => $username,
 	'password' => $password];
+        
+        
 	$ch = curl_init('https://web.njit.edu/~glh4/user.php');
 	curl_setopt($ch, CURLOPT_POST, 1);
 	curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);

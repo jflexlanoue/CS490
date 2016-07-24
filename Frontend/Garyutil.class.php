@@ -53,13 +53,14 @@ class util {
     static function ForwardPostRequest($PageRequest, $PostParams) {
         $url = self::UTIL_BASEURL . $PageRequest;
         $res = self::httpPost($url, $PostParams);
+       
         return json_decode($res, true);
     }
 
     static function ForwardGetRequest($PageRequest, $GetParams) {
         $url = self::UTIL_BASEURL . $PageRequest;
         $res = self::httpPost($url, $GetParams, false);
-        return json_decode($res, true);
+         return json_decode($res, true);
     }
 
 }
