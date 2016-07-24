@@ -15,11 +15,15 @@ $GETPARAMS = array();
     
 if(isset($_GET['examid'])){
     $ExamId = $_GET['examid'];
-    $GETPARAMS = ["examID" => $ExamId ,
+    $GETPARAMS = ["method" => "get",
+                    "examID" => $ExamId ,
                   "expand" => 1];
+} else{
+    echo "Need GET parameter examid";
+    return;
 }
 
-$Results = json_decode(util::ForwardGETRequest("result.php",$GETPARAMS ),1);
+$Results = json_decode(util::ForwardRequest("result.php",$GETPARAMS ),1);
 
 if(!$Results['success']){
     echo "No Results";
@@ -33,98 +37,34 @@ foreach($Results as  $v){
     $Result_ID = $v['id'];
     
     $sAnswer = $v['student_answer'];
+    
+    
     $sSolution = $v['question']['answer'];
     $sQuestion = $v['question']['question'];
     
-    echo "Solution: " . $sSolution;
-    
-        echo "<br />";
-    echo "<br />";
-    
-        echo "Student Answer: " . $sAnswer;
-    
-            echo "<br />";
-    echo "<br />";
-    
     $Grade = new grading($sSolution, $sAnswer);
     $Grade->DoGrading();
-    $FeedBack = $Grade->GetFeedBack();
-
-    echo "Score: " . $Grade->ScorePerc;
-
-        echo "<br />";
-    echo "<br />";
-
     
-    foreach ($FeedBack as $f) {
-        echo $f;
-            echo "<br />";
-    echo "<br />";
-    }
-        echo "<br />";
-    echo "<br />";
+    $sFeedback  = $Grade->GetFeedBack();
+    $sScore = $Grade->ScorePerc;
     
-
     //PATCH  id => $Result_ID , score => $Score , feedback => $feedback
+    
+    $ParamData = [  "method" => "patch",
+                    "id" => $Result_ID 
+                   ,"score" => $sScore 
+                   ,"feedback" => serialize($sFeedback)];
+    
+    $PatchRes = json_decode(util::ForwardRequest("result.php",$ParamData ),1);
+    
+
 }
 
+$DATA = [ 'method' => "PATCH" 
+         ,'id' => $ExamId
+         ,'released' => true];
 
-/*
-$exam = json_decode(util::ForwardGETRequest("exam.php",$GETPARAMS ),1);
+$PatchExam = json_decode(util::ForwardRequest("exam.php",$DATA ),1);
 
-$QuestionPairs = $exam['result']['sharedQuestion'];
-
-
-foreach($QuestionPairs as $k => $v){
-    
-    $QuestionId = $v['id'];
-    $QuestionQ = $v['question'];
-    $QuestionA = $v['answer'];
-    
-
-    echo  $QuestionId . " " . $QuestionQ . " " . $QuestionA ;
-    echo "<br />";
-    echo "<br />";
-    
-}
-
-$GETPARAMS = ["examID" => $ExamId];
-$result = json_decode(util::ForwardGETRequest("result.php",$GETPARAMS ),1);
-
-$ExamAnswers = $result;
-
-
-foreach($ExamAnswers as $k => $v){
-    
-    //echo  $k . "   " . $v ;
-    echo "<br />";
-    echo "<br />";
-    
-}
-
-
-
-
-
-?>
-
-
-
-
-
-<?php
-//Set Exam Released
-
-
-
-/*
-$Grade = new grading($Answer, $StudentAnswer);
-$Grade->DoGrading();
-$FeedBack = $Grade->GetFeedBack();
-
-echo $Grade->ScorePerc;*/
-
-
-
-//['studentID', 'examID', 'questionID', 'score', 'studentAnswer', 'feedback'];
+echo $PatchExam['success'];
 ?>

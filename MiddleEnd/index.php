@@ -17,14 +17,21 @@ if(isset($_GET['p'])){
     return;
 }
 
-if(count($_POST) > 0){
-   echo util::ForwardPostRequest($PageRequest, $_POST);
-   return;
+$data = array_merge($_GET, $_POST);
+
+
+if(isset($data['method'])){
+  echo util::ForwardRequest($PageRequest, $data);
+} else{
+    
+    if(count($_POST) > 0){
+        echo util::ForwardPostRequest($PageRequest, $data);
+    }
+    else{
+        echo util::ForwardGetRequest($PageRequest, $data);
+    }
 }
 
-if(count($_GET) > 0){
-   echo util::ForwardGetRequest($PageRequest, $_GET);
-   return;
-}
 
-echo "error";
+ 
+

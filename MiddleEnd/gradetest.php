@@ -75,7 +75,7 @@ $Grade = new grading($Answer, $StudentAnswer);
 $Grade->DoGrading();
 $FeedBack = $Grade->GetFeedBack();
 
-echo $Grade->ScorePerc;
+echo "Score: " . $Grade->ScorePerc . "%<br/>";
 ?>
 
 
