@@ -18,11 +18,11 @@ if(isset($_GET['p'])){
 }
 
 if(count($_POST) > 0){
-   echo utilForwardPostRequest($PageRequest, $_POST);
+   echo util::ForwardPostRequest($PageRequest, $_POST);
    return;
 }
 
-if(count($_GET) > 1){
+if(count($_GET) > 0){
    echo util::ForwardGetRequest($PageRequest, $_GET);
    return;
 }
