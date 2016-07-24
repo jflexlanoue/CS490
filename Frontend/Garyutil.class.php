@@ -63,19 +63,19 @@ class util {
          return json_decode($res, true);
     }
 
-    static function ForwardDeleteRequest($PageRequest, $GetParams) {
+    static function ForwardDeleteRequest($PageRequest, $DeleteParams) {
         
-        $GetParams['method'] = "delete";
+        $DeleteParams['method'] = "delete";
         $url = self::UTIL_BASEURL . $PageRequest;
-        $res = self::httpPost($url, $GetParams, true);
+        $res = self::httpPost($url, $DeleteParams, true);
          return json_decode($res, true);
     }
     
-    static function ForwardPatchRequest($PageRequest, $GetParams) {
+    static function ForwardPatchRequest($PageRequest, $PatchParams) {
         
-        $GetParams['method'] = "patch";
+        $PatchParams['method'] = "patch";
         $url = self::UTIL_BASEURL . $PageRequest;
-        $res = self::httpPost($url, $GetParams, true);
+        $res = self::httpPost($url, $PatchParams, true);
          return json_decode($res, true);
     }
     
