@@ -7,8 +7,9 @@
             var xhr;
             var username = document.getElementById("username").value;
             var password = document.getElementById("password").value;
+            // var password2 = document.getElementById("password2").value;  // support later
             var permission;
-            if (document.getElementById('instructor').checked)
+            if (document.getElementById("instructor").checked)
                 permission = "instructor";
             else
                 permission = "student";
@@ -35,7 +36,12 @@
             };         
             xhr.open('post', url, true);
             xhr.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
-            xhr.send("username="+username+"&password="+password);
+            xhr.send("username="+username+
+                    "&password="+password+
+                  "&permission="+permission);
+                /*  +
+                   "&password2="+password2);
+                */
             document.getElementById("message").innerHTML = ".................";         // indication of processing        
         }             
            
@@ -45,17 +51,19 @@
         <a href="index.php">Return to login page</a><br>
         <center>
             <h2>Registration</h2>
-                <input id="username" type="text" name="username" placeholder="username" autofocus><br><br>
-                <input id= "password" type="password" name="password" placeholder="password"><br><br>
+            <input id="username" type="text" name="username" placeholder="Create a username" autofocus><br><br>
+            <input id= "password" type="password" name="password" placeholder="Create a password"><br><br>
+            <!-- <input id= "password2" type="password" name="password2" placeholder="Re-enter password"><br><br> -->
                 <input id="student" type="radio" name="accType" value="Student" checked> Student<br>
                 <input id= "instructor" type="radio" name="accType" value="Instructor"> Instructor<br><br>
                 <input name="loginButton" type="submit" value="Create new account" onclick="
                     ajax_post('create_user_frontback.php', function(xhr){
-                    // var response = JSON.parse(xhr.responseText);
-                        response = xhr.responseText;
-                        document.getElementById('message').innerHTML = response;
-                    })"><br><br>
-                <div id="message"></div>
+                        document.getElementById('message').innerHTML = xhr.responseText;
+                    })"
+                ><br><br>
+                    <div id="message">
+                    </div>
+
         </center>
     </body>
 </html>
