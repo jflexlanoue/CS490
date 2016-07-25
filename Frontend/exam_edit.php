@@ -11,7 +11,32 @@ $creation = !isset($exam_id);
 if($_SERVER['REQUEST_METHOD'] === "POST") {
     print_r($_POST);
 
-    //util::Redirect('instructor.php');
+    $exam = array();
+    if(!$creation)
+        $exam["id"] = $_POST["examid"];
+
+    $exam["title"] = $_POST["name"];
+    $exam["released"] = isset($_POST["released"]);
+    $exam["sharedQuestion"] = array();
+
+    foreach ($_POST as $key => $value) {
+        if(substr($key, 0, 14) === "sharedquestion" && $value === "on") {
+            $question_id = (int)substr($key, 14);
+            array_push($exam["sharedQuestion"], $question_id);
+        }
+    }
+    $exam["questionIDs"] = implode(",", $exam["sharedQuestion"]);
+
+    if($creation)
+        $res = util::ForwardPostRequest("exam.php", $exam);
+    else
+        $res = util::ForwardPatchRequest("exam.php", $exam);
+
+    if(!$res['success']) {
+        die($res["error"]);
+    }
+
+    util::Redirect('instructor.php');
 }
 
 if(!$creation) {
@@ -45,7 +70,7 @@ $questions = $questionRetrieval["result"];
     <h2><?php echo ($creation ? "Create Exams" : "Edit exam") ?></h2>
 
     <form method="post">
-        <?php if($creation) echo '<input type="hidden" name="examid" value="' . $exam_id . '">' ?>
+        <?php if(!$creation) echo '<input type="hidden" name="examid" value="' . $exam_id . '">' ?>
         <div>
             <label>Name</label>
             <input name="name" value="<?php echo $exam["title"] ?>">
@@ -64,7 +89,7 @@ $questions = $questionRetrieval["result"];
             <?php
             foreach ($questions as $q) {
                 echo '<tr>';
-                echo '<td><input name="' . $q['id'] . '" type="checkbox" ' . (in_array($q['id'], $exam_question_ids) ? 'checked="checked"' : "") . '></td>';
+                echo '<td><input name="sharedquestion' . $q['id'] . '" type="checkbox" ' . (in_array($q['id'], $exam_question_ids) ? 'checked="checked"' : "") . '></td>';
                 echo '<td>' . $q['question'] . '</td>';
                 echo '<td>' . $q['answer'] . '</td>';
                 echo '</tr>';
