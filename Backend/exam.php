@@ -1,7 +1,7 @@
 <?php
 require 'common.php';
 
-must_be_instructor();
+// TODO: https://github.com/jflexlanoue/CS490/issues/13
 
 switch ($_SERVER['REQUEST_METHOD']) {
     case "GET":
