@@ -1,20 +1,10 @@
 <?php
-session_start();
 include("Garyutil.class.php");
+include("htmlutil.php");
 
 util::VerifyRole("student");
+hdr("Student");
 ?>
-
-<html>
-    <head>
-        <title>Student</title>
-    </head>
-
-    <script src="site.js"></script>
-
-    <body>
-        <a href="edit_user.php" style="float:right">Account settings</a><br>
-        <a href="index.php?logout=1" style="float:right">Logout</a>
 
     <center>
         <h1>Student</h1>
@@ -62,10 +52,6 @@ util::VerifyRole("student");
     </table>
     </center>
 
-</body>
-</html>
-
-
-
-
-
+<?php
+footer();
+?>

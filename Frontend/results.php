@@ -1,10 +1,11 @@
 <?php
-session_start();
 include("Garyutil.class.php");
+include("htmlutil.php");
 
 util::VerifyRole("instructor");
-
+hdr("Results");
 ?>
+
         <style>
             th, td {
             border: 1px solid black;
@@ -35,3 +36,7 @@ util::VerifyRole("instructor");
             }
         ?>
         </table>
+
+<?php
+footer();
+?>
