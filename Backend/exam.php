@@ -32,7 +32,11 @@ switch ($_SERVER['REQUEST_METHOD']) {
             if (isset($_REQUEST["questionIDs"])) {
                 $questions = explode(",", $_REQUEST["questionIDs"]);
                 foreach ($questions as $question) {
-                    array_push($exam->sharedQuestionList, load_or_error('question', (int)$question));
+                    list($id, $score) = explode(";", $question);
+                    $obj = array();
+                    $obj["questionID"] = load_or_error('question', (int)$id);
+                    $obj["score"] = (int)$score;
+                    array_push($exam->sharedQuestionList, $obj);
                 }
             }
         }
@@ -55,7 +59,11 @@ switch ($_SERVER['REQUEST_METHOD']) {
             if($_REQUEST["questionIDs"] != -1) {
                 $questions = explode(",", $_REQUEST["questionIDs"]);
                 foreach ($questions as $question) {
-                    array_push($exam->sharedQuestionList, load_or_error('question', (int)$question));
+                    list($id, $score) = explode(";", $question);
+                    $obj = array();
+                    $obj["questionID"] = load_or_error('question', (int)$id);
+                    $obj["score"] = $score;
+                    array_push($exam->sharedQuestionList, $obj);
                 }
             }
         }
