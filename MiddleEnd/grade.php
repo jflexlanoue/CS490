@@ -17,7 +17,7 @@ if(isset($_GET['examid'])){
     $ExamId = $_GET['examid'];
     $GETPARAMS = ["method" => "get",
                     "examID" => $ExamId ,
-                  "expand" => 1];
+                  "expand" => true];
 } else{
     echo "Need GET parameter examid";
     return;
@@ -37,6 +37,12 @@ foreach($Results as  $v){
     $Result_ID = $v['id'];
     
     $sAnswer = $v['student_answer'];
+    
+    if(!isset($v['question'])){
+        echo "Question Deleted From the Database";
+        echo '<br/>';
+        continue;
+    }
     
     
     $sSolution = $v['question']['answer'];
