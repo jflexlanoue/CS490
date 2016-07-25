@@ -7,10 +7,18 @@ hdr("Exam Creation");
 $exam_id = $_GET["id"];
 $creation = !isset($exam_id);
 
-// Do edit
+// Handle response
 if($_SERVER['REQUEST_METHOD'] === "POST") {
-    print_r($_POST);
+    // Handle deletion
+    if(isset($_POST["Delete"]) && $_POST["Delete"] == "Delete") {
+        $res = util::ForwardDeleteRequest("exam.php", Array("id" => $_GET["id"]));
+        if(!$res['success']) {
+            die($res["error"]);
+        }
+        util::Redirect('instructor.php');
+    }
 
+    // Handle creation/editing
     $exam = array();
     if(!$creation)
         $exam["id"] = $_POST["examid"];
@@ -68,6 +76,13 @@ $questions = $questionRetrieval["result"];
 
 <center>
     <h2><?php echo ($creation ? "Create Exams" : "Edit exam") ?></h2>
+    <div><?php if(!$creation) echo '
+        <form method="post">
+            <div>
+                <button type="submit" name="Delete" value="Delete">Delete</button>
+            </div>
+        </form>' ?></div>
+
 
     <form method="post">
         <?php if(!$creation) echo '<input type="hidden" name="examid" value="' . $exam_id . '">' ?>
