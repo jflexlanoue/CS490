@@ -82,8 +82,8 @@ hdr("Question Creation");
                         echo '<td><input type="checkbox" name="'.$q['id'].'"></td>'; 
                         echo '<td><input type="button" value="Edit" onclick="deleteRow('.$id.');"></td>';        
                         echo '<td>' . $q['id'] . '</td>';
-                        echo '<td>' . $q['question'] . '</td>'; 
-                        echo '<td>' . $q['answer'] . '</td>';
+                        echo '<td>' . util::Printable($q['question']) . '</td>';
+                        echo '<td>' . util::Printable($q['answer']) . '</td>';
                         echo '</tr>';
                     }
                     $id++;

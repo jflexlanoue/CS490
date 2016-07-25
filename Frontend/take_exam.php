@@ -33,7 +33,7 @@ $response = $response["result"];
           echo '
             <label for="question">Question</label>
             <div class="test_question">' .
-                $question["question"]
+                util::Printable($question["question"])
             .'</div>
             <label for="answer">Answer</label>
             <textarea name="answer'.$question["id"].'" rows="8" cols="40"  placeholder="Enter answer..."></textarea>'; // TODO don't leak question IDs

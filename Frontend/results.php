@@ -47,17 +47,17 @@ function exam_by_id($id) {
                 if(util::IsInstructor() || exam_by_id($q["exam_id"])["released"] == 1) {
                     echo '<tr>';
                     echo '<td>' . exam_by_id($q['exam_id'])["title"] . '</td>';
-                    echo '<td>' . question_by_id($q['question_id'])["question"] . '</td>';
-                    echo '<td>' . $q['student_answer'] . '</td>';
+                    echo '<td>' . util::Printable(question_by_id($q['question_id'])["question"]) . '</td>';
+                    echo '<td>' . util::Printable($q['student_answer']) . '</td>';
                     echo '<td>' . $q['score'] . '</td>';
-                    echo '<td>' . $q['feedback'] . '</td>';
+                    echo '<td>' . util::Printable($q['feedback']) . '</td>';
                     echo '</tr>';
                 }
                 else{
                     echo '<tr>';
                     echo '<td>' . exam_by_id($q['exam_id'])["title"] . '</td>';
-                    echo '<td>' . question_by_id($q['question_id'])["question"] . '</td>';
-                    echo '<td>' . $q['student_answer'] . '</td>';
+                    echo '<td>' . util::Printable(question_by_id($q['question_id'])["question"]) . '</td>';
+                    echo '<td>' . util::Printable($q['student_answer']) . '</td>';
                     echo '<td>N/A</td>';
                     echo '<td>Exam not released</td>';
                     echo '</tr>';
