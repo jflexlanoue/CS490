@@ -20,7 +20,6 @@ if ($redirectToLogin) {
 }
 ?>
 
-
 function ajax_get(url, callback) {
                 var xhr = new XMLHttpRequest();
                 xhr.onreadystatechange = function(){
