@@ -1,12 +1,13 @@
 <?php
 session_start();
 
-function hdr($title, $showmenu = false) {
+function hdr($title, $showmenu = true) {
     echo '
 <!DOCTYPE html>
     <head>
         <title>' . $title . '</title>
         <script src="site.js"></script>
+        <link rel="stylesheet" type="text/css" href="site.css">
     </head>
     <body>';
 
