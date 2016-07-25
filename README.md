@@ -1,3 +1,6 @@
 # Team project for NJIT CS490
 
-Backend is documented [on the wiki](https://github.com/jflexlanoue/CS490/wiki/Backend-API)
+## Documentation
+
+- [Backend](https://github.com/jflexlanoue/CS490/wiki/Backend-API)
+- [MiddleEnd](https://github.com/jflexlanoue/CS490/wiki/MiddleEnd-API)
