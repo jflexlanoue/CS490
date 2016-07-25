@@ -83,6 +83,10 @@ class util {
         header('Location: ' . $page);
     }
 
+    static function IsInstructor() {
+        return ($_SESSION['role'] && $_SESSION['role'] === "instructor");
+    }
+
     static function VerifyRole($role) {
         if (!isset($_SESSION['role']) || $_SESSION['role'] != $role) {
             Util::Redirect('index.php');

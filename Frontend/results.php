@@ -2,7 +2,6 @@
 include("Garyutil.class.php");
 include("htmlutil.php");
 
-util::VerifyRole("student");
 hdr("Results");
 
 function question_by_id($id) {
@@ -38,11 +37,14 @@ function exam_by_id($id) {
                 <td>Score</td>
                 <td>Feedback</td>
                 </tr>
-        <?php $resultsRetrieval = util::ForwardGETRequest("result.php", array("studentID" => util::GetUserID()));
+        <?php
+        $id = array();
+        if(!util::IsInstructor())
+            $id = array("studentID" => util::GetUserID());
+        $resultsRetrieval = util::ForwardGETRequest("result.php", $id);
 
-            $i = 1;
             foreach ( $resultsRetrieval['result'] as $q ){       // $q is an array
-                if(exam_by_id($q["exam_id"])["released"] == true) {
+                if(util::IsInstructor() || exam_by_id($q["exam_id"])["released"] == 1) {
                     echo '<tr>';
                     echo '<td>' . exam_by_id($q['exam_id'])["title"] . '</td>';
                     echo '<td>' . question_by_id($q['question_id'])["question"] . '</td>';
@@ -60,7 +62,6 @@ function exam_by_id($id) {
                     echo '<td>Exam not released</td>';
                     echo '</tr>';
                 }
-                $i++;
             }
         ?>
         </table>

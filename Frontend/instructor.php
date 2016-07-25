@@ -21,6 +21,7 @@ if(isset($_POST["action"])) {
         <h1>Instructor</h1>
         <a href="question_creation.php">Question Bank</a><br>
         <a href="exam_edit.php">New Exam</a><br>
+        <a href="results.php">View results</a><br>
         <h1>Exams</h1>
         <div id="list">
             <?php
