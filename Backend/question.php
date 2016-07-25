@@ -17,6 +17,7 @@ switch ($_SERVER['REQUEST_METHOD']) {
         $question = R::dispense('question');
         $question->question = $_REQUEST["question"];
         $question->answer = $_REQUEST["answer"];
+        $question->points = $_REQUEST["points"];
 
         $response["result"] = R::store($question);
         break;
@@ -31,6 +32,8 @@ switch ($_SERVER['REQUEST_METHOD']) {
             $question->question = $_REQUEST["question"];
         if (isset($_REQUEST["answer"]))
             $question->answer = $_REQUEST["answer"];
+        if (isset($_REQUEST["points"]))
+            $question->points = $_REQUEST["points"];
         R::store($question);
         break;
 
