@@ -25,7 +25,7 @@ if($_SERVER['REQUEST_METHOD'] === "POST") {
 
     $exam["title"] = $_POST["name"];
     $exam["released"] = isset($_POST["released"]);
-    $exam["sharedQuestion"] = array();
+    $exam["questionIDs"] = array();
 
     foreach ($_POST as $key => $value) {
         if(substr($key, 0, 14) === "sharedquestion" && $value === "on") {
@@ -39,6 +39,8 @@ if($_SERVER['REQUEST_METHOD'] === "POST") {
         $res = util::ForwardPostRequest("exam.php", $exam);
     else
         $res = util::ForwardPatchRequest("exam.php", $exam);
+
+    print_r($exam);
 
     if(!$res['success']) {
         die($res["error"]);
