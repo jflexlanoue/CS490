@@ -9,8 +9,9 @@ $message = "";
 
 if (!isset($_GET['id']))
 {
-    die("Exam ID missing");
+    util::Redirect('exam_list.php');
 }
+
 $id["id"] = $_GET['id'];
 
 hdr("Take Exam");
@@ -45,5 +46,5 @@ $response = $response["result"];
 </div>
 
 <?php
-footer("Take Exam");
+footer();
 ?>

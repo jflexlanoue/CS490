@@ -26,7 +26,10 @@ foreach ($_POST as $item => $answer) {
         }
     }
 }
+
+$grading_results = util::httpPost("https://web.njit.edu/~jl366/grade.php?examid=".$exam_id);
+
 if(isset($resulterror))
     die($resulterror);
 
-util::Redirect("student.php");
+util::Redirect("exam_complete.php");

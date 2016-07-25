@@ -9,7 +9,7 @@ hdr("Student");
     <center>
         <h1>Student</h1>
 
-        <a href="take_exam.php">Take Exam</a><br>
+        <a href="exam_list.php">Take Exam</a><br>
         <a href="results.php">Graded Questions</a><br>
 
          <?php 
