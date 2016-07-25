@@ -5,10 +5,8 @@ $password = $_POST["password"];
 $permission = $_POST["permission"];
 // $password2 = $_POST["password2"];  // support later
 
-if ($username === "")
-	echo 'Username cannot be left blank.';
-else if ($password === "")
-	echo 'Password cannot be left blank.';
+if ($username === "" || $password === "")
+	echo 'Username or password cannot be left blank.';
 //else if ($password !== $password2) {
 //	echo 'Passwords do not match';
 else{

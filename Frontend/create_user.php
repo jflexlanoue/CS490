@@ -61,7 +61,7 @@
                         document.getElementById('message').innerHTML = xhr.responseText;
                     })"
                 ><br><br>
-                    <div style="color:red" id="message"></div>
+                    <div id="message">
                     </div>
 
         </center>
