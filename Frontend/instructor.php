@@ -31,7 +31,7 @@ function ajax_get(url, callback) {
                 xhr.send();   
             }
 
-            ajax_get('https://web.njit.edu/~glh4/exam.php', function(xhr){
+            ajax_get('https://web.njit.edu/~jl366/?p=exam.php', function(xhr){
                     var response = xhr.responseText;       
                     var list = document.getElementById('list');
                     list.innerHTML = '';                                    // Clear list; otherwise, updated list appends to older list--needs testing
@@ -51,7 +51,13 @@ function ajax_get(url, callback) {
         <a href="question_creation.php">Question Bank</a><br>
         <a href="exam_creation.php">New Exam</a><br>
         <h1>Published Exams</h1>
-        <div id="list"></div>
+        <div id="list">
+            <?php
+
+            // TODO List exams
+
+            ?>
+        </div>
         <br>
     </center>
 
