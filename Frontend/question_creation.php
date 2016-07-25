@@ -53,13 +53,11 @@
                 
 
             function getSelectedBox(checkForm) {
-                // JavaScript & jQuery Course - http://coursesweb.net/javascript/
-                var selectedBox = [];        // array that will store the value of selected checkboxes
+              
+                var selectedBox = [];
             
-                // gets all the input tags in checkForm, and their number
                 var inputFields = checkForm.getElementsByTagName('input');
             
-                // traverse the inputFields elements, and adds the value of selected (checked) checkbox in selectedBox
                 for(var i=0; i<inputFields.length; i++) {
                 if(inputFields[i].type == 'checkbox' && inputFields[i].checked == true) 
                     selectedBox.push(inputFields[i].value);
@@ -177,7 +175,7 @@
                 })">
             <script>
                 document.getElementById('btnTest').onclick = function(){
-                var selected = getSelectedBox(this.form);     // gets the array returned by getSelectedBox()
+                var selected = getSelectedBox(this.form);
                 alert(selected);      // debug
                 }
             </script>
