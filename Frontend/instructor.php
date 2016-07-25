@@ -74,19 +74,3 @@ function ajax_get(url, callback) {
 
 </body>
 </html>
-
-
-
-
-
-
-
-
-<html>
-    <head>
-        <title></title>
-    </head>
-    <body>
-
-    </body>
-</html>
