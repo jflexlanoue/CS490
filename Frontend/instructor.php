@@ -65,7 +65,7 @@ function ajax_get(url, callback) {
         <a href="index.php?logout=1" style="float:right">Logout</a>
     <center>
         <h1>Instructor</h1>
-        <a href="question_creation.php">Question Creation</a><br>
+        <a href="question_creation.php">Question Bank</a><br>
         <a href="exam_creation.php">New Exam</a><br>
         <h1>Published Exams</h1>
         <div id="list"></div>
