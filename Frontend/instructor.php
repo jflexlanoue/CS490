@@ -28,7 +28,7 @@ if(isset($_POST["action"])) {
             function print_exam($exam)
             {
                 echo "<div class='exam'>";
-                    echo '<div><a href="edit_exam.php?id=' . $exam["id"] . '">' . $exam["title"] . "</a></div>";
+                    echo '<div><a href="exam_edit.php?id=' . $exam["id"] . '">' . $exam["title"] . "</a></div>";
                     echo "<div>" . ($exam["released"] ==1 ? "Released" : "Not released") . "</div>";
                     echo "<div>Questions: " . count($exam["sharedQuestion"]) . "</div>";
                     if($exam["released"] == 0)
