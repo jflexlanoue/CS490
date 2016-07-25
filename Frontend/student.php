@@ -2,11 +2,7 @@
 session_start();
 include("Garyutil.class.php");
 
-$redirectToLogin = false;
-
-if (!isset($_SESSION['role']) || $_SESSION['role'] != "student") {
-    $redirectToLogin = true;
-}
+util::VerifyRole("student");
 ?>
 
 <html>
@@ -15,11 +11,6 @@ if (!isset($_SESSION['role']) || $_SESSION['role'] != "student") {
     </head>
 
     <script>
-<?php
-if ($redirectToLogin) {
-    echo "window.location = 'index.php';";
-}
-?>
 
 function ajax_get(url, callback) {
                 var xhr;

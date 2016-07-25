@@ -78,5 +78,14 @@ class util {
         $res = self::httpPost($url, $PatchParams, true);
          return json_decode($res, true);
     }
-    
+
+    static function Redirect($page) {
+        header('Location: ' . $page);
+    }
+
+    static function VerifyRole($role) {
+        if (!isset($_SESSION['role']) || $_SESSION['role'] != $role) {
+            Util::Redirect('index.php');
+        }
+    }
 }

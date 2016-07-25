@@ -6,13 +6,8 @@
     
     session_start();
     include("Garyutil.class.php");
-    
-    $redirectToLogin = false;
-    
-    
-    if (!isset($_SESSION['role']) || $_SESSION['role'] != "instructor") {
-        $redirectToLogin = true;
-    }
+
+    util::VerifyRole("instructor");
     
     $message = "";
 
@@ -44,13 +39,6 @@
     <head>
         <title>Question Creation</title>
         <script>
-            <?php
-                if ($redirectToLogin) {
-                    echo "window.location = 'index.php';";
-                }
-                ?>
-                
-
             function getSelectedBox(checkForm) {
                 var selectedBox = [];
             

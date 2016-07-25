@@ -6,14 +6,7 @@ error_reporting(E_ALL);
 
 session_start();
 include("Garyutil.class.php");
-
-$redirectToLogin = false;
-
-
-if (!isset($_SESSION['role']) || $_SESSION['role'] != "instructor") {
-    $redirectToLogin = true;
-}
-
+util::VerifyRole("instructor");
 
 echo json_encode($_POST);
 
