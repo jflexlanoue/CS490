@@ -3,31 +3,17 @@ ini_set('display_errors', 1);
 ini_set('display_startup_errors', 1);
 error_reporting(E_ALL);
 
-set_time_limit(10);
-
 
 session_start();
 
 include("util.class.php");
 include("grading.class.php");
 
-if (isset($_POST["Question"])) {
-    $Question = $_POST['Question'];
+if (isset($_POST["Answer"])) {
     $Answer = $_POST['Answer'];
     $StudentAnswer = $_POST['StudentAnswer'];
 } else {
 
-    $Question = "Write a child class Car that inherits from Vehicle and overrides the Drive method. Inside the new function, print the distance traveled denoted in miles.
-
-Vechicle.java:
-
-public class Vehicle
-{
-  public void Drive(int miles)
-  {
-    // throw not implemented exception
-  }
-}";
 
     $Answer = "public class Car extends Vehicle
 
@@ -60,8 +46,7 @@ public class Vehicle
 ?>
 
 <form action="" method="POST">
-    <br/>Question: <br/>
-    <textarea type="text" name = "Question" rows="4" cols="50"><?php echo $Question ?></textarea>
+    
     <br/>Solution:<br/>
     <textarea type="text" name = "Answer" rows="15" cols="50"><?php echo $Answer ?></textarea>
     <br/>Student Answer:<br/>
@@ -77,7 +62,6 @@ $FeedBack = $Grade->GetFeedBack();
 
 echo "Score: " . $Grade->ScorePerc . "%<br/>";
 ?>
-
 
 
 FeedBack: <br/>
