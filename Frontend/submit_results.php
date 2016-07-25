@@ -6,7 +6,6 @@ include("htmlutil.php");
 util::VerifyRole('student');
 
 $exam_id = $_POST["examid"];
-$user_id = json_decode(util::ForwardGetRequest("user.php")["result"])->id;
 
 foreach ($_POST as $item => $answer) {
     if(substr($item, 0, 6) === "answer") {

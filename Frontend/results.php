@@ -2,9 +2,27 @@
 include("Garyutil.class.php");
 include("htmlutil.php");
 
-util::VerifyRole("instructor");
+util::VerifyRole("student");
 hdr("Results");
+
+function question_by_id($id) {
+    global $questioncache;
+    if(!isset($questioncache[$id])) {
+        $questioncache[$id] = util::ForwardGETRequest("question.php", array("id" => $id))["result"];
+    }
+    return $questioncache[$id];
+}
+
+function exam_by_id($id) {
+    global $examcache;
+    if(!isset($examcache[$id])) {
+        $examcache[$id] = util::ForwardGETRequest("exam.php", array("id" => $id))["result"];
+    }
+    return $examcache[$id];
+}
 ?>
+
+    <a href="student.php" style="float:left">Return to main page</a>
 
         <style>
             th, td {
@@ -14,24 +32,34 @@ hdr("Results");
 
         <table>
             <tr>
-                <!-- <td></td> -->
-                <td>Question ID</td>
-                <td>Score</td>
+                <td>Exam</td>
+                <td>Question</td>
                 <td>Student Answer</td>
+                <td>Score</td>
                 <td>Feedback</td>
                 </tr>
-        <?php $resultsRetrieval = util::ForwardGETRequest("result.php", array());
+        <?php $resultsRetrieval = util::ForwardGETRequest("result.php", array("studentID" => util::GetUserID()));
 
-        
             $i = 1;
-            foreach ( $resultsRetrieval['result'] as $q ){       // $q is an array    
-                echo '<tr>';
-                // echo '<input type="checkbox" name="check_list[]" value="PHP">';
-                echo '<td>' . $q['question_id'] . '</td>';
-                echo '<td>' . $q['score'] . '</td>';
-                echo '<td>' . $q['student_answer'] . '</td>'; 
-                echo '<td>' . $q['feedback'] . '</td>';
-                echo '</tr>';
+            foreach ( $resultsRetrieval['result'] as $q ){       // $q is an array
+                if(exam_by_id($q["exam_id"])["released"] == true) {
+                    echo '<tr>';
+                    echo '<td>' . exam_by_id($q['exam_id'])["title"] . '</td>';
+                    echo '<td>' . question_by_id($q['question_id'])["question"] . '</td>';
+                    echo '<td>' . $q['student_answer'] . '</td>';
+                    echo '<td>' . $q['score'] . '</td>';
+                    echo '<td>' . $q['feedback'] . '</td>';
+                    echo '</tr>';
+                }
+                else{
+                    echo '<tr>';
+                    echo '<td>' . exam_by_id($q['exam_id'])["title"] . '</td>';
+                    echo '<td>' . question_by_id($q['question_id'])["question"] . '</td>';
+                    echo '<td>' . $q['student_answer'] . '</td>';
+                    echo '<td>N/A</td>';
+                    echo '<td>Exam not released</td>';
+                    echo '</tr>';
+                }
                 $i++;
             }
         ?>

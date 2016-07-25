@@ -88,4 +88,12 @@ class util {
             Util::Redirect('index.php');
         }
     }
+
+    static function GetUser() {
+        return json_decode(util::ForwardGetRequest("user.php")["result"]);
+    }
+
+    static function GetUserID() {
+        return self::GetUser()->id;
+    }
 }
