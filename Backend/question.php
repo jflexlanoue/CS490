@@ -6,6 +6,14 @@ switch ($_SERVER['REQUEST_METHOD']) {
         if (isset($_REQUEST["id"])) {
             $response["result"] = load_or_error('question', $_REQUEST["id"]);
         } else {
+/*
+            - minScore [optional]
+            - maxScore [optional]
+            - search [optional]
+            - orderby [optional] // Can be "name", "score"
+            - order [optional] // Can be asc, desc
+  */
+
             $response["result"] = R::findAll('question');
         }
         break;
