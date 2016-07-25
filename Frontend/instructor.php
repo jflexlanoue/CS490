@@ -13,35 +13,11 @@ if (!isset($_SESSION['role']) || $_SESSION['role'] != "instructor") {
 <html>
     <head>
         <title>CS 490 - Instructor</title>
-        <script>
 <?php
 if ($redirectToLogin) {
     echo "window.location = 'index.php';";
 }
 ?>
-
-function ajax_get(url, callback) {
-                var xhr = new XMLHttpRequest();
-                xhr.onreadystatechange = function(){
-                    if((xhr.status !== 200) || (xhr.readyState < 4)) 
-                        return;
-                    callback(xhr);
-                }; 
-                xhr.open('get', url, true);
-                xhr.send();   
-            }
-
-            ajax_get('https://web.njit.edu/~jl366/?p=exam.php', function(xhr){
-                    var response = xhr.responseText;       
-                    var list = document.getElementById('list');
-                    list.innerHTML = '';                                    // Clear list; otherwise, updated list appends to older list--needs testing
-                    for (var i = 0 ; i < response.length; i++) {
-                        list.innerHTML += '<li>' + response[i] + '</li>';
-                        // list.innerHTML += '<li>'+ 'test' + '</li>'; 
-                    }      
-                });
-
-        </script>
     </head>
     <body>
         <a href="edit_user.php" style="float:right">Account settings</a><br>
@@ -50,11 +26,25 @@ function ajax_get(url, callback) {
         <h1>Instructor</h1>
         <a href="question_creation.php">Question Bank</a><br>
         <a href="exam_creation.php">New Exam</a><br>
-        <h1>Published Exams</h1>
+        <h1>Exams</h1>
         <div id="list">
             <?php
+            
+            function print_exam($exam)
+            {
+                echo "<div class='exam'>";
+                echo "<div>ID: " . $exam["id"] . "</>";
+                echo "<div>Title: " . $exam["title"] . "</div>";
+                echo "<div>" . $exam["Released"]==1 ? "Released" : "Not released" . "</span>";
+                echo "<div>Questions: " . count($exam["sharedQuestion"]) . "</div>";
+                echo "</div>";
+            }
 
-            // TODO List exams
+            $exams = util::ForwardGetRequest("exam.php");
+            foreach ($exams["result"] as $exam)
+            {
+                echo "<li>" . print_exam($exam) . "</li>";
+            }
 
             ?>
         </div>
