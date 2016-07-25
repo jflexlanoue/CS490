@@ -50,6 +50,7 @@ switch ($_SERVER['REQUEST_METHOD']) {
         $result->score = $_REQUEST["score"];
         $result->studentAnswer = $_REQUEST["studentAnswer"];
         $result->feedback = $_REQUEST["feedback"];
+        $result->executionResult = $_REQUEST["executionResult"];
 
         $response["result"] = R::store($result);
         break;
@@ -70,6 +71,8 @@ switch ($_SERVER['REQUEST_METHOD']) {
             $result->studentAnswer = $_REQUEST["studentAnswer"];
         if (isset($_REQUEST["feedback"]))
             $result->feedback = $_REQUEST["feedback"];
+        if (isset($_REQUEST["executionResult"]))
+            $result->executionResult = $_REQUEST["executionResult"];
         R::store($result);
         break;
 
