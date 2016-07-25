@@ -2,7 +2,7 @@
 require 'common.php';
 
 if(!is_instructor()) {
-    if ($_SERVER['REQUEST_METHOD'] != "POST") { // Anyone can create an account
+    if ($_SERVER['REQUEST_METHOD'] != "POST" && $_SERVER['REQUEST_METHOD'] != "GET") { // Anyone can create an account and view their own account
         if (!isset($_REQUEST["id"]) || ($_SESSION["userID"] != $_REQUEST["id"])) {
             Error("Students can only modify and view their own accounts");
         }
@@ -11,17 +11,23 @@ if(!is_instructor()) {
 
 switch ($_SERVER['REQUEST_METHOD']) {
     case "GET":
-        if (isset($_REQUEST["id"])) {
-            $result = load_or_error('user', $_REQUEST["id"]);
-            scrub_user($result);
-            $response["result"] = $result;
-        } else {
-            $result = R::findAll('user');
-            foreach($result as $resp){
-                scrub_user($resp);
+        if(is_instructor()) {
+            if (isset($_REQUEST["id"])) {
+                $result = load_or_error('user', $_REQUEST["id"]);
+                scrub_user($result);
+                $response["result"] = $result;
+            } else if (isset($_REQUEST["all"])) {
+                {
+                    $result = R::findAll('user');
+                    foreach ($result as $resp) {
+                        scrub_user($resp);
+                    }
+                    $response["result"] = $result;
+                }
             }
-            $response["result"] = $result;
         }
+        $user = load_or_error('user', $_SESSION["userID"]);
+        $response["result"] = json_encode(scrub_user($user));
         break;
 
     case "POST":
