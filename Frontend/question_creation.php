@@ -46,14 +46,12 @@
         <script>
             <?php
                 if ($redirectToLogin) {
-                
                     echo "window.location = 'index.php';";
                 }
                 ?>
                 
 
             function getSelectedBox(checkForm) {
-              
                 var selectedBox = [];
             
                 var inputFields = checkForm.getElementsByTagName('input');
@@ -65,51 +63,19 @@
             
                 return selectedBox;
             }
-            
-            
-                    function ajax_post(url, callback) {
-                        var xhr;
-            
-            /*
-                        var checkResults = 'Checkboxes: ';
-                        for (var i = 0; i < document.checkForm.elements.length; i++){
-                            if (checkForm.elements[i].type == 'checkbox'){
-                                if (checkForm.elements[i].checked == true){
-                                    checkResults += checkForm.elements[i].value + ' ';
-                                }
-                            }
-                        }
-            */            
-            
-                        if(typeof XMLHttpRequest !== 'undefined') 
-                            xhr = new XMLHttpRequest();
-                        else {
-                            var versions = ["Microsoft.XmlHttp",    // Support for older Internet Explorer versions (older than IE7)...
-                                            "MSXML2.XmlHttp",
-                                            "MSXML2.XmlHttp.3.0",
-                                            "MSXML2.XmlHttp.4.0",
-                                            "MSXML2.XmlHttp.5.0"];
-                            for(var i = 0; i < versions.length; i++){
-                                try {
-                                    xhr = new ActiveXObject(versions[i]);
-                                    break;
-                                }
-                                catch(e){}
-                            }
-                        }         
-                        xhr.onreadystatechange = function(){         
-                            if((xhr.status !== 200) || (xhr.readyState < 4)) 
-                                return;
-                            callback(xhr);
-                        };         
-                        xhr.open('post', url, true);
-                        xhr.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
-                        xhr.send("selectedBox="+selectedBox);
-                        document.getElementById("message").innerHTML = ".................";         // indication of processing        
-                    }             
-                    
-            
-                    
+
+            function ajax_post(url, callback) {
+                var xhr = new XMLHttpRequest();
+                xhr.onreadystatechange = function(){
+                    if((xhr.status !== 200) || (xhr.readyState < 4))
+                        return;
+                    callback(xhr);
+                };
+                xhr.open('post', url, true);
+                xhr.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+                xhr.send("selectedBox="+selectedBox);
+                document.getElementById("message").innerHTML = ".................";         // indication of processing
+            }
         </script>
     </head>
     <body>
