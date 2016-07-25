@@ -28,10 +28,12 @@ switch ($_SERVER['REQUEST_METHOD']) {
         $exam->released = filter_var($_REQUEST["released"], FILTER_VALIDATE_BOOLEAN);
         $exam->sharedQuestionList = array();
 
-        if (isset($_REQUEST["questionIDs"])) {
-            $questions = explode(",", $_REQUEST["questionIDs"]);
-            foreach($questions as $question) {
-                array_push($exam->sharedQuestionList, load_or_error('question', (int)$question));
+        if($_REQUEST["questionIDs"] != -1) {
+            if (isset($_REQUEST["questionIDs"])) {
+                $questions = explode(",", $_REQUEST["questionIDs"]);
+                foreach ($questions as $question) {
+                    array_push($exam->sharedQuestionList, load_or_error('question', (int)$question));
+                }
             }
         }
 
