@@ -32,7 +32,8 @@ if(isset($_POST["action"])) {
                     echo "<div>Title: " . $exam["title"] . "</div>";
                     echo "<div>" . ($exam["released"] ==1 ? "Released" : "Not released") . "</div>";
                     echo "<div>Questions: " . count($exam["sharedQuestion"]) . "</div>";
-                    echo '<form action="" method="post"><input type="hidden" name="action" value="release"><button value="' . $exam["id"] . '" name="release">Release Scores</button></form>';
+                    if($exam["released"] == 0)
+                        echo '<form action="" method="post"><input type="hidden" name="action" value="release"><button value="' . $exam["id"] . '" name="release">Release Scores</button></form>';
                 echo "</div>";
             }
 
