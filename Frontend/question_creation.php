@@ -79,8 +79,7 @@ hdr("Question Creation");
                     $id = 1;
                     foreach ( $QuestionBank['result'] as $q ){ 
                         echo '<tr>';
-                        echo '<td><input type="checkbox" name="'.$q['id'].'"></td>'; 
-                        echo '<td><input type="button" value="Edit" onclick="deleteRow('.$id.');"></td>';        
+                        echo '<td><input type="checkbox" name="'.$q['id'].'"></td>';       
                         echo '<td>' . $q['id'] . '</td>';
                         echo '<td>' . util::Printable($q['question']) . '</td>';
                         echo '<td>' . util::Printable($q['answer']) . '</td>';
