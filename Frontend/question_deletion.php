@@ -15,7 +15,16 @@ if (!isset($_SESSION['role']) || $_SESSION['role'] != "instructor") {
 }
 
 
+echo json_encode($_POST);
 
+foreach($_POST as $id => $value)
+{
+    if($value == "on")
+    {
+        $idx["id"] = $id;
+        util::ForwardDeleteRequest("question.php", $idx);
+    }
+}
 
 /* tested
   
@@ -24,5 +33,5 @@ if (!isset($_SESSION['role']) || $_SESSION['role'] != "instructor") {
     $response = util::ForwardDeleteRequest("question.php", $data);
 
 */
-header('Location: question_creation.php');    
+header('Location: question_creation.php');
 ?>

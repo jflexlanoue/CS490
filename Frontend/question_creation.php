@@ -15,7 +15,7 @@
     }
     
     $message = "";
-    
+
     if (isset($_POST['question'])) {
         
         $question = $_POST['question'];
@@ -144,6 +144,8 @@
                     //return;
                 }
                     ?>
+
+            <form name="checkForm" action="question_deletion.php" method="post">
             <table>
                 <tr>
                     <td></td>
@@ -153,7 +155,6 @@
                     <td><strong>Answer</strong></td>
                 </tr>
                 <?php
-                    echo '<form name="checkForm">';
                     $id = 1;
                     foreach ( $QuestionBank['result'] as $q ){ 
                         echo '<tr>';
@@ -164,15 +165,12 @@
                         echo '<td>' . $q['answer'] . '</td>';
                         echo '</tr>';
                     }
-                    echo '<input type="button" value="Delete 2" id="btnTest">';
-                    echo '</form>';
                     $id++;
                     ?>
             </table>
-            <input type="submit" name="delete" value="Delete" onclick="ajax_post('question_deletion.php', function(xhr){
-              
-                document.getElementById('message').innerHTML = 'response';
-                })">
+            <input type="submit" name="delete" value="Delete"">
+            </form>
+
             <script>
                 document.getElementById('btnTest').onclick = function(){
                 var selected = getSelectedBox(this.form);
