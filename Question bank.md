@@ -1,5 +1,18 @@
 # Question Bank
 
+## Primary Question
+
+```python
+def compute(op,a,b):
+  if op == '+':
+    return a+b
+  elif op == '-':
+    return a-b
+  elif op == '*':
+    return a*b
+  else return a/b
+```
+
 ## 1
 Write a child class **Car** that inherits from **Vehicle** and overrides the **Drive** method. Inside the new function, print the distance traveled denoted in miles.
 
