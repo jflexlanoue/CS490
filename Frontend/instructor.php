@@ -20,7 +20,7 @@ if(isset($_POST["action"])) {
     <center>
         <h1>Instructor</h1>
         <a href="question_creation.php">Question Bank</a><br>
-        <a href="exam_creation.php">New Exam</a><br>
+        <a href="exam_edit.php">New Exam</a><br>
         <h1>Exams</h1>
         <div id="list">
             <?php
