@@ -75,7 +75,7 @@ class util {
         $DeleteParams['method'] = "delete";
         $url = self::UTIL_BASEURL . $PageRequest;
         $res = self::httpPost($url, $DeleteParams, true);
-         return json_decode($res, true);
+         return $res;
     }
     
     static function ForwardPatchRequest($PageRequest, $PatchParams) {
@@ -83,7 +83,7 @@ class util {
         $PatchParams['method'] = "patch";
         $url = self::UTIL_BASEURL . $PageRequest;
         $res = self::httpPost($url, $PatchParams, true);
-         return json_decode($res, true);
+         return $res;
     }
     
     
