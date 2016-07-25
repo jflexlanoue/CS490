@@ -38,33 +38,7 @@
 <html>
     <head>
         <title>Question Creation</title>
-        <script>
-            function getSelectedBox(checkForm) {
-                var selectedBox = [];
-            
-                var inputFields = checkForm.getElementsByTagName('input');
-            
-                for(var i=0; i<inputFields.length; i++) {
-                if(inputFields[i].type == 'checkbox' && inputFields[i].checked == true) 
-                    selectedBox.push(inputFields[i].value);
-                }
-            
-                return selectedBox;
-            }
-
-            function ajax_post(url, callback) {
-                var xhr = new XMLHttpRequest();
-                xhr.onreadystatechange = function(){
-                    if((xhr.status !== 200) || (xhr.readyState < 4))
-                        return;
-                    callback(xhr);
-                };
-                xhr.open('post', url, true);
-                xhr.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
-                xhr.send("selectedBox="+selectedBox);
-                document.getElementById("message").innerHTML = ".................";         // indication of processing
-            }
-        </script>
+        <script src="site.js"></script>
     </head>
     <body>
         <a href="instructor.php" style="float:left">Return to main page</a>
