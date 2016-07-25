@@ -1,6 +1,6 @@
 <?php
-session_start();
 include("Garyutil.class.php");
+include("htmlutil.php");
 
 $failedLogin = false;
 
@@ -14,7 +14,8 @@ if (isset($_POST["username"])) {
     $password = $_POST["password"];
 
     $response = util::ForwardPostRequest("backend_login.php", $_POST);
-    
+    print_r($response);
+
     if ($response['authenticated']) {
         $_SESSION['role'] = $response["permission"];
     } else{
@@ -29,14 +30,10 @@ if (isset($_SESSION['role'])) {
         util::Redirect('student.php');
     }
 }
+
+hdr("CS 490", false);
 ?>
 
-<!DOCTYPE html>
-<html>
-    <head>
-        <title>CS 490</title>
-    </head>
-    <body>
     <center>
         <h1>CS 490</h1>
         <h2>Login</h2>
@@ -51,6 +48,7 @@ if (isset($_SESSION['role'])) {
                <?php
                if($failedLogin){
                    echo "The username and password you entered do not match.";
+                   print_r($response);
                }
                ?>
             </span>
@@ -58,5 +56,7 @@ if (isset($_SESSION['role'])) {
         </form>
 
     </center>
-</body>
-</html>
+
+<?php
+footer();
+?>

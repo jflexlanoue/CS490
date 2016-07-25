@@ -1,49 +1,42 @@
 <?php
-    ini_set('display_errors', 1);
-    ini_set('display_startup_errors', 1);
-    error_reporting(E_ALL);
-    
-    
-    session_start();
-    include("Garyutil.class.php");
+ini_set('display_errors', 1);
+ini_set('display_startup_errors', 1);
+error_reporting(E_ALL);
 
-    util::VerifyRole("instructor");
-    
-    $message = "";
 
-    if (isset($_POST['question'])) {
-        
-        $question = $_POST['question'];
-        $answer = $_POST['answer'];
-    
-        if ($question == "") {
-            $message = 'Question cannot be left blank.';
-        } else if ($answer == "") {
-            $message = 'Answer cannot be left blank.';
-        } else {
-    
-            $response = util::ForwardPostRequest("question.php", $_POST);
-            
-            if($response['success']){
-                $message = 'Question and answer added successfully.';
-                
-            } else{
-                
-                $message = $response['result'];
-            }
+include("Garyutil.class.php");
+include("htmlutil.php");
+
+util::VerifyRole("instructor");
+
+$message = "";
+
+if (isset($_POST['question'])) {
+
+    $question = $_POST['question'];
+    $answer = $_POST['answer'];
+
+    if ($question == "") {
+        $message = 'Question cannot be left blank.';
+    } else if ($answer == "") {
+        $message = 'Answer cannot be left blank.';
+    } else {
+
+        $response = util::ForwardPostRequest("question.php", $_POST);
+
+        if($response['success']){
+            $message = 'Question and answer added successfully.';
+
+        } else{
+
+            $message = $response['result'];
         }
     }
-    
-    ?>
-<html>
-    <head>
-        <title>Question Creation</title>
-        <script src="site.js"></script>
-    </head>
-    <body>
-        <a href="instructor.php" style="float:left">Return to main page</a>
-        <a href="edit_user.php" style="float:right">Account settings</a><br>
-        <a href="index.php?logout=1" style="float:right">Logout</a>
+}
+
+hdr("Question Creation");
+?>
+
         <center>
             <h1>Question Creation</h1>
             <br>
@@ -115,5 +108,7 @@
             <!-- <input type = "button" name="btn" value="Test delete" onclick="function delete()"><br><br> -->
             <div id="message"></div>
         </center>
-    </body>
-</html>
+
+<?php
+footer();
+?>

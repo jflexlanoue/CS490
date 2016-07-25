@@ -1,18 +1,11 @@
 <?php
-session_start();
 include("Garyutil.class.php");
+include("htmlutil.php");
 
 util::VerifyRole("instructor");
+hdr("CS 490 - Instructor", true);
 ?>
 
-<!DOCTYPE html>
-<html>
-    <head>
-        <title>CS 490 - Instructor</title>
-    </head>
-    <body>
-        <a href="edit_user.php" style="float:right">Account settings</a><br>
-        <a href="index.php?logout=1" style="float:right">Logout</a>
     <center>
         <h1>Instructor</h1>
         <a href="question_creation.php">Question Bank</a><br>
@@ -41,6 +34,6 @@ util::VerifyRole("instructor");
         </div>
         <br>
     </center>
-
-</body>
-</html>
+<?php
+footer();
+?>

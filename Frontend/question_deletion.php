@@ -26,5 +26,5 @@ foreach($_POST as $id => $value)
     $response = util::ForwardDeleteRequest("question.php", $data);
 
 */
-header('Location: question_creation.php');
+hdr('Location: question_creation.php');
 ?>
