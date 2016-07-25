@@ -2,22 +2,13 @@
 session_start();
 include("Garyutil.class.php");
 
-$redirectToLogin = false;
-
-if (!isset($_SESSION['role']) || $_SESSION['role'] != "instructor") {
-    $redirectToLogin = true;
-}
+util::VerifyRole("instructor");
 ?>
 
 <!DOCTYPE html>
 <html>
     <head>
         <title>CS 490 - Instructor</title>
-<?php
-if ($redirectToLogin) {
-    echo "window.location = 'index.php';";
-}
-?>
     </head>
     <body>
         <a href="edit_user.php" style="float:right">Account settings</a><br>
@@ -33,9 +24,9 @@ if ($redirectToLogin) {
             function print_exam($exam)
             {
                 echo "<div class='exam'>";
-                echo "<div>ID: " . $exam["id"] . "</>";
+                echo "<div>ID: " . $exam["id"] . "</div>";
                 echo "<div>Title: " . $exam["title"] . "</div>";
-                echo "<div>" . $exam["Released"]==1 ? "Released" : "Not released" . "</span>";
+                echo "<div>" . $exam["Released"]==1 ? "Released" : "Not released" . "</div>";
                 echo "<div>Questions: " . count($exam["sharedQuestion"]) . "</div>";
                 echo "</div>";
             }

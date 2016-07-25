@@ -2,11 +2,8 @@
 session_start();
 include("Garyutil.class.php");
 
-$redirectToLogin = false;
+util::VerifyRole("instructor");
 
-if (!isset($_SESSION['role']) || $_SESSION['role'] != "student") {
-    $redirectToLogin = true;
-}
 ?>
         <style>
             th, td {

@@ -7,9 +7,7 @@ $failedLogin = false;
 if(isset($_GET['logout'])){
     $_SESSION = array();
     session_destroy();
- 
 }
-
 
 if (isset($_POST["username"])) {
     $username = $_POST["username"];
@@ -20,8 +18,15 @@ if (isset($_POST["username"])) {
     if ($response['authenticated']) {
         $_SESSION['role'] = $response["permission"];
     } else{
-        
         $failedLogin = true;
+    }
+}
+
+if (isset($_SESSION['role'])) {
+    if($_SESSION['role'] == "instructor"){
+        util::Redirect('instructor.php');
+    } else if($_SESSION['role'] == "student") {
+        util::Redirect('student.php');
     }
 }
 ?>
@@ -30,19 +35,6 @@ if (isset($_POST["username"])) {
 <html>
     <head>
         <title>CS 490</title>
-        <script>
-
-            <?php
-            
-            if (isset($_SESSION['role'])) {
-                if($_SESSION['role'] == "instructor"){
-                    echo "window.location = 'instructor.php';";
-                } else if($_SESSION['role'] == "student") {
-                     echo "window.location = 'student.php';";
-                }
-            }
-            ?>
-        </script>
     </head>
     <body>
     <center>
