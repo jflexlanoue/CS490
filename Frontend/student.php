@@ -10,36 +10,7 @@ util::VerifyRole("student");
         <title>Student</title>
     </head>
 
-    <script>
-
-function ajax_get(url, callback) {
-                var xhr;
-                if(typeof XMLHttpRequest !== 'undefined') 
-                    xhr = new XMLHttpRequest();
-                else {
-                var versions = ["Microsoft.XmlHttp",    // Support for older Internet Explorer versions (versions older than IE7)...
-                                "MSXML2.XmlHttp",
-                                "MSXML2.XmlHttp.3.0",
-                                "MSXML2.XmlHttp.4.0",
-                                "MSXML2.XmlHttp.5.0"];
-                    for(var i = 0; i < versions.length; i++){
-                        try {
-                            xhr = new ActiveXObject(versions[i]);
-                            break;
-                        }
-                        catch(e){}
-                    }
-                }
-                xhr.onreadystatechange = function(){
-                    if((xhr.status !== 200) || (xhr.readyState < 4)) 
-                        return;
-                    callback(xhr);
-                }; 
-                xhr.open('get', url, true);
-                xhr.send();   
-            }
-
-    </script>
+    <script src="site.js"></script>
 
     <body>
         <a href="edit_user.php" style="float:right">Account settings</a><br>
