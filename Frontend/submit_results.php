@@ -12,7 +12,7 @@ foreach ($_POST as $item => $answer) {
         $question_id = (int)substr($item, 6);
 
         $result = Array();
-        $result["studentID"] = $user_id;
+        $result["studentID"] = util::GetUserID();
         $result["examID"] = $exam_id;
         $result["questionID"] = $question_id;
         $result["score"] = 0;
