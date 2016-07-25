@@ -30,10 +30,15 @@ if($_SERVER['REQUEST_METHOD'] === "POST") {
     foreach ($_POST as $key => $value) {
         if(substr($key, 0, 14) === "sharedquestion" && $value === "on") {
             $question_id = (int)substr($key, 14);
-            array_push($exam["sharedQuestion"], $question_id);
+            array_push($exam["questionIDs"], $question_id);
         }
     }
-    $exam["questionIDs"] = implode(",", $exam["sharedQuestion"]);
+
+    if(count($exam["questionIDs"]) == 0) {
+        $exam["questionIDs"] = "-1";
+    } else {
+        $exam["questionIDs"] = implode(",", $exam["questionIDs"]);
+    }
 
     if($creation)
         $res = util::ForwardPostRequest("exam.php", $exam);

@@ -50,9 +50,11 @@ switch ($_SERVER['REQUEST_METHOD']) {
 
         if (isset($_REQUEST["questionIDs"])) {
             $exam->sharedQuestionList = array();
-            $questions = explode(",", $_REQUEST["questionIDs"]);
-            foreach($questions as $question) {
-                array_push($exam->sharedQuestionList, load_or_error('question', (int)$question));
+            if($_REQUEST["questionIDs"] != -1) {
+                $questions = explode(",", $_REQUEST["questionIDs"]);
+                foreach ($questions as $question) {
+                    array_push($exam->sharedQuestionList, load_or_error('question', (int)$question));
+                }
             }
         }
         R::store($exam);
