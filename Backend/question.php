@@ -26,6 +26,9 @@ switch ($_SERVER['REQUEST_METHOD']) {
     case "GET":
         if (isset($_REQUEST["id"])) {
             $response["result"] = load_or_error('question', $_REQUEST["id"]);
+
+            // Force lazy loaded item to load
+            scrub_question($response["result"]);
         } else {
             $querystr = "";
             $query = array();
@@ -43,6 +46,11 @@ switch ($_SERVER['REQUEST_METHOD']) {
                 $response["result"] = R::findAll('question');
             } else {
                 $response["result"] = R::find('question', $querystr, $query);
+            }
+
+            // Force lazy loaded item to load
+            foreach($response["result"] as $q) {
+                scrub_question($q);
             }
 
             if(!is_instructor()) {
@@ -66,6 +74,12 @@ switch ($_SERVER['REQUEST_METHOD']) {
         $question->answer = $_REQUEST["answer"];
         $question->points = $_REQUEST["points"];
 
+        $enum = array();
+        $props = explode(",", $_REQUEST["properties"]);
+        foreach($props as $prop)
+            array_push($enum, R::enum('properties:' . $prop));
+        $question->sharedPropertiesList = $enum;
+
         $response["result"] = R::store($question);
         break;
 
@@ -81,6 +95,15 @@ switch ($_SERVER['REQUEST_METHOD']) {
             $question->answer = $_REQUEST["answer"];
         if (isset($_REQUEST["points"]))
             $question->points = $_REQUEST["points"];
+        if (isset($_REQUEST["properties"])) {
+            $enum = array();
+            $props = explode(",", $_REQUEST["properties"]);
+            foreach($props as $prop)
+                array_push($enum, R::enum('properties:' . $prop));
+            $question->sharedPropertiesList = $enum;
+        }
+        $response["properties"] = $enum;
+
         R::store($question);
         break;
 

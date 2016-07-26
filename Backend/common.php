@@ -126,6 +126,7 @@ function load_or_error($table, $id, $message = "") {
     return $return;
 }
 
+// Scrub user object FOR DISPLAY ONLY, DO NOT PERSIST THIS
 function scrub_user(&$user){
     // Convert permission from database enum to a plain string
     $permission = strtolower($user->permission->name);
@@ -136,6 +137,20 @@ function scrub_user(&$user){
     // Don't expose hash
     unset($user->hash);
     return $user;
+}
+
+// Scrub question object FOR DISPLAY ONLY, DO NOT PERSIST THIS
+function scrub_question(&$question){
+    // Convert permission from database enum to a plain string
+    $properties = array();
+
+    foreach($question->sharedProperties as $prop) {
+        array_push($properties, strtolower($prop->name));
+    }
+    unset($question->sharedProperties);
+    $question->properties = $properties;
+
+    return $question;
 }
 
 function AddAndPad(&$str, $it) {
