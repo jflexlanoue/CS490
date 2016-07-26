@@ -37,9 +37,8 @@ switch ($_SERVER['REQUEST_METHOD']) {
 
             $querystr = "";
             $query = array();
-            AddToQuery($query, $querystr, "score", "minScore", ">");
-            AddToQuery($query, $querystr, "score", "maxScore", "<");
-
+            AddToQuery($query, $querystr, "points", "minPoints", ">");
+            AddToQuery($query, $querystr, "points", "maxPoints", "<");
             AddToQuery($query, $querystr, "question", "search", "like", "%" . $_REQUEST["search"] . "%");
             if (isset($_REQUEST["orderby"])) {
                 $querystr .= " order by " . $_REQUEST["orderby"];
@@ -71,7 +70,7 @@ switch ($_SERVER['REQUEST_METHOD']) {
 
     case "POST":
         must_be_instructor();
-        verify_params(['question', 'answer']);
+        verify_params(['question', 'answer', 'points']);
 
         $question = R::dispense('question');
         $question->question = $_REQUEST["question"];
