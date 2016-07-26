@@ -1,10 +1,13 @@
 <?php
 require 'common.php';
 
-function AddToQuery(&$query, &$querystr, $str, $operation = "=") {
+function AddToQuery(&$query, &$querystr, $field, $str, $operation = "=", $replacestr = "") {
     if (isset($_REQUEST[$str])) {
-        $query[":" . $str] = $_REQUEST[$str];
-        AddAndPad($querystr, $str . " " . $operation . " :" . $str);
+        if(empty($replacestr)) {
+            $replacestr = $str;
+        }
+        $query[":" . $str] = $replacestr;
+        AddAndPad($querystr, $field . " " . $operation . " :" . $str);
     }
 }
 
@@ -34,12 +37,21 @@ switch ($_SERVER['REQUEST_METHOD']) {
 
             $querystr = "";
             $query = array();
-            AddToQuery($query, $querystr, "minScore");
-            AddToQuery($query, $querystr, "maxScore");
-            AddToQuery($query, $querystr, "search", "LIKE");
-            AddToQuery($query, $querystr, "orderby", "OrderBy");
+            AddToQuery($query, $querystr, "score", "minScore", ">");
+            AddToQuery($query, $querystr, "score", "maxScore", "<");
 
-            if(count($query) == 0) {
+            AddToQuery($query, $querystr, "question", "search", "like", "%" . $_REQUEST["search"] . "%");
+            if (isset($_REQUEST["orderby"])) {
+                $querystr .= " order by " . $_REQUEST["orderby"];
+                if (isset($_REQUEST["order"])) {
+                    $querystr .= " " . $_REQUEST["order"];
+                }
+            }
+
+            $response["querystr"] = $querystr;
+            $response["query"] = $query;
+
+            if(empty($querystr)) {
                 $response["result"] = R::findAll('question');
             } else {
                 $response["result"] = R::find('question', $querystr, $query);
