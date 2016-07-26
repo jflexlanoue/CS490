@@ -137,3 +137,9 @@ function scrub_user(&$user){
     unset($user->hash);
     return $user;
 }
+
+function AddAndPad(&$str, $it) {
+    if(!empty($str))
+        $str .= " AND ";
+    $str .= $it;
+}
