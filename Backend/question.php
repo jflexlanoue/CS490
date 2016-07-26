@@ -4,7 +4,7 @@ require 'common.php';
 function AddToQuery(&$query, &$querystr, $field, $str, $operation = "=", $replacestr = "") {
     if (isset($_REQUEST[$str])) {
         if(empty($replacestr)) {
-            $replacestr = $str;
+            $replacestr = $_REQUEST[$str];
         }
         $query[":" . $str] = $replacestr;
         AddAndPad($querystr, $field . " " . $operation . " :" . $str);
@@ -27,28 +27,17 @@ switch ($_SERVER['REQUEST_METHOD']) {
         if (isset($_REQUEST["id"])) {
             $response["result"] = load_or_error('question', $_REQUEST["id"]);
         } else {
-/*
-            - minScore [optional]
-            - maxScore [optional]
-            - search [optional]
-            - orderby [optional] // Can be "name", "score"
-            - order [optional] // Can be asc, desc
-  */
-
             $querystr = "";
             $query = array();
-            AddToQuery($query, $querystr, "points", "minPoints", ">");
-            AddToQuery($query, $querystr, "points", "maxPoints", "<");
-            AddToQuery($query, $querystr, "question", "search", "like", "%" . $_REQUEST["search"] . "%");
+            AddToQuery($query, $querystr, "points", "minPoints", ">=");
+            AddToQuery($query, $querystr, "points", "maxPoints", "<=");
+            AddToQuery($query, $querystr, "question", "search", "like", "%" . (isset($_REQUEST["search"])?$_REQUEST["search"]:"") . "%");
             if (isset($_REQUEST["orderby"])) {
                 $querystr .= " order by " . $_REQUEST["orderby"];
                 if (isset($_REQUEST["order"])) {
                     $querystr .= " " . $_REQUEST["order"];
                 }
             }
-
-            $response["querystr"] = $querystr;
-            $response["query"] = $query;
 
             if(empty($querystr)) {
                 $response["result"] = R::findAll('question');
