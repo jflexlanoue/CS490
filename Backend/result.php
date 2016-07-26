@@ -1,6 +1,12 @@
 <?php
 require 'common.php';
 
+function AndIt(&$str, $it) {
+    if(!empty($str))
+        $str .= " AND ";
+    $str .= $it;
+}
+
 switch ($_SERVER['REQUEST_METHOD']) {
     case "GET":
         if (isset($_REQUEST["id"])) {
@@ -9,19 +15,32 @@ switch ($_SERVER['REQUEST_METHOD']) {
             exit();
         }
 
+        $querystr = "";
+        $query = array();
         if (isset($_REQUEST["studentID"])) {
             // All results for studentID
-            $response["result"] = R::find('result', "student_id=:id", [":id" => $_REQUEST["studentID"]]);
-        } else if (isset($_REQUEST["questionID"])) {
-            // All results for questionID
-            $response["result"] = R::find('result', "question_id=:id", [":id" => $_REQUEST["questionID"]]);
-        } else if (isset($_REQUEST["examID"])) {
-            // All results for examID
-            $response["result"] = R::find('result', "exam_id=:id", [":id" => $_REQUEST["examID"]]);
-        } else {
-            $response["result"] = R::findAll('result');
-            //Error("Requires one of: id, studentID, questionID, or examID");
+            $query[":studentid"] = $_REQUEST["studentID"];
+            AndIt($querystr, "student_id=:studentid");
         }
+        if (isset($_REQUEST["questionID"])) {
+            // All results for questionID
+            $query[":questionid"] = $_REQUEST["questionID"];
+            AndIt($querystr, "question_id=:questionid");
+        }
+        if (isset($_REQUEST["examID"])) {
+            // All results for examID
+            $query[":examid"] = $_REQUEST["examID"];
+            AndIt($querystr, "exam_id=:examid");
+        }
+
+        if(count($query) == 0) {
+            $response["result"] = R::findAll('result');
+        } else {
+            $response["result"] = R::find('result', $querystr, $query);
+        }
+
+        $response["querystr"] = $querystr;
+        $response["query"] = $query;
 
         // Common error handling for studentID, questionID, and examID
         if (!count($response["result"])) {
