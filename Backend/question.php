@@ -1,6 +1,24 @@
 <?php
 require 'common.php';
 
+function AddToQuery(&$query, &$querystr, $str, $operation = "=") {
+    if (isset($_REQUEST[$str])) {
+        $query[":" . $str] = $_REQUEST[$str];
+        AddAndPad($querystr, $str . " " . $operation . " :" . $str);
+    }
+}
+
+function StripAnswers(&$obj) {
+    $keys = array();
+    foreach($obj as $result => $val) {
+        array_push($keys, $result);
+    }
+    foreach ($keys as $key) {
+        if(isset($obj[$key]->answer))
+            unset($obj[$key]["answer"]);
+    }
+}
+
 switch ($_SERVER['REQUEST_METHOD']) {
     case "GET":
         if (isset($_REQUEST["id"])) {
@@ -14,7 +32,28 @@ switch ($_SERVER['REQUEST_METHOD']) {
             - order [optional] // Can be asc, desc
   */
 
-            $response["result"] = R::findAll('question');
+            $querystr = "";
+            $query = array();
+            AddToQuery($query, $querystr, "minScore");
+            AddToQuery($query, $querystr, "maxScore");
+            AddToQuery($query, $querystr, "search", "LIKE");
+            AddToQuery($query, $querystr, "orderby", "OrderBy");
+
+            if(count($query) == 0) {
+                $response["result"] = R::findAll('question');
+            } else {
+                $response["result"] = R::find('question', $querystr, $query);
+            }
+
+            if(!is_instructor()) {
+                StripAnswers($response["result"]);
+                $response["answersHidden"] = "true";
+            }
+
+            if (!count($response["result"])) {
+                unset($response["result"]);
+                Error("No results found");
+            }
         }
         break;
 
