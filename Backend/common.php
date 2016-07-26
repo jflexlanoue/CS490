@@ -150,6 +150,16 @@ function scrub_question(&$question){
     unset($question->sharedProperties);
     $question->properties = $properties;
 
+    // Expand test cases
+
+    if(isset($question->testcases)) {
+        $cases = array();
+        $tc = explode(";", $question->testcases);
+        foreach ($tc as $c)
+            array_push($cases, explode(",", $c));
+        $question->testcases = $cases;
+    }
+
     return $question;
 }
 
