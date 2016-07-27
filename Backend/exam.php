@@ -9,13 +9,19 @@ switch ($_SERVER['REQUEST_METHOD']) {
             $response["result"] = load_or_error('exam', $_REQUEST["id"]);
 
             // Expand questions
-            $response["result"]->xownExamquestionList;
+            $questions = $response["result"]->xownExamquestionList;
+            foreach($questions  as $question) {
+                $question->question;
+            }
         } else {
             $response["result"] = R::findAll('exam');
 
             // Expand questions
             foreach($response["result"] as $exam) {
-                $exam->xownExamquestionList;
+                $questions = $exam->xownExamquestionList;
+                foreach($questions  as $question) {
+                    $question->question;
+                }
             }
         }
         break;
@@ -34,12 +40,12 @@ switch ($_SERVER['REQUEST_METHOD']) {
                 foreach ($questions as $question) {
                     $q = explode(":", $question);
                     $id = $q[0];
-                    $score = -1;
+                    $points = -1;
                     if(count($q) > 1)
-                        $score = $q[1];
+                        $points = $q[1];
                     $obj = R::dispense('examquestion');
                     $obj["question"] = load_or_error('question', (int)$id);
-                    $obj["score"] = (int)$score;
+                    $obj["points"] = (int)$points;
                     $exam->xownExamquestionList[] = $obj;
                 }
             }
@@ -66,12 +72,12 @@ switch ($_SERVER['REQUEST_METHOD']) {
                     foreach ($questions as $question) {
                         $q = explode(":", $question);
                         $id = $q[0];
-                        $score = -1;
+                        $points = -1;
                         if(count($q) > 1)
-                            $score = $q[1];
+                            $points = $q[1];
                         $obj = R::dispense('examquestion');
                         $obj["question"] = load_or_error('question', (int)$id);
-                        $obj["score"] = (int)$score;
+                        $obj["points"] = (int)$points;
                         $exam->xownExamquestionList[] = $obj;
                     }
                 }
