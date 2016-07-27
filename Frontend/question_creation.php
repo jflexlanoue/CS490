@@ -37,27 +37,27 @@ if (isset($_POST['question'])) {
 $template = "instructor_template";
 hdr("Question Creation");
 ?>
-    
-<center>
-    <h1>Question Creation</h1>
-    <br>
-    <div id="message">
-        <?php
+
+    <center>
+        <h1>Question Creation</h1>
+        <br>
+        <div id="message">
+            <?php
             if ($message != "") {
                 echo $message;
             }
             ?>
-    </div>
-    <br>
-    <form action = "question_creation.php" method="POST">
-        <label for="question">Question</label><br>
-        <textarea name="question" value="question" rows="8" cols="40"  placeholder="Enter question..." autofocus></textarea><br><br>
-        <label for="answer">Answer</label><br>
-        <textarea name = "answer" value="answer" rows="8" cols="40"  placeholder="Enter answer..."></textarea><br><br>
-        <input type = "submit" name="btn" value="Add" ><br><br>
-    </form>
-    <h2>Questions/Answers Bank</h2>
-    <?php
+        </div>
+        <br>
+        <form action = "question_creation.php" method="POST">
+            <label for="question">Question</label><br>
+            <textarea name="question" value="question" rows="8" cols="40"  placeholder="Enter question..." autofocus></textarea><br><br>
+            <label for="answer">Answer</label><br>
+            <textarea name = "answer" value="answer" rows="8" cols="40"  placeholder="Enter answer..."></textarea><br><br>
+            <input type = "submit" name="btn" value="Add" ><br><br>
+        </form>
+        <h2>Questions/Answers Bank</h2>
+        <?php
         $QuestionBank = util::ForwardGETRequest("question.php", array());
 
         if( !$QuestionBank['success']) {
@@ -65,47 +65,54 @@ hdr("Question Creation");
             echo 'error';
             //return;
         }
-            ?>
+        ?>
 
-    <form name="checkForm" action="question_deletion.php" method="post">
+        <form name="checkForm" action="question_deletion.php" method="post">
 
-   <style type="text/css">
-        tr, td {border: 1px solid black; }
-        tr.noBorder td {border: 0; }
+            <style type="text/css">
+                tr, td {border: 1px solid black; }
+                tr.noBorder td {border: 0; }
 
-    </style>
+            </style>
 
-    <table>
-        <tr class ="noBorder">
-            <td></td>
-            <td><strong><center>ID</center></strong></td>
-            <td><strong><center>Question</center></strong></td>
-            <td><strong><center>Answer</center></strong></td>
-        </tr>
-        <?php
-            $id = 1;
-            foreach ( $QuestionBank['result'] as $q ){
-                echo '<tr>';
-                echo '<td><input type="checkbox" name="'.$q['id'].'"></td>';
-                echo '<td>' . $q['id'] . '</td>';
-                echo '<td>' . util::Printable($q['question']) . '</td>';
-                echo '<td>' . util::Printable($q['answer']) . '</td>';
-                echo '</tr>';
+            <table>
+                <tr class ="noBorder">
+                    <td></td>
+                    <td><strong><center>ID</center></strong></td>
+                    <td><strong><center>Question</center></strong></td>
+                    <td><strong><center>Answer</center></strong></td>
+                </tr>
+                <?php
+
+                $question_html = '
+<tr>
+    <td><input type="checkbox" name="{{id}}"></td>
+    <td>{{id}}</td>
+    <td>{{question}}</td>
+    <td>{{answer}}</td>
+</tr>';
+
+                foreach ( $QuestionBank['result'] as $q ){
+                    $question = array();
+                    $question["id"] = $q['id'];
+                    $question["question"] = util::Printable($q['question']);
+                    $question["answer"] = util::Printable($q['answer']);
+
+                    echo render($question_html, $question);
+                }
+                ?>
+            </table>
+            <input type="submit" name="delete" value="Delete"">
+        </form>
+
+        <script>
+            document.getElementById('btnTest').onclick = function(){
+                var selected = getSelectedBox(this.form);
+                alert(selected);      // debug
             }
-            $id++;
-            ?>
-    </table>
-    <input type="submit" name="delete" value="Delete"">
-    </form>
-
-    <script>
-        document.getElementById('btnTest').onclick = function(){
-        var selected = getSelectedBox(this.form);
-        alert(selected);      // debug
-        }
-    </script>
-    <div id="message"></div>
-</center>
+        </script>
+        <div id="message"></div>
+    </center>
 
 <?php
 footer();
