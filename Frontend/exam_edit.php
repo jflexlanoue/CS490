@@ -111,12 +111,22 @@ $questions = $questionRetrieval["result"];
                 <td>Answer</td>
             </tr>
             <?php
+
+            $question_html = '
+<tr>
+    <td><input name="sharedquestion{{id}}" type="checkbox" {{checked}}></td>    
+    <td>{{question}}</td>
+    <td>{{answer}}</td>
+</tr>';
+
             foreach ($questions as $q) {
-                echo '<tr>';
-                echo '<td><input name="sharedquestion' . $q['id'] . '" type="checkbox" ' . (in_array($q['id'], $exam_question_ids) ? 'checked="checked"' : "") . '></td>';
-                echo '<td>' . $q['question'] . '</td>';
-                echo '<td>' . $q['answer'] . '</td>';
-                echo '</tr>';
+                $item = array();
+                $item["id"] = $q['id'];
+                $item["checked"] = (in_array($q['id'], $exam_question_ids) ? 'checked="checked"' : "");
+                $item["question"] = $q['question'];
+                $item["answer"] = $q['answer'];
+
+                echo render($result_html, $item);
             }
             ?>
         </table>
