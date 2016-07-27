@@ -50,20 +50,20 @@ class util {
         return $body;
     }
 
-    static function ForwardPostRequest($PageRequest, $PostParams) {
+    static function ForwardPostRequest($PageRequest, $PostParams = array()) {
         $url = self::UTIL_BASEURL . $PageRequest;
         $res = self::httpPost($url, $PostParams);
        
         return json_decode($res, true);
     }
 
-    static function ForwardGetRequest($PageRequest, $GetParams) {
+    static function ForwardGetRequest($PageRequest, $GetParams = array()) {
         $url = self::UTIL_BASEURL . $PageRequest;
         $res = self::httpPost($url, $GetParams, false);
          return json_decode($res, true);
     }
 
-    static function ForwardDeleteRequest($PageRequest, $DeleteParams) {
+    static function ForwardDeleteRequest($PageRequest, $DeleteParams = array()) {
         
         $DeleteParams['method'] = "delete";
         $url = self::UTIL_BASEURL . $PageRequest;
@@ -71,7 +71,7 @@ class util {
          return json_decode($res, true);
     }
     
-    static function ForwardPatchRequest($PageRequest, $PatchParams) {
+    static function ForwardPatchRequest($PageRequest, $PatchParams = array()) {
         
         $PatchParams['method'] = "patch";
         $url = self::UTIL_BASEURL . $PageRequest;
