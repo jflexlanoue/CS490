@@ -6,7 +6,7 @@ include("htmlutil.php");
 util::VerifyRole('student');
 
 $message = "";
-
+echo '<a href="student.php" style="float:left">Return to main page</a>';
 hdr("Available Exams");
 $response = util::ForwardGetRequest("exam.php");
 if($response["success"] == false)
@@ -14,7 +14,6 @@ if($response["success"] == false)
 $response = $response["result"];
 ?>
 
-<a href="student.php" style="float:left">Return to main page</a>
 <div style="text-align: center;">
     <h1>Available Exams</h1>
 
