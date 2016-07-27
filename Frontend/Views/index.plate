@@ -1,5 +1,6 @@
 %%template: site%%
 {{!menu_style = display:none}}
+{{!title = Exam system}}
 
 <section class="hero is-primary is-medium">
     <!-- Hero content: will be in the middle -->

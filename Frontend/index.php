@@ -33,8 +33,6 @@ if (isset($_SESSION['role'])) {
     }
 }
 
-hdr("CS 490", false);
-
 if($failedLogin){
     $view["message"] = '
         <article class="message is-danger">

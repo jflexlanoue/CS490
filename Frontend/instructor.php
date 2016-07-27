@@ -26,7 +26,7 @@ function print_exam($exam)
     return render($exam_html, array(
         "exam_id" => $exam["id"],
         "exam_name" => $exam["title"],
-        "question_count" => count($exam["sharedQuestion"]),
+        "question_count" => count($exam["ownExamquestion"]),
         "exam_released" => ($exam["released"] ==1 ? "Released" : "Not released")));
 }
 
