@@ -22,14 +22,6 @@ function exam_by_id($id) {
 }
 ?>
 
-    <a href="student.php" style="float:left">Return to main page</a>
-
-        <style>
-            th, td {
-            border: 1px solid black;
-        }           
-        </style>
-
         <table>
             <tr>
                 <td>Exam</td>
@@ -44,29 +36,33 @@ function exam_by_id($id) {
             $id = array("studentID" => util::GetUserID());
         $resultsRetrieval = util::ForwardGETRequest("result.php", $id);
 
-            foreach ( $resultsRetrieval['result'] as $q ){       // $q is an array
+        $result_html = '
+<tr>
+    <td>{{exam_title}}</td>
+    <td>{{question}}</td>
+    <td>{{student_answer}}</td>
+    <td>{{score}}</td>
+    <td>{{feedback}}</td>
+</tr>';
+
+            foreach ( $resultsRetrieval['result'] as $q ) {
+                $item = array();
+
+                $item["exam_title"] = exam_by_id($q['exam_id'])["title"];
+                $item["question"] = util::Printable(question_by_id($q['question_id'])["question"]);
+                $item["student_answer"] = util::Printable($q['student_answer']);
+
                 if(util::IsInstructor() || exam_by_id($q["exam_id"])["released"] == 1) {
-                    echo '<tr>';
-                    echo '<td>' . exam_by_id($q['exam_id'])["title"] . '</td>';
-                    echo '<td>' . util::Printable(question_by_id($q['question_id'])["question"]) . '</td>';
-                    echo '<td>' . util::Printable($q['student_answer']) . '</td>';
-                    echo '<td>' . $q['score'] . '</td>';
-                    echo '<td>' . util::Printable($q['feedback']) . '</td>';
-                    echo '</tr>';
+                    $item["score"] = $q['score'];
+                    $item["feedback"] = util::Printable($q['feedback']);
+                } else{
+                    $item["score"] = "N/A";
+                    $item["feedback"] = "Exam not released";
                 }
-                else{
-                    echo '<tr>';
-                    echo '<td>' . exam_by_id($q['exam_id'])["title"] . '</td>';
-                    echo '<td>' . util::Printable(question_by_id($q['question_id'])["question"]) . '</td>';
-                    echo '<td>' . util::Printable($q['student_answer']) . '</td>';
-                    echo '<td>N/A</td>';
-                    echo '<td>Exam not released</td>';
-                    echo '</tr>';
-                }
+
+                echo render($result_html, $item);
             }
         ?>
         </table>
 
-<?php
-footer();
-?>
+<?php footer(); ?>
