@@ -34,3 +34,11 @@ function footer() {
 </html>
     ';
 }
+
+// Tiny Mustache renderer
+function render($string, $values) {
+    foreach ($values as $key => $value) {
+        $string = str_replace("{{" . $key . "}}", $value, $string);
+    }
+    return $string;
+}
