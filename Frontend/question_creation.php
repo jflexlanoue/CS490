@@ -21,10 +21,8 @@ if (isset($_POST['question'])) {
 
         if($response['success']){
             $message = 'Question and answer added successfully.';
-
         } else{
-
-            $message = $response['result'];
+            $message = $response['error'];
         }
     }
 }
