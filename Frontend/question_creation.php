@@ -44,9 +44,11 @@ hdr("Question Creation");
         <br>
         <form action = "question_creation.php" method="POST">
             <label for="question">Question</label><br>
-            <textarea name="question" value="question" rows="8" cols="40"  placeholder="Enter question..." autofocus></textarea><br><br>
+            <textarea name="question" value="question" rows="8" cols="40" placeholder="Enter question..." autofocus></textarea><br><br>
             <label for="answer">Answer</label><br>
-            <textarea name = "answer" value="answer" rows="8" cols="40"  placeholder="Enter answer..."></textarea><br><br>
+            <textarea name = "answer" value="answer" rows="8" cols="40" placeholder="Enter answer..."></textarea><br><br>
+            <label for="points">Points</label><br>
+            <input type="text" name="points" placeholder="Enter point value..."><br><br>
             <input type = "submit" name="btn" value="Add" ><br><br>
         </form>
         <h2>Questions/Answers Bank</h2>
@@ -71,18 +73,22 @@ hdr("Question Creation");
             <table>
                 <tr class ="noBorder">
                     <td></td>
+                    <td></td>
                     <td><strong><center>ID</center></strong></td>
                     <td><strong><center>Question</center></strong></td>
                     <td><strong><center>Answer</center></strong></td>
+                    <td><strong><center>Points</center></strong</td>
                 </tr>
                 <?php
 
                 $question_html = '
 <tr>
     <td><input type="checkbox" name="{{id}}"></td>
+    <td><input type="button" value="Edit" name="{{id}}"></td> 
     <td>{{id}}</td>
     <td>{{question}}</td>
     <td>{{answer}}</td>
+    <td>{{points}}</td>
 </tr>';
 
                 foreach ( $QuestionBank['result'] as $q ){
@@ -90,7 +96,7 @@ hdr("Question Creation");
                     $question["id"] = $q['id'];
                     $question["question"] = util::Printable($q['question']);
                     $question["answer"] = util::Printable($q['answer']);
-
+                    $question["points"] = util::Printable($q['points']);
                     echo render($question_html, $question);
                 }
                 ?>
