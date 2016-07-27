@@ -12,7 +12,20 @@ function hdr($title, $showmenu = true) {
     <body>';
     if($showmenu)
         echo '
-        <a href="index.php?logout=1" style="float:right">Logout</a><br>
+
+    <nav class="nav">
+        <div class="nav-left">
+            <a class="nav-item" href="index.php">
+                Exam System
+            </a>
+        </div>
+
+        <div class="nav-right nav-menu">
+            <a class="nav-item" href="index.php?logout=1">
+                Logout
+            </a>
+        </div>
+    </nav>
     ';
 }
 function footer() {
