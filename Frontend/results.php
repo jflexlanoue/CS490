@@ -2,7 +2,10 @@
 include("Garyutil.class.php");
 include("htmlutil.php");
 
-$template = "instructor_template";
+if(util::IsInstructor())
+    $template = "instructor_template";
+else
+    $template = "student_template";
 hdr("Results");
 
 function question_by_id($id) {
@@ -35,7 +38,7 @@ function exam_by_id($id) {
     <p class="card-header-title">
       {{exam_title}}
     </p>
-    <a class="card-header-icon">Edit</a>
+    <a class="card-header-icon" style="{{instructor_only}}">Edit</a>
   </header>
   <div class="card-content">
     <div class="content">
@@ -75,6 +78,7 @@ function exam_by_id($id) {
                 $item["exam_title"] = exam_by_id($q['exam_id'])["title"];
                 $item["question"] = util::Printable(question_by_id($q['question_id'])["question"]);
                 $item["student_answer"] = util::Printable($q['student_answer']);
+                $item["instructor_only"] = util::IsInstructor() ? "" : "display:none";
 
                 if(util::IsInstructor() || exam_by_id($q["exam_id"])["released"] == 1) {
                     $item["score"] = $q['score'];
