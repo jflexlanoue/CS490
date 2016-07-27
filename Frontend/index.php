@@ -33,29 +33,46 @@ if (isset($_SESSION['role'])) {
 
 hdr("CS 490", false);
 ?>
+    <section class="hero is-primary is-medium">
+        <!-- Hero content: will be in the middle -->
+        <div class="hero-body">
+            <div class="container has-text-centered">
+                <h1 class="title">
+                    Exam System
+                </h1>
+                <h2 class="subtitle">
+                    Login
+                </h2>
+            </div>
+        </div>
+    </section>
 
-    <center>
-        <h1>CS 490</h1>
-        <h2>Login</h2>
+    <div class="section">
+    <div class="container ">
+
+        <?php
+        if($failedLogin){
+            echo '
+                    <article class="message is-danger">
+                      <div class="message-header">
+                         Login Failed
+                      </div>
+                      <div class="message-body">
+                          The username and password you entered do not match.
+                      </div>
+                    </article>';
+        }
+        ?>
 
         <form action="index.php" method="POST">
             <input id="username" type="text" name="username" placeholder="username" autofocus><br><br>
             <input id= "password" type="password" name="password" placeholder="password"><br><br>
-            <input name="loginButton" type="submit" value="Login"><br><br>
-            <a href="create_user.php">Create an account</a><br><br>
-    
-            <div><span style="color: red;">
-               <?php
-               if($failedLogin){
-                   echo "The username and password you entered do not match.";
-                   print_r($response);
-               }
-               ?>
-            </span>
-            </div><br>
+            <input class="button is-primary" name="loginButton" type="submit" value="Login"><br><br>
+            <a class="button" href="create_user.php">Create an account</a><br><br>
         </form>
 
-    </center>
+    </div>
+    </div>
 
 <?php
 footer();
