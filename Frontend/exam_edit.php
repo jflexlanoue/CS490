@@ -2,6 +2,8 @@
 include("Garyutil.class.php");
 include("htmlutil.php");
 util::VerifyRole('instructor');
+
+$template = "instructor_template";
 hdr("Exam Creation");
 
 $exam_id = $_GET["id"];

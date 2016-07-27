@@ -1,0 +1,25 @@
+<div class="container">
+    <div class="columns">
+        <div class="column is-one-quarter">
+            <aside class="menu">
+                <p class="menu-label">
+                    Exam Management
+                </p>
+                <ul class="menu-list">
+                    <li><a href="question_creation.php">Question Bank</a></li>
+                    <li><a href="exam_edit.php">Create Exam</a></li>
+                </ul>
+                <p class="menu-label">
+                    Results
+                </p>
+                <ul class="menu-list">
+                    <li><a href="results.php">Student Results</a></li>
+                </ul>
+            </aside>
+        </div>
+
+        <div class="column">
+            {{content}}
+        </div>
+    </div>
+</div>

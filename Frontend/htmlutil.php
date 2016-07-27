@@ -1,6 +1,7 @@
 <?php
 session_start();
 function hdr($title, $showmenu = true) {
+    global $template;
     echo '
 <!DOCTYPE html>
     <head>
@@ -27,8 +28,18 @@ function hdr($title, $showmenu = true) {
         </div>
     </nav>
     ';
+
+    if(isset($template))
+        ob_start();
 }
 function footer() {
+    global $template;
+    if(isset($template)) {
+        $output = ob_get_contents();
+        ob_get_clean();
+        echo render_file($template, array("content" => $output));
+    }
+
     echo '
 </body>
 </html>
@@ -41,4 +52,8 @@ function render($string, $values) {
         $string = str_replace("{{" . $key . "}}", $value, $string);
     }
     return $string;
+}
+
+function render_file($filename, $values) {
+    return render(file_get_contents($filename . ".plate"), $values);
 }
