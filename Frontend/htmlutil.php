@@ -1,50 +1,42 @@
 <?php
-session_start();
-function hdr($title, $showmenu = true) {
-    global $template;
-    echo '
-<!DOCTYPE html>
-    <head>
-        <title>' . $title . '</title>
-        <script src="site.js"></script>
-        <link rel="stylesheet" type="text/css" href="site.css">
-        <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/bulma/0.1.0/css/bulma.css">
-        <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.6.3/css/font-awesome.min.css">
-    </head>
-    <body>';
-    if($showmenu)
-        echo '
 
-    <nav class="nav">
-        <div class="nav-left">
-            <a class="nav-item" href="index.php">
-                Exam System
-            </a>
-        </div>
-
-        <div class="nav-right nav-menu">
-            <a class="nav-item" href="index.php?logout=1">
-                Logout
-            </a>
-        </div>
-    </nav>
-    ';
-
-    if(isset($template))
-        ob_start();
+# Reports uncaught exceptions
+function exception_error_handler($errno, $errstr, $errfile, $errline)
+{
+    echo ("Error " . $errno . ': ' . $errstr . "\r"
+        . 'Line ' . $errline . ': ' . $errfile);
+    debug_print_backtrace();
 }
+set_error_handler("exception_error_handler");
+
+session_start();
+register_shutdown_function('footer');
+$cwd = getcwd();
+
+function hdr($title, $showmenu = true) {
+    global $template_options;
+
+    $template_options = array();
+
+    if(!$showmenu)
+        $template_options["menu_style"] = "display:none";
+
+    $template_options["title"] = $title;
+    ob_start();
+}
+
 function footer() {
     global $template;
-    if(isset($template)) {
-        $output = ob_get_contents();
-        ob_get_clean();
-        echo render_file($template, array("content" => $output));
-    }
+    global $template_options;
+    $output = ob_get_contents();
+    ob_get_clean();
 
-    echo '
-</body>
-</html>
-    ';
+    if(isset($template)) {
+        $template_options = array_merge($template_options, array("main" => render_file($template, array("content" => $output))));
+    } else {
+        $template_options = array_merge($template_options, array("main" => $output));
+    }
+    echo render_file("site", $template_options);
 }
 
 // Tiny Mustache renderer
@@ -56,5 +48,6 @@ function render($string, $values) {
 }
 
 function render_file($filename, $values) {
-    return render(file_get_contents($filename . ".plate"), $values);
+    global $cwd;
+    return render(file_get_contents($cwd . "/Views/" . $filename . ".plate"), $values);
 }

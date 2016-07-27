@@ -44,7 +44,3 @@ $response = $response["result"];
     </form>
 
 </div>
-
-<?php
-footer();
-?>

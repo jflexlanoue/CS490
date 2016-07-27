@@ -1,12 +1,10 @@
 <?php
-session_start();
 include("Garyutil.class.php");
 include("htmlutil.php");
 
 util::VerifyRole('student');
 
 $message = "";
-echo '<a href="student.php" style="float:left">Return to main page</a>';
 hdr("Available Exams");
 $response = util::ForwardGetRequest("exam.php");
 if($response["success"] == false)
@@ -30,7 +28,3 @@ $response = $response["result"];
     ?>
 
 </div>
-
-<?php
-footer();
-?>

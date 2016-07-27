@@ -13,7 +13,3 @@ hdr("Student");
     <div><a href="results.php">View Grades</a></div>
 
 </div>
-
-<?php
-footer();
-?>

@@ -11,7 +11,3 @@ hdr("Exam Complete");
 <div style="text-align: center;">
     <h1>Exam Complete</h1>
 </div>
-
-<?php
-footer();
-?>

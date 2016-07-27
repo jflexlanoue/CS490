@@ -57,7 +57,7 @@ class util {
         return $res;
     }
 
-    static function ForwardGetRequest($PageRequest, $GetParams) {
+    static function ForwardGetRequest($PageRequest) {
         $url = self::UTIL_BASEURL . $PageRequest;
         $res = self::httpPost($url, $GetParams, false);
         return $res;

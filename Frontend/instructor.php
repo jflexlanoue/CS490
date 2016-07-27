@@ -54,6 +54,3 @@ if(isset($_POST["action"])) {
 
     ?>
 </nav>
-<?php
-footer();
-?>

@@ -92,5 +92,3 @@ function exam_by_id($id) {
             }
         ?>
         </table>
-
-<?php footer(); ?>

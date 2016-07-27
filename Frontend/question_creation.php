@@ -113,7 +113,3 @@ hdr("Question Creation");
         </script>
         <div id="message"></div>
     </center>
-
-<?php
-footer();
-?>

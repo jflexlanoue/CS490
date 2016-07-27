@@ -73,7 +73,3 @@ hdr("CS 490", false);
 
     </div>
     </div>
-
-<?php
-footer();
-?>
