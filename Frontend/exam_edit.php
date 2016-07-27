@@ -6,7 +6,8 @@ util::VerifyRole('instructor');
 $template = "instructor_template";
 hdr("Exam Creation");
 
-$exam_id = $_GET["id"];
+if(isset($_GET["ID"]))
+    $exam_id = $_GET["id"];
 $creation = !isset($exam_id);
 
 // Handle response
@@ -56,13 +57,13 @@ if($_SERVER['REQUEST_METHOD'] === "POST") {
     util::Redirect('instructor.php');
 }
 
+$exam_question_ids = array();
 if(!$creation) {
     $exam = util::ForwardGETRequest("exam.php", array("id" => $exam_id));
     if(!$exam['success']) {
         die($exam["error"]);
     }
     $exam = $exam["result"];
-    $exam_question_ids = array();
     foreach ($exam["sharedQuestion"] as $item => $value) {
         array_push($exam_question_ids, $value["id"]);
     }
@@ -136,7 +137,3 @@ $questions = $questionRetrieval["result"];
         </div>
     </form>
 </center>
-
-<?php
-footer();
-?>
