@@ -1,4 +1,6 @@
 <?php
+// Index controller
+
 include("Garyutil.class.php");
 include("htmlutil.php");
 
@@ -32,44 +34,17 @@ if (isset($_SESSION['role'])) {
 }
 
 hdr("CS 490", false);
-?>
-    <section class="hero is-primary is-medium">
-        <!-- Hero content: will be in the middle -->
-        <div class="hero-body">
-            <div class="container has-text-centered">
-                <h1 class="title">
-                    Exam System
-                </h1>
-                <h2 class="subtitle">
-                    Login
-                </h2>
+
+if($failedLogin){
+    $view["message"] = '
+        <article class="message is-danger">
+            <div class="message-header">
+                Login Failed
             </div>
-        </div>
-    </section>
+            <div class="message-body">
+                The username and password you entered do not match.
+            </div>
+        </article>';
+}
 
-    <div class="section">
-    <div class="container">
-
-        <?php
-        if($failedLogin){
-            echo '
-                    <article class="message is-danger">
-                      <div class="message-header">
-                         Login Failed
-                      </div>
-                      <div class="message-body">
-                          The username and password you entered do not match.
-                      </div>
-                    </article>';
-        }
-        ?>
-
-        <form action="index.php" method="POST">
-            <input id="username" type="text" name="username" placeholder="username" autofocus><br><br>
-            <input id= "password" type="password" name="password" placeholder="password"><br><br>
-            <input class="button is-primary" name="loginButton" type="submit" value="Login"><br><br>
-            <a class="button" href="create_user.php">Create an account</a><br><br>
-        </form>
-
-    </div>
-    </div>
+view();

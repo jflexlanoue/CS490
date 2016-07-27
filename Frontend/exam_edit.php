@@ -82,8 +82,6 @@ if( !$questionRetrieval['success']) {
 $questions = $questionRetrieval["result"];
 ?>
 
-<a href="instructor.php">Return to main page</a>
-
 <center>
     <h2><?php echo ($creation ? "Create Exams" : "Edit exam") ?></h2>
     <div><?php if(!$creation) echo '

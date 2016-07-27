@@ -18,7 +18,7 @@ $response = $response["result"];
     <?php
     foreach($response as $exam) {
 
-        echo ' 
+        echo '
             <div>
                 <div><a href="take_exam.php?id=' . $exam["id"] . '">Exam: ' . $exam["title"] . '</a></div>
                 Questions: ' . count($exam["sharedQuestion"]) .'

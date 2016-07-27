@@ -15,7 +15,9 @@ $cwd = getcwd();
 
 function hdr($title, $showmenu = true) {
     global $template_options;
+    global $view;
 
+    $view = array();
     $template_options = array();
 
     if(!$showmenu)
@@ -32,11 +34,11 @@ function footer() {
     ob_get_clean();
 
     if(isset($template)) {
-        $template_options = array_merge($template_options, array("main" => render_file($template, array("content" => $output))));
+        $template_options = array_merge($template_options, array("main" => render_file_to_string($template, array("content" => $output))));
     } else {
         $template_options = array_merge($template_options, array("main" => $output));
     }
-    echo render_file("site", $template_options);
+    render_file("site", $template_options);
 }
 
 // Tiny Mustache renderer
@@ -47,7 +49,17 @@ function render($string, $values) {
     return $string;
 }
 
-function render_file($filename, $values) {
+function render_file_to_string($filename, $values, $echo = true) {
     global $cwd;
     return render(file_get_contents($cwd . "/Views/" . $filename . ".plate"), $values);
+}
+
+function render_file($filename, $values) {
+    global $cwd;
+    echo render(file_get_contents($cwd . "/Views/" . $filename . ".plate"), $values);
+}
+function view() {
+    global $view;
+    $url = basename($_SERVER['PHP_SELF'], '.php');
+    render_file($url, $view);
 }
