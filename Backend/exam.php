@@ -27,7 +27,7 @@ switch ($_SERVER['REQUEST_METHOD']) {
         break;
 
     case "POST":
-        verify_params(['title', 'released']);
+        verify_params(['title', 'released', 'questionIDs']);
 
         $exam = R::dispense('exam');
         $exam->title = $_REQUEST["title"];
