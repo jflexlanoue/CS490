@@ -36,7 +36,7 @@ function exam_by_id($id) {
             $id = array("studentID" => util::GetUserID());
         $resultsRetrieval = util::ForwardGETRequest("result.php", $id);
 
-        $result_html = '
+        $result_html_table = '
 <tr>
     <td>{{exam_title}}</td>
     <td>{{question}}</td>
@@ -44,6 +44,45 @@ function exam_by_id($id) {
     <td>{{score}}</td>
     <td>{{feedback}}</td>
 </tr>';
+        $result_html = '
+<div class="card is-fullwidth">
+  <header class="card-header">
+    <p class="card-header-title">
+      {{exam_title}}
+    </p>
+    <a class="card-header-icon">Edit</a>
+  </header>
+  <div class="card-content">
+    <div class="content">
+      <article class="message is-primary">
+        <div class="message-header">
+          Question
+        </div>
+        <div class="message-body">
+        {{question}}
+        </div>
+      </article>
+      <article class="message">
+        <div class="message-header">
+          Student Answer
+        </div>
+        <div class="message-body">
+        {{student_answer}}
+        </div>
+      </article>
+      <article class="message">
+        <div class="message-header">
+          Feedback
+        </div>
+        <div class="message-body">
+        Score: {{score}}
+        <br>
+        {{feedback}}
+        </div>
+      </article>
+    </div>
+  </div>
+</div>';
 
             foreach ( $resultsRetrieval['result'] as $q ) {
                 $item = array();
