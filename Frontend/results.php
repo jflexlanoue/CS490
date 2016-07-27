@@ -22,28 +22,13 @@ function exam_by_id($id) {
 }
 ?>
 
-        <table>
-            <tr>
-                <td>Exam</td>
-                <td>Question</td>
-                <td>Student Answer</td>
-                <td>Score</td>
-                <td>Feedback</td>
-                </tr>
+
         <?php
         $id = array();
         if(!util::IsInstructor())
             $id = array("studentID" => util::GetUserID());
         $resultsRetrieval = util::ForwardGETRequest("result.php", $id);
 
-        $result_html_table = '
-<tr>
-    <td>{{exam_title}}</td>
-    <td>{{question}}</td>
-    <td>{{student_answer}}</td>
-    <td>{{score}}</td>
-    <td>{{feedback}}</td>
-</tr>';
         $result_html = '
 <div class="card is-fullwidth">
   <header class="card-header">
