@@ -51,16 +51,20 @@ switch ($_SERVER['REQUEST_METHOD']) {
         break;
 
     case "POST":
-        verify_params(['studentID', 'examID', 'questionID', 'score', 'studentAnswer', 'feedback']);
+        verify_params(['studentID', 'examID', 'questionID', 'studentAnswer']);
 
         $result = R::dispense('result');
         $result->student = load_or_error('user', $_REQUEST["studentID"]);
         $result->exam = load_or_error('exam', $_REQUEST["examID"]);
         $result->question = load_or_error('question', $_REQUEST["questionID"]);
-        $result->score = $_REQUEST["score"];
         $result->studentAnswer = $_REQUEST["studentAnswer"];
-        $result->feedback = $_REQUEST["feedback"];
-        $result->executionResult = $_REQUEST["executionResult"];
+
+        if (isset($_REQUEST["score"]))
+            $result->score = $_REQUEST["score"];
+        if (isset($_REQUEST["feedback"]))
+            $result->feedback = $_REQUEST["feedback"];
+        if (isset($_REQUEST["executionResult"]))
+            $result->executionResult = $_REQUEST["executionResult"];
 
         $response["result"] = R::store($result);
         break;
