@@ -9,13 +9,13 @@ switch ($_SERVER['REQUEST_METHOD']) {
             $response["result"] = load_or_error('exam', $_REQUEST["id"]);
 
             // Expand questions
-            $response["result"]->sharedQuestionList;
+            $response["result"]->xownExamquestionList;
         } else {
             $response["result"] = R::findAll('exam');
 
             // Expand questions
             foreach($response["result"] as $exam) {
-                $exam->sharedQuestionList;
+                $exam->xownExamquestionList;
             }
         }
         break;
@@ -26,17 +26,21 @@ switch ($_SERVER['REQUEST_METHOD']) {
         $exam = R::dispense('exam');
         $exam->title = $_REQUEST["title"];
         $exam->released = filter_var($_REQUEST["released"], FILTER_VALIDATE_BOOLEAN);
-        $exam->sharedQuestionList = array();
+        $exam->xownExamquestionList = array();
 
         if($_REQUEST["questionIDs"] != -1) {
             if (isset($_REQUEST["questionIDs"])) {
                 $questions = explode(",", $_REQUEST["questionIDs"]);
                 foreach ($questions as $question) {
-                    list($id, $score) = explode(";", $question);
-                    $obj = array();
-                    $obj["questionID"] = load_or_error('question', (int)$id);
+                    $q = explode(":", $question);
+                    $id = $q[0];
+                    $score = -1;
+                    if(count($q) > 1)
+                        $score = $q[1];
+                    $obj = R::dispense('examquestion');
+                    $obj["question"] = load_or_error('question', (int)$id);
                     $obj["score"] = (int)$score;
-                    array_push($exam->sharedQuestionList, $obj);
+                    $exam->xownExamquestionList[] = $obj;
                 }
             }
         }
@@ -55,15 +59,21 @@ switch ($_SERVER['REQUEST_METHOD']) {
             $exam->released = filter_var($_REQUEST["released"], FILTER_VALIDATE_BOOLEAN);
 
         if (isset($_REQUEST["questionIDs"])) {
-            $exam->sharedQuestionList = array();
+            $exam->xownExamquestionList = array();
             if($_REQUEST["questionIDs"] != -1) {
-                $questions = explode(",", $_REQUEST["questionIDs"]);
-                foreach ($questions as $question) {
-                    list($id, $score) = explode(";", $question);
-                    $obj = array();
-                    $obj["questionID"] = load_or_error('question', (int)$id);
-                    $obj["score"] = $score;
-                    array_push($exam->sharedQuestionList, $obj);
+                if (isset($_REQUEST["questionIDs"])) {
+                    $questions = explode(",", $_REQUEST["questionIDs"]);
+                    foreach ($questions as $question) {
+                        $q = explode(":", $question);
+                        $id = $q[0];
+                        $score = -1;
+                        if(count($q) > 1)
+                            $score = $q[1];
+                        $obj = R::dispense('examquestion');
+                        $obj["question"] = load_or_error('question', (int)$id);
+                        $obj["score"] = (int)$score;
+                        $exam->xownExamquestionList[] = $obj;
+                    }
                 }
             }
         }
