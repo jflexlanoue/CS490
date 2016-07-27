@@ -6,7 +6,7 @@ util::VerifyRole('instructor');
 $template = "instructor_template";
 hdr("Exam Creation");
 
-if(isset($_GET["ID"]))
+if(isset($_GET["id"]))
     $exam_id = $_GET["id"];
 $creation = !isset($exam_id);
 
@@ -64,8 +64,9 @@ if(!$creation) {
         die($exam["error"]);
     }
     $exam = $exam["result"];
-    foreach ($exam["sharedQuestion"] as $item => $value) {
-        array_push($exam_question_ids, $value["id"]);
+    foreach ($exam["ownExamquestion"] as $item => $value) {
+        $exam_question_ids[] = $value["question_id"];
+        $exam_question_point_overrides[] = $value["points"];  // TODO Display this
     }
 } else {
     $exam = array();
