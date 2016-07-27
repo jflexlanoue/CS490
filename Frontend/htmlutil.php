@@ -9,6 +9,7 @@ function hdr($title, $showmenu = true) {
         <script src="site.js"></script>
         <link rel="stylesheet" type="text/css" href="site.css">
         <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/bulma/0.1.0/css/bulma.css">
+        <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.6.3/css/font-awesome.min.css">
     </head>
     <body>';
     if($showmenu)
