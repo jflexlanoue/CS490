@@ -34,9 +34,10 @@ if (isset($_POST['question'])) {
     }
 }
 
+echo '<a href="instructor.php" style="float:left">Return to main page</a>';
 hdr("Question Creation");
 ?>
-
+    
         <center>
             <h1>Question Creation</h1>
             <br>
@@ -67,13 +68,19 @@ hdr("Question Creation");
                     ?>
 
             <form name="checkForm" action="question_deletion.php" method="post">
+
+           <style type="text/css">
+                tr, td {border: 1px solid black; }
+                tr.noBorder td {border: 0; }
+                
+            </style>
+
             <table>
-                <tr>
+                <tr class ="noBorder">
                     <td></td>
-                    <td></td>
-                    <td><strong>ID</strong></td>
-                    <td><strong>Question</strong></td>
-                    <td><strong>Answer</strong></td>
+                    <td><strong><center>ID</center></strong></td>
+                    <td><strong><center>Question</center></strong></td>
+                    <td><strong><center>Answer</center></strong></td>
                 </tr>
                 <?php
                     $id = 1;
@@ -97,14 +104,6 @@ hdr("Question Creation");
                 alert(selected);      // debug
                 }
             </script>
-            <?php
-                /*   in question_deletion.php
-                            $id = 31;
-                            $data = ["id" => $id];
-                            $response = util::ForwardDeleteRequest("question.php", $data);
-                */
-                ?>
-            <!-- <input type = "button" name="btn" value="Test delete" onclick="function delete()"><br><br> -->
             <div id="message"></div>
         </center>
 
