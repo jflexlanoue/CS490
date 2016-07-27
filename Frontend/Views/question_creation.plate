@@ -1,0 +1,41 @@
+%%template: instructor_template%%
+
+<center>
+    <h1>Question Creation</h1>
+    <br>
+    <div id="message">
+        {{ message }}
+    </div>
+    <br>
+    <form action = "question_creation.php" method="POST">
+        <label for="question">Question</label><br>
+        <textarea name="question" value="question" rows="8" cols="40" placeholder="Enter question..." autofocus></textarea><br><br>
+        <label for="answer">Answer</label><br>
+        <textarea name = "answer" value="answer" rows="8" cols="40" placeholder="Enter answer..."></textarea><br><br>
+        <label for="points">Points</label><br>
+        <input type="text" name="points" placeholder="Enter point value..."><br><br>
+        <input type = "submit" name="btn" value="Add" ><br><br>
+    </form>
+    <h2>Questions/Answers Bank</h2>
+
+    <form name="checkForm" action="question_deletion.php" method="post">
+
+        <style type="text/css">
+            tr, td {border: 1px solid black; }
+            tr.noBorder td {border: 0; }
+        </style>
+
+        <table>
+            <tr class ="noBorder">
+                <td></td>
+                <td></td>
+                <td><strong><center>ID</center></strong></td>
+                <td><strong><center>Question</center></strong></td>
+                <td><strong><center>Answer</center></strong></td>
+                <td><strong><center>Points</center></strong</td>
+            </tr>
+            {{ items }}
+        </table>
+        <input type="submit" name="delete" value="Delete"">
+    </form>
+</center>
