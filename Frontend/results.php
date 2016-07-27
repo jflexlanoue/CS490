@@ -1,6 +1,6 @@
 <?php
-include("Garyutil.class.php");
-include("htmlutil.php");
+include("Util/Garyutil.class.php");
+include("Util/htmlutil.php");
 
 if(util::IsInstructor())
     $template = "instructor_template";

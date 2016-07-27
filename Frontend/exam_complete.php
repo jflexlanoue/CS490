@@ -1,6 +1,6 @@
 <?php
-include("Garyutil.class.php");
-include("htmlutil.php");
+include("Util/Garyutil.class.php");
+include("Util/htmlutil.php");
 
 util::VerifyRole('student');
 echo '<a href="student.php" style="float:left">Return to main page</a>';

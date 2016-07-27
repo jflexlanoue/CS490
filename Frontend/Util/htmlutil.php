@@ -3,9 +3,13 @@
 # Reports uncaught exceptions
 function exception_error_handler($errno, $errstr, $errfile, $errline)
 {
-    echo ("Error " . $errno . ': ' . $errstr . "\r"
-        . 'Line ' . $errline . ': ' . $errfile);
-    debug_print_backtrace();
+    echo ("Error " . $errno . ': ' . $errstr . "<br>"
+        . 'Line ' . $errline . ': ' . $errfile. "<br>");
+    $traces = debug_backtrace();
+    foreach($traces as $trace) {
+        echo ($trace["file"] . ": " . $trace["line"] . " in " . $trace["function"] . "<br>");
+    }
+    echo "<br>";
 }
 set_error_handler("exception_error_handler");
 

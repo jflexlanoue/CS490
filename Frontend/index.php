@@ -1,8 +1,8 @@
 <?php
 // Index controller
 
-include("Garyutil.class.php");
-include("htmlutil.php");
+include("Util/Garyutil.class.php");
+include("Util/htmlutil.php");
 
 $failedLogin = false;
 
