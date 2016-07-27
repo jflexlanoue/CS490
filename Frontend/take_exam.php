@@ -1,5 +1,4 @@
 <?php
-session_start();
 include("Garyutil.class.php");
 include("htmlutil.php");
 
