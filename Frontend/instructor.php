@@ -30,9 +30,6 @@ function print_exam($exam)
         "exam_released" => ($exam["released"] ==1 ? "Released" : "Not released")));
 }
 
-$template = "instructor_template";
-hdr("CS 490 - Instructor", true);
-
 $view["exams"] = '';
 $exams = util::ForwardGetRequest("exam.php");
 foreach ($exams["result"] as $exam)
