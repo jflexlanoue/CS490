@@ -48,7 +48,7 @@ hdr("CS 490", false);
     </section>
 
     <div class="section">
-    <div class="container ">
+    <div class="container">
 
         <?php
         if($failedLogin){

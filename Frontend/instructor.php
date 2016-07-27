@@ -17,36 +17,66 @@ if(isset($_POST["action"])) {
 
 ?>
 
-    <center>
-        <h1>Instructor</h1>
-        <a href="question_creation.php">Question Bank</a><br>
-        <a href="exam_edit.php">New Exam</a><br>
-        <a href="results.php">View results</a><br>
-        <h1>Exams</h1>
-        <div id="list">
-            <?php
-            
-            function print_exam($exam)
-            {
-                echo "<div class='exam'>";
-                    echo '<div><a href="exam_edit.php?id=' . $exam["id"] . '">' . $exam["title"] . "</a></div>";
-                    echo "<div>" . ($exam["released"] ==1 ? "Released" : "Not released") . "</div>";
-                    echo "<div>Questions: " . count($exam["sharedQuestion"]) . "</div>";
-                    if($exam["released"] == 0)
-                        echo '<form action="" method="post"><input type="hidden" name="action" value="release"><button value="' . $exam["id"] . '" name="release">Release Scores</button></form>';
-                echo "</div>";
-            }
-
-            $exams = util::ForwardGetRequest("exam.php");
-            foreach ($exams["result"] as $exam)
-            {
-                echo print_exam($exam);
-            }
-
-            ?>
+<div class="container">
+    <div class="columns">
+        <div class="column is-one-quarter">
+            <aside class="menu">
+                <p class="menu-label">
+                    Exam Management
+                </p>
+                <ul class="menu-list">
+                    <li><a href="question_creation.php">Question Bank</a></li>
+                    <li><a href="exam_edit.php">Create Exam</a></li>
+                </ul>
+                <p class="menu-label">
+                    Results
+                </p>
+                <ul class="menu-list">
+                    <li><a href="results.php">Student Results</a></li>
+                </ul>
+            </aside>
         </div>
-        <br>
-    </center>
+
+        <div class="column">
+            <nav class="panel">
+                <p class="panel-heading">
+                    Exams
+                </p>
+                <p class="panel-tabs">
+                    <a class="is-active" href="#">All</a>
+                    <a href="#">Released</a>
+                    <a href="#">Unreleased</a>
+                    <a href="#">In-Progress</a>
+                </p>
+
+                <?php
+                function print_exam($exam)
+                {
+                    $exam_html = '<a class="panel-block is-active" href="exam_edit.php?id={{exam_id}}">
+                                  <span class="panel-icon">
+                                    <i class="fa fa-book"></i>
+                                  </span>
+                                      {{exam_name}}
+                                  </a>';
+
+                    echo render($exam_html, array(
+                        "exam_id" => $exam["id"],
+                        "exam_name" => $exam["title"],
+                        "question_count" => count($exam["sharedQuestion"]),
+                        "exam_released" => ($exam["released"] ==1 ? "Released" : "Not released")));
+                }
+
+                $exams = util::ForwardGetRequest("exam.php");
+                foreach ($exams["result"] as $exam)
+                {
+                    echo print_exam($exam);
+                }
+
+                ?>
+            </nav>
+        </div>
+    </div>
+</div>
 <?php
 footer();
 ?>
