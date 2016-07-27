@@ -84,7 +84,7 @@ hdr("Question Creation");
                 $question_html = '
 <tr>
     <td><input type="checkbox" name="{{id}}"></td>
-    <td><input type="button" value="Edit" name="{{id}}"></td> 
+    <td><a class="button" href="question_creation.php?edit={{id}}">Edit</a></td>
     <td>{{id}}</td>
     <td>{{question}}</td>
     <td>{{answer}}</td>
