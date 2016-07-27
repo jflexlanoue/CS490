@@ -6,7 +6,6 @@ if(util::IsInstructor())
     $template = "instructor_template";
 else
     $template = "student_template";
-hdr("Results");
 
 function question_by_id($id) {
     global $questioncache;
@@ -23,16 +22,13 @@ function exam_by_id($id) {
     }
     return $examcache[$id];
 }
-?>
 
+$id = array();
+if(!util::IsInstructor())
+    $id = array("studentID" => util::GetUserID());
+$resultsRetrieval = util::ForwardGETRequest("result.php", $id);
 
-        <?php
-        $id = array();
-        if(!util::IsInstructor())
-            $id = array("studentID" => util::GetUserID());
-        $resultsRetrieval = util::ForwardGETRequest("result.php", $id);
-
-        $result_html = '
+$result_html = '
 <div class="card is-fullwidth">
   <header class="card-header">
     <p class="card-header-title">
@@ -72,23 +68,29 @@ function exam_by_id($id) {
   </div>
 </div>';
 
-            foreach ( $resultsRetrieval['result'] as $q ) {
-                $item = array();
+$exams = "";
+foreach ( $resultsRetrieval['result'] as $q ) {
+    $item = array();
 
-                $item["exam_title"] = exam_by_id($q['exam_id'])["title"];
-                $item["question"] = util::Printable(question_by_id($q['question_id'])["question"]);
-                $item["student_answer"] = util::Printable($q['student_answer']);
-                $item["instructor_only"] = util::IsInstructor() ? "" : "display:none";
+    $item["exam_title"] = exam_by_id($q['exam_id'])["title"];
+    $item["question"] = util::Printable(question_by_id($q['question_id'])["question"]);
+    $item["student_answer"] = util::Printable($q['student_answer']);
+    $item["instructor_only"] = util::IsInstructor() ? "" : "display:none";
 
-                if(util::IsInstructor() || exam_by_id($q["exam_id"])["released"] == 1) {
-                    $item["score"] = $q['score'];
-                    $item["feedback"] = util::Printable($q['feedback']);
-                } else{
-                    $item["score"] = "N/A";
-                    $item["feedback"] = "Exam not released";
-                }
+    if(util::IsInstructor() || exam_by_id($q["exam_id"])["released"] == 1) {
+        $item["score"] = $q['score'];
+        $item["feedback"] = util::Printable($q['feedback']);
+    } else{
+        $item["score"] = "N/A";
+        $item["feedback"] = "Exam not released";
+    }
 
-                echo render($result_html, $item);
-            }
-        ?>
-        </table>
+    $exams .= render($result_html, $item);
+}
+$view["child"] = $exams;
+$view["title"] = "Results";
+
+if(util::IsInstructor())
+    view("instructor_template");
+else
+    view("student_template");

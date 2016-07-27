@@ -1,3 +1,5 @@
+%%template: site%%
+
 <div class="container">
     <div class="columns">
         <div class="column is-one-quarter">
@@ -19,7 +21,7 @@
         </div>
 
         <div class="column">
-            {{content}}
+            {{child}}
         </div>
     </div>
 </div>

@@ -1,3 +1,6 @@
+%%template: instructor_template%%
+{{!title = CS 490 - Instructor}}
+
 <nav class="panel">
     <p class="panel-heading">
         Exams

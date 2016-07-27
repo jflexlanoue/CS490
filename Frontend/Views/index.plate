@@ -1,3 +1,6 @@
+%%template: site%%
+{{!menu_style = display:none}}
+
 <section class="hero is-primary is-medium">
     <!-- Hero content: will be in the middle -->
     <div class="hero-body">
