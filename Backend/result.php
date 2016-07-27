@@ -34,10 +34,10 @@ switch ($_SERVER['REQUEST_METHOD']) {
         }
 
         // Common error handling for studentID, questionID, and examID
-        if (!count($response["result"])) {
+        /*if (!count($response["result"])) {
             unset($response["result"]);
             Error("No results found");
-        }
+        }*/
 
         // Expand linked fields
         if (isset($_REQUEST["expand"]) && filter_var($_REQUEST["expand"], FILTER_VALIDATE_BOOLEAN)) {
