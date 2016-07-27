@@ -27,14 +27,14 @@ switch ($_SERVER['REQUEST_METHOD']) {
         break;
 
     case "POST":
-        verify_params(['title', 'released', 'questionIDs']);
+        verify_params(['title', 'released']);
 
         $exam = R::dispense('exam');
         $exam->title = $_REQUEST["title"];
         $exam->released = filter_var($_REQUEST["released"], FILTER_VALIDATE_BOOLEAN);
         $exam->xownExamquestionList = array();
 
-        if($_REQUEST["questionIDs"] != -1) {
+        if(isset($_REQUEST["questionIDs"]) && $_REQUEST["questionIDs"] != -1) {
             if (isset($_REQUEST["questionIDs"])) {
                 $questions = explode(",", $_REQUEST["questionIDs"]);
                 foreach ($questions as $question) {
