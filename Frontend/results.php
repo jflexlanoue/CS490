@@ -2,6 +2,7 @@
 include("Garyutil.class.php");
 include("htmlutil.php");
 
+$template = "instructor_template";
 hdr("Results");
 
 function question_by_id($id) {

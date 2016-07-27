@@ -34,7 +34,7 @@ if (isset($_POST['question'])) {
     }
 }
 
-echo '<a href="instructor.php" style="float:left">Return to main page</a>';
+$template = "instructor_template";
 hdr("Question Creation");
 ?>
     
