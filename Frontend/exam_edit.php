@@ -126,7 +126,7 @@ $questions = $questionRetrieval["result"];
                 $item["question"] = $q['question'];
                 $item["answer"] = $q['answer'];
 
-                echo render($result_html, $item);
+                echo render($question_html, $item);
             }
             ?>
         </table>
