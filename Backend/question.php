@@ -73,13 +73,17 @@ switch ($_SERVER['REQUEST_METHOD']) {
         $question->question = $_REQUEST["question"];
         $question->answer = $_REQUEST["answer"];
         $question->points = $_REQUEST["points"];
-        $question->testcases = $_REQUEST["testcases"];
 
-        $enum = array();
-        $props = explode(",", $_REQUEST["properties"]);
-        foreach($props as $prop)
-            array_push($enum, R::enum('properties:' . $prop));
-        $question->sharedPropertiesList = $enum;
+        if (isset($_REQUEST["testcases"]))
+            $question->testcases = $_REQUEST["testcases"];
+
+        if (isset($_REQUEST["properties"])) {
+            $enum = array();
+            $props = explode(",", $_REQUEST["properties"]);
+            foreach ($props as $prop)
+                array_push($enum, R::enum('properties:' . $prop));
+            $question->sharedPropertiesList = $enum;
+        }
 
         $response["result"] = R::store($question);
         break;

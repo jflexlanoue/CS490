@@ -3,30 +3,33 @@
 {% block instructor %}
 <center>
     <h1>Question Creation</h1>
-    <br>
+
     <div id="message">
         {{ message }}
     </div>
-    <br>
+
     <form action = "question_creation.php" method="POST">
-        <label for="question">Question</label><br>
-        <textarea name="question" value="question" rows="8" cols="40" placeholder="Enter question..." autofocus>{{ medel["question"] }}</textarea>
-        <label for="answer">Answer</label><
-        <textarea name = "answer" value="answer" rows="8" cols="40" placeholder="Enter answer...">{{ medel["answer"] }}</textarea>
+        <label for="question">Question</label>
+        <textarea name="question" value="question" rows="8" cols="40" placeholder="Enter question..." autofocus>{{ model["question"] }}</textarea>
+
+        <label for="answer">Answer</label>
+        <textarea name = "answer" value="answer" rows="8" cols="40" placeholder="Enter answer...">{{ model["answer"] }}</textarea>
+
         <label for="points">Points</label>
-        <input type="text" name="points" placeholder="Enter point value..." value="{{ medel["points"] }}">
+        <input type="text" name="points" placeholder="Enter point value..." value="{{ model["points"] }}">
+
+        <input type="hidden" name="id" value="{{ model["id"] }}">
         <input type = "submit" name="btn" value="Add" >
     </form>
 
     <h2>Questions/Answers Bank</h2>
-
-    <form name="checkForm" action="question_deletion.php" method="post">
 
         <style type="text/css">
             tr, td {border: 1px solid black; }
             tr.noBorder td {border: 0; }
         </style>
 
+    <form name="checkForm" action="question_creation.php" method="post">
         <table>
             <tr class ="noBorder">
                 <td></td>
@@ -37,19 +40,20 @@
                 <td><strong><center>Points</center></strong</td>
             </tr>
 
-            {{ loop-over: itemarray }}
+            {% for i in itemarray %}
             <tr>
-                <td><input type="checkbox" name="{{id}}"></td>
-                <td><a class="button" href="question_creation.php?edit={{id}}">Edit</a></td>
-                <td>{{id}}</td>
-                <td>{{question}}</td>
-                <td>{{answer}}</td>
-                <td>{{points}}</td>
+                <td><input type="checkbox" name="{{i.id}}"></td>
+                <td><a class="button" href="question_creation.php?edit={{i.id}}">Edit</a></td>
+                <td>{{i.id}}</td>
+                <td>{{i.question}}</td>
+                <td>{{i.answer}}</td>
+                <td>{{i.points}}</td>
             </tr>
-            {{ end-loop }}
+            {% endfor  %}
 
         </table>
-        <input type="submit" name="delete" value="Delete"">
+
+        <input type="submit" name="delete" value="Delete">
     </form>
 </center>
 

@@ -4,9 +4,19 @@ include("Util/htmlutil.php");
 
 util::VerifyRole("instructor");
 
+if (isset($_POST['delete'])) {
+    foreach ($_POST as $id => $value) {
+        if ($value == "on") {
+            $idx["id"] = $id;
+            util::ForwardDeleteRequest("question.php", $idx);
+        }
+    }
+}
+
 if (isset($_POST['question'])) {
     $question = $_POST['question'];
     $answer = $_POST['answer'];
+    $id = $_POST['id'];
 
     if ($question == "") {
         $view["message"] = 'Question cannot be left blank.';
@@ -25,7 +35,7 @@ if (isset($_POST['question'])) {
 if (isset($_GET['edit'])) {
     $editing = true;
     $model["id"] = $_GET['edit'];
-    $model =$response = util::ForwardGetRequest("question.php", $model);
+    $view["model"] = util::ForwardGetRequest("question.php", $model)["result"];
 }
 
 $QuestionBank = util::ForwardGETRequest("question.php", array());
