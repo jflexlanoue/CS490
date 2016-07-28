@@ -1,0 +1,44 @@
+{% extends "student_template.twig" %}
+
+{% block student %}
+    {% for e in exams %}
+    <div class="card is-fullwidth">
+        <header class="card-header">
+            <p class="card-header-title">
+                {{e.exam_title}}
+            </p>
+            <a class="card-header-icon" style="{{instructor_only}}">Edit</a>
+        </header>
+        <div class="card-content">
+            <div class="content">
+                <article class="message is-primary">
+                    <div class="message-header">
+                        Question
+                    </div>
+                    <div class="message-body">
+                        {{e.question}}
+                    </div>
+                </article>
+                <article class="message">
+                    <div class="message-header">
+                        Student Answer
+                    </div>
+                    <div class="message-body">
+                        {{e.student_answer}}
+                    </div>
+                </article>
+                <article class="message">
+                    <div class="message-header">
+                        Feedback
+                    </div>
+                    <div class="message-body">
+                        Score: {{e.score}}
+                        <br>
+                        {{e.feedback}}
+                    </div>
+                </article>
+            </div>
+        </div>
+    </div>
+    {% endfor %}
+{% endblock %}
