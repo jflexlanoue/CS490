@@ -28,69 +28,30 @@ if(!util::IsInstructor())
     $id = array("studentID" => util::GetUserID());
 $resultsRetrieval = util::ForwardGETRequest("result.php", $id);
 
-$result_html = '
-<div class="card is-fullwidth">
-  <header class="card-header">
-    <p class="card-header-title">
-      {{exam_title}}
-    </p>
-    <a class="card-header-icon" style="{{instructor_only}}">Edit</a>
-  </header>
-  <div class="card-content">
-    <div class="content">
-      <article class="message is-primary">
-        <div class="message-header">
-          Question
-        </div>
-        <div class="message-body">
-        {{question}}
-        </div>
-      </article>
-      <article class="message">
-        <div class="message-header">
-          Student Answer
-        </div>
-        <div class="message-body">
-        {{student_answer}}
-        </div>
-      </article>
-      <article class="message">
-        <div class="message-header">
-          Feedback
-        </div>
-        <div class="message-body">
-        Score: {{score}}
-        <br>
-        {{feedback}}
-        </div>
-      </article>
-    </div>
-  </div>
-</div>';
-
-$exams = "";
+$exams = array();
 foreach ( $resultsRetrieval['result'] as $q ) {
     $item = array();
 
     $item["exam_title"] = exam_by_id($q['exam_id'])["title"];
-    $item["question"] = util::Printable(question_by_id($q['question_id'])["question"]);
-    $item["student_answer"] = util::Printable($q['student_answer']);
+    $item["question"] = question_by_id($q['question_id'])["question"];
+    $item["student_answer"] = $q['student_answer'];
     $item["instructor_only"] = util::IsInstructor() ? "" : "display:none";
 
     if(util::IsInstructor() || exam_by_id($q["exam_id"])["released"] == 1) {
         $item["score"] = $q['score'];
-        $item["feedback"] = util::Printable($q['feedback']);
+        $item["feedback"] = $q['feedback'];
     } else{
         $item["score"] = "N/A";
         $item["feedback"] = "Exam not released";
     }
 
-    $exams .= render($result_html, $item);
+    $exams[] = $item;
 }
-$view["child"] = $exams;
+
+$view["exams"] = $exams;
 $view["title"] = "Results";
 
 if(util::IsInstructor())
-    view("instructor_template");
+    view("results_instructor");
 else
-    view("student_template");
+    view("results_student");
