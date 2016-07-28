@@ -68,7 +68,9 @@ if(!$creation) {
     foreach ($exam["ownExamquestion"] as $item => $value) {
         $exam_question_ids[] = $value["question_id"];
         $exam_question_point_overrides[] = $value["points"];  // TODO Display this
+
     }
+
 } else {
     $exam = array();
     $exam["title"] = "";
@@ -85,39 +87,56 @@ $questions = $questionRetrieval["result"];
 ?>
 
 <center>
-    <h2><?php echo ($creation ? "Create Exams" : "Edit exam") ?></h2>
+    <h2><?php echo ($creation ? "Create Exams" : "Edit exam") ?></h2><br>
     <div><?php if(!$creation) echo '
         <form method="post">
             <div>
                 <button type="submit" name="Delete" value="Delete">Delete</button>
             </div>
-        </form>' ?></div>
+        </form>' ?></div><br>
 
 
     <form method="post">
         <?php if(!$creation) echo '<input type="hidden" name="examid" value="' . $exam_id . '">' ?>
         <div>
             <label>Name</label>
-            <input name="name" value="<?php echo $exam["title"] ?>">
-        </div>
+            <input name="name" value="<?php echo $exam["title"] ?>"><br>
+        </div><br>
         <div>
             <label>Released</label>
             <input name="released" <?php if($exam["released"] == 1) echo 'checked="checked"'?> type="checkbox">
-        </div>
+        </div><br>
+
+         <style type="text/css">
+                tr, td {border: 1px solid black; }
+                tr.noBorder td {border: 0; }
+        </style>
 
         <table>
-            <tr>
-                <td>Included</td>
-                <td>Question</td>
-                <td>Answer</td>
+            <tr class ="noBorder">
+                <td><strong><Center>Included</Center></strong></td>
+                <td><strong><Center>Question</Center></strong></td>
+                <td><strong><Center>Answer</Center></strong></td>
+                <td><strong><Center>Points</Center></strong></td>
             </tr>
             <?php
 
-            $question_html = '
+        /*    $question_html = '
 <tr>
     <td><input name="sharedquestion{{id}}" type="checkbox" {{checked}}></td>    
     <td>{{question}}</td>
     <td>{{answer}}</td>
+    <td>{{points}}</td>
+</tr>';
+
+*/
+
+             $question_html = '
+<tr>
+    <td><input name="sharedquestion{{id}}" type="checkbox" {{checked}}></td>    
+    <td>{{question}}</td>
+    <td>{{answer}}</td>
+    <td><input type="text" name="points" value="{{points}}" size="4"></td>
 </tr>';
 
             foreach ($questions as $q) {
@@ -126,14 +145,15 @@ $questions = $questionRetrieval["result"];
                 $item["checked"] = (in_array($q['id'], $exam_question_ids) ? 'checked="checked"' : "");
                 $item["question"] = $q['question'];
                 $item["answer"] = $q['answer'];
+                $item["points"] = $q['points'];
 
                 echo render($question_html, $item);
             }
             ?>
-        </table>
+        </table><br>
 
         <div>
-            <button type="submit"><?php echo ($creation ? "Create" : "Edit") ?></button>
+            <button type="submit"><?php echo ($creation ? "Create" : "Apply changes") ?></button>
         </div>
     </form>
 </center>
