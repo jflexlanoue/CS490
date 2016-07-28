@@ -1,0 +1,57 @@
+{% extends "instructor_template.twig" %}
+
+{% block instructor %}
+<center>
+    <h2> {% if create %} Create Exam {% else %} Edit Exam {% endif %} </h2>
+    <div>
+        <form method="post" {% if create %} style="display:none" {% endif %}>
+            <div>
+                <button type="submit" name="Delete" value="Delete">Delete</button>
+            </div>
+        </form>
+    </div>
+
+
+    <form method="post">
+        {% if create == false %}
+            <input type="hidden" name="examid" value="{{ exam["id"] }}">
+        {% endif %}
+        <div>
+            <label>Name</label>
+            <input name="name" value="{{ exam["title"] }}">
+        </div>
+        <div>
+            <label>Released</label>
+            <input name="released" {% if exam["released"]  %} checked="checked" {% endif %} type="checkbox">
+        </div>
+
+        <table>
+            <tr>
+                <td>Included</td>
+                <td>Question</td>
+                <td>Answer</td>
+                <td>Points</td>
+            </tr>
+
+            {% for q in questions %}
+            <tr>
+                <td><input name="sharedquestion{{q["id"]}}" type="checkbox" {% if q["checked"] %} checked="checked" {% endif %}></td>
+                <td>{{q.question}}</td>
+                <td>{{q.answer}}</td>
+                <td>{{q.points}}</td>
+            </tr>
+            {% else %}
+                <tr>
+                    <td></td>
+                    <td>No questions found</td>
+                    <td></td>
+                </tr>
+            {% endfor  %}
+        </table>
+
+        <div>
+            <button type="submit"> <h2> {% if create %} Create {% else %} Edit {% endif %} </h2></button>
+        </div>
+    </form>
+</center>
+{% endblock %}

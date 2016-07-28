@@ -1,4 +1,5 @@
 <?php
+session_start();
 
 # Reports uncaught exceptions
 function exception_error_handler($errno, $errstr, $errfile, $errline)
@@ -14,8 +15,17 @@ function exception_error_handler($errno, $errstr, $errfile, $errline)
 set_error_handler("exception_error_handler");
 
 
+require_once 'Twig-1.24.1/lib/Twig/Autoloader.php';
+Twig_Autoloader::register();
+
+$loader = new Twig_Loader_Filesystem('Views');
+
+$twig = new Twig_Environment($loader, array(
+    'cache' => false,
+));
+
+
 $cwd = getcwd();
-session_start();
 $view = array();
 
 function Printable($item) {
@@ -24,6 +34,20 @@ function Printable($item) {
     return $item;
 }
 
+// Magically renders the view with the same name as the url (eg index.php -> index.plate)
+function view($view_override = null) {
+    global $view;
+    global $twig;
+    if(isset($view_override)) {
+        echo $twig->render($view_override . ".twig", $view);
+    } else {
+        $url = basename($_SERVER['PHP_SELF'], '.php');
+        echo $twig->render($url . ".twig", $view);
+    }
+}
+
+// Our old template renderer - Moved to Twig
+/*
 $stack_internal = array();
 $stack = array();
 $stack_level = 0;
@@ -189,3 +213,4 @@ function view($view_override = null) {
         //echo $twig->render($url, $view);
     }
 }
+*/

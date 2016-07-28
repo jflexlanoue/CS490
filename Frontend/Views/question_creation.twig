@@ -1,5 +1,6 @@
-%%template: instructor_template%%
+{% extends "instructor_template.twig" %}
 
+{% block instructor %}
 <center>
     <h1>Question Creation</h1>
     <br>
@@ -51,3 +52,5 @@
         <input type="submit" name="delete" value="Delete"">
     </form>
 </center>
+
+{% endblock %}

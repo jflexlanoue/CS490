@@ -1,5 +1,6 @@
-%%template: student_template%%
+{% extends "student_template.twig" %}
 
+{% block student %}
 <div style="text-align: center;">
     <h1>Student</h1>
 
@@ -7,3 +8,4 @@
     <div><a href="results.php">View Grades</a></div>
 
 </div>
+{% endblock %}

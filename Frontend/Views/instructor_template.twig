@@ -1,5 +1,6 @@
-%%template: site%%
+{% extends "site.twig" %}
 
+{% block content %}
 <div class="container">
     <div class="columns">
         <div class="column is-one-quarter">
@@ -21,7 +22,8 @@
         </div>
 
         <div class="column">
-            {{child}}
+            {% block instructor %}{% endblock %}
         </div>
     </div>
 </div>
+{% endblock %}

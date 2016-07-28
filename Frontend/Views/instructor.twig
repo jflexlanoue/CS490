@@ -1,0 +1,27 @@
+{% extends "instructor_template.twig" %}
+
+{% block instructor %}
+<nav class="panel">
+    <p class="panel-heading">
+        Exams
+    </p>
+    <p class="panel-tabs">
+        <a class="is-active" href="#">All</a>
+        <a href="#">Released</a>
+        <a href="#">Unreleased</a>
+        <a href="#">In-Progress</a>
+    </p>
+
+    {% for exam in exams %}
+        <a class="panel-block is-active" href="exam_edit.php?id={{exam.id}}">
+                      <span class="panel-icon">
+                        <i class="fa fa-book"></i>
+                      </span>
+            {{exam.title}}
+        </a>
+    {% else %}
+    No exams have been found.
+    {% endfor %}
+
+</nav>
+{% endblock %}

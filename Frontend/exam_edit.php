@@ -4,7 +4,6 @@ include("Util/htmlutil.php");
 util::VerifyRole('instructor');
 
 $template = "instructor_template";
-hdr("Exam Creation");
 
 if(isset($_GET["id"]))
     $exam_id = $_GET["id"];
@@ -49,8 +48,6 @@ if($_SERVER['REQUEST_METHOD'] === "POST") {
     else
         $res = util::ForwardPatchRequest("exam.php", $exam);
 
-    print_r($exam);
-
     if(!$res['success']) {
         die($res["error"]);
     }
@@ -81,59 +78,13 @@ $questionRetrieval = util::ForwardGETRequest("question.php", array());
 if( !$questionRetrieval['success']) {
     die($questionRetrieval["error"]);
 }
-$questions = $questionRetrieval["result"];
-?>
 
-<center>
-    <h2><?php echo ($creation ? "Create Exams" : "Edit exam") ?></h2>
-    <div><?php if(!$creation) echo '
-        <form method="post">
-            <div>
-                <button type="submit" name="Delete" value="Delete">Delete</button>
-            </div>
-        </form>' ?></div>
+$view["create"] = $creation;
+$view["exam"] = $exam;
 
+foreach ($questionRetrieval["result"] as &$q) {
+    $q["checked"] = in_array($q['id'], $exam_question_ids);
+}
+$view["questions"] = $questionRetrieval["result"];
 
-    <form method="post">
-        <?php if(!$creation) echo '<input type="hidden" name="examid" value="' . $exam_id . '">' ?>
-        <div>
-            <label>Name</label>
-            <input name="name" value="<?php echo $exam["title"] ?>">
-        </div>
-        <div>
-            <label>Released</label>
-            <input name="released" <?php if($exam["released"] == 1) echo 'checked="checked"'?> type="checkbox">
-        </div>
-
-        <table>
-            <tr>
-                <td>Included</td>
-                <td>Question</td>
-                <td>Answer</td>
-            </tr>
-            <?php
-
-            $question_html = '
-<tr>
-    <td><input name="sharedquestion{{id}}" type="checkbox" {{checked}}></td>    
-    <td>{{question}}</td>
-    <td>{{answer}}</td>
-</tr>';
-
-            foreach ($questions as $q) {
-                $item = array();
-                $item["id"] = $q['id'];
-                $item["checked"] = (in_array($q['id'], $exam_question_ids) ? 'checked="checked"' : "");
-                $item["question"] = $q['question'];
-                $item["answer"] = $q['answer'];
-
-                echo render($question_html, $item);
-            }
-            ?>
-        </table>
-
-        <div>
-            <button type="submit"><?php echo ($creation ? "Create" : "Edit") ?></button>
-        </div>
-    </form>
-</center>
+view();
