@@ -16,7 +16,6 @@ if (isset($_POST["username"])) {
     $password = $_POST["password"];
 
     $response = util::ForwardPostRequest("backend_login.php", $_POST);
-    print_r($response);
 
     if ($response['authenticated']) {
         $_SESSION['role'] = $response["permission"];
@@ -34,15 +33,8 @@ if (isset($_SESSION['role'])) {
 }
 
 if($failedLogin){
-    $view["message"] = '
-        <article class="message is-danger">
-            <div class="message-header">
-                Login Failed
-            </div>
-            <div class="message-body">
-                The username and password you entered do not match.
-            </div>
-        </article>';
+    $view["message_header"] = "Login Failed";
+    $view["message_body"] = "The username and password you entered do not match.";
 }
 
 view();

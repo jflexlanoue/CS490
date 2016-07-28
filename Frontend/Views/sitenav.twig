@@ -1,0 +1,18 @@
+{% extends "site.twig" %}
+
+{% block site %}
+<nav class="nav" style="{{menu_style}}">
+    <div class="nav-left">
+        <a class="nav-item" href="index.php">
+            Exam System
+        </a>
+    </div>
+
+    <div class="nav-right nav-menu">
+        <a class="nav-item" href="index.php?logout=1">
+            Logout
+        </a>
+    </div>
+</nav>
+    {% block content %}{% endblock %}
+{% endblock %}
