@@ -1,15 +1,5 @@
 <?php
 
-/*
-require_once 'Twig-1.24.1/lib/Twig/Autoloader.php';
-Twig_Autoloader::register();
-
-$loader = new Twig_Loader_Filesystem('../Views/');
-$twig = new Twig_Environment($loader, array(
-    'cache' => 'Twig-1.24.1/lib/Twig/cache',
-));
-*/
-
 # Reports uncaught exceptions
 function exception_error_handler($errno, $errstr, $errfile, $errline)
 {
@@ -23,37 +13,53 @@ function exception_error_handler($errno, $errstr, $errfile, $errline)
 }
 set_error_handler("exception_error_handler");
 
-session_start();
-$cwd = getcwd();
-$view = array();
 
-// LEGACY - USE view() and *.plate templates
-function hdr($title, $showmenu = true) {
-    global $view;
-    if(!$showmenu)
-        $view["menu_style"] = "display:none";
-    $view["title"] = $title;
-    ob_start();
-    register_shutdown_function('footer');
-}
-// LEGACY - DO NOT USE
-function footer() {
-    global $template;
-    global $view;
-    $output = ob_get_contents();
-    ob_get_clean();
-    $view = array_merge($view, array("child" => $output));
-    if(isset($template)) {
-        render_file($template, $view);
-    } else {
-        render_file("site", $view);
-    }
-}
+$cwd = getcwd();
+session_start();
+$view = array();
 
 function Printable($item) {
     $item = str_replace("\n", "<br>", $item);
     $item = str_replace("  ", "&nbsp&nbsp", $item);
     return $item;
+}
+
+$stack_internal = array();
+$stack = array();
+$stack_level = 0;
+
+function Startblock() {
+    global $stack;
+    global $stack_internal;
+    global $stack_level;
+    $stack_level++;
+    array_push($stack_internal, $stack);
+    $stack = array();
+    $stack["looping"] = false;
+}
+
+function &Getstack($index = null) {
+    global $stack;
+    return $stack;
+}
+
+function Getvar($index) {
+    global $stack;
+    global $stack_level;
+    if(!isset($stack[$index]))
+    {
+        //echo "Not set (" . $stack_level . "): " . $index . "<br>";
+        return false;
+    }
+    return $stack[$index];
+}
+
+function Endblock() {
+    global $stack;
+    global $stack_internal;
+    global $stack_level;
+    $stack_level--;
+    $stack = array_pop($stack_internal);
 }
 
 function GetTag($tagvalue, &$values) {
@@ -75,22 +81,23 @@ function GetTag($tagvalue, &$values) {
     }
 
     // Loops
-    global $looping_over;
-    global $looping;
-    global $loop_template;
     if(strpos($tagvalue,"loop-over") !== false) {
+        Startblock();
+        global $stack;
         $mid = strpos($tagvalue, ":");
         $end = strlen($tagvalue);
         $itemname = trim(substr($tagvalue, $mid + 1, $end - $mid));
-        $looping = true;
-        $looping_over = $values[$itemname];
+        $stack["looping"] = true;
+        $stack["looping_over"] = $values[$itemname];
     }
     if(strpos($tagvalue,"end-loop") !== false) {
+        global $stack;
         $ret = "";
-        $looping = false;
-        foreach($looping_over as $item) {
-            $ret .= render_internal($loop_template, $item);
+        $stack["looping"] = false;
+        foreach(Getvar("looping_over") as $item) {
+            $ret .= render_internal($stack["loop_template"], $item);
         }
+        Endblock();
         return $ret;
     }
 
@@ -113,8 +120,6 @@ function render_internal($string, &$values) {
         return render_file_to_string($template, $values);
     }
 
-    global $looping;
-    global $loop_template;
     $parts = array();
     $position = 0;
     while(true) {
@@ -126,9 +131,12 @@ function render_internal($string, &$values) {
         if($end === FALSE)
             break;
 
+        global $stack;
         // Normal processing
-        if(!$looping) {
+        if(!Getvar("looping")) {
             // Capture part of template between the last tag and this one
+
+            //$stack["parts"][]
             $parts[] = substr($string, $position, $start - $position);
 
             // Get tag text
@@ -143,7 +151,7 @@ function render_internal($string, &$values) {
             // Loop handling
 
             $end = strpos($string, "{{ end-loop }}", $start);
-            $loop_template = substr($string, $position, $end - $position);
+            $stack["loop_template"] = substr($string, $position, $end - $position);
 
             // Get tag value
             $parts[] = GetTag("{{ end-loop }}", $values);
