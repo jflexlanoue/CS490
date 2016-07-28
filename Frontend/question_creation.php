@@ -5,25 +5,26 @@ include("Util/htmlutil.php");
 util::VerifyRole("instructor");
 
 if (isset($_POST['delete'])) {
-    foreach ($_POST as $id => $value) {
-        if ($value == "on") {
-            $idx["id"] = $id;
-            util::ForwardDeleteRequest("question.php", $idx);
-        }
-    }
+    $idx["id"] = $_POST['id'];
+    util::ForwardDeleteRequest("question.php", $idx);
 }
 
 if (isset($_POST['question'])) {
-    $question = $_POST['question'];
-    $answer = $_POST['answer'];
-    $id = $_POST['id'];
-
-    if ($question == "") {
+    if ($_POST['question'] == "") {
         $view["message"] = 'Question cannot be left blank.';
-    } else if ($answer == "") {
+        $view["model"] = $_POST; // Repopulate inputs
+    } else if($_POST['answer'] == "") {
         $view["message"] = 'Answer cannot be left blank.';
-    } else {
+        $view["model"] = $_POST; // Repopulate inputs
+    } else if($_POST["id"] == "") {
         $response = util::ForwardPostRequest("question.php", $_POST);
+        if($response['success']){
+            $view["message"] = 'Question and answer added successfully.';
+        } else{
+            $view["message"] = $response['error'];
+        }
+    } else {
+        $response = util::ForwardPatchRequest("question.php", $_POST);
         if($response['success']){
             $view["message"] = 'Question and answer added successfully.';
         } else{
@@ -33,9 +34,8 @@ if (isset($_POST['question'])) {
 }
 
 if (isset($_GET['edit'])) {
-    $editing = true;
-    $model["id"] = $_GET['edit'];
-    $view["model"] = util::ForwardGetRequest("question.php", $model)["result"];
+    $view["editing"] = true;
+    $view["model"] = util::ForwardGetRequest("question.php", array("id" => $_GET["edit"]))["result"];
 }
 
 $QuestionBank = util::ForwardGETRequest("question.php", array());

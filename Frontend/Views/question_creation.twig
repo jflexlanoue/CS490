@@ -19,7 +19,7 @@
         <input type="text" name="points" placeholder="Enter point value..." value="{{ model["points"] }}">
 
         <input type="hidden" name="id" value="{{ model["id"] }}">
-        <input type = "submit" name="btn" value="Add" >
+        <input type = "submit" name="btn" value="{% if editing %} Edit {% else %} Add {% endif %}" >
     </form>
 
     <h2>Questions/Answers Bank</h2>
@@ -29,7 +29,6 @@
             tr.noBorder td {border: 0; }
         </style>
 
-    <form name="checkForm" action="question_creation.php" method="post">
         <table>
             <tr class ="noBorder">
                 <td></td>
@@ -42,8 +41,13 @@
 
             {% for i in itemarray %}
             <tr>
-                <td><input type="checkbox" name="{{i.id}}"></td>
                 <td><a class="button" href="question_creation.php?edit={{i.id}}">Edit</a></td>
+                <td>
+                    <form name="checkForm" action="question_creation.php" method="post">
+                        <input type="hidden" name="id" value="{{i.id}}">
+                        <button class="button" type="submit" name="delete" value="Delete">Delete</button>
+                    </form>
+                </td>
                 <td>{{i.id}}</td>
                 <td>{{i.question}}</td>
                 <td>{{i.answer}}</td>
@@ -53,8 +57,6 @@
 
         </table>
 
-        <input type="submit" name="delete" value="Delete">
-    </form>
 </center>
 
 {% endblock %}
