@@ -11,6 +11,10 @@
         </form>
     </div>
 
+    <style type="text/css">
+        tr, td {border: 1px solid black; }
+        tr.noBorder td {border: 0; }
+    </style>
 
     <form method="post">
         {% if create == false %}
@@ -26,11 +30,11 @@
         </div>
 
         <table>
-            <tr>
-                <td>Included</td>
-                <td>Question</td>
-                <td>Answer</td>
-                <td>Points</td>
+            <tr class ="noBorder">
+                <td><strong><Center>Included</Center></strong></td>
+                <td><strong><Center>Question</Center></strong></td>
+                <td><strong><Center>Answer</Center></strong></td>
+                <td><strong><Center>Points</Center></strong></td>
             </tr>
 
             {% for q in questions %}
@@ -50,7 +54,7 @@
         </table>
 
         <div>
-            <button type="submit"> <h2> {% if create %} Create {% else %} Edit {% endif %} </h2></button>
+            <button type="submit"> <h2> {% if create %} Create {% else %} Apply changes {% endif %} </h2></button>
         </div>
     </form>
 </center>
