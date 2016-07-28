@@ -1,0 +1,23 @@
+{% extends "student_template.twig" %}
+
+{% block student %}
+<div style="text-align: center;">
+    <h1>Exam: {{ exam.title }}</h1>
+    Questions: {{ exam.questioncount }}
+
+    <form action = "submit_results.php" method="POST">
+        <input type="hidden" name="examid" value="{{ exam.id }}">
+
+        {% for question in exam.ownExamquestion %}
+            <label for="question">Question</label>
+            <div class="test_question">{{ question.question.question }}</div>
+
+            {# TODO don't leak question IDs? #}
+            <label for="answer">Answer</label>
+            <textarea name="answer{{ question.question_id }}" rows="8" cols="40"  placeholder="Enter answer..."></textarea>
+        {% endfor %}
+
+        <input type="submit" value="Submit" >
+    </form>
+</div>
+{% endblock %}
