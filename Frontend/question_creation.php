@@ -34,25 +34,6 @@ if(!$QuestionBank['success']) {
     $view["message"] = $QuestionBank['error'];
 }
 
-$question_html = '
-<tr>
-    <td><input type="checkbox" name="{{id}}"></td>
-    <td><a class="button" href="question_creation.php?edit={{id}}">Edit</a></td>
-    <td>{{id}}</td>
-    <td>{{question}}</td>
-    <td>{{answer}}</td>
-    <td>{{points}}</td>
-</tr>';
+$view["itemarray"] = $QuestionBank['result'];
 
-$items = "";
-foreach ( $QuestionBank['result'] as $q ){
-    $question = array();
-    $question["id"] = $q['id'];
-    $question["question"] = util::Printable($q['question']);
-    $question["answer"] = util::Printable($q['answer']);
-    $question["points"] = util::Printable($q['points']);
-    $items .= render($question_html, $question);
-}
-
-$view["items"] = $items;
 view();

@@ -1,5 +1,15 @@
 <?php
 
+/*
+require_once 'Twig-1.24.1/lib/Twig/Autoloader.php';
+Twig_Autoloader::register();
+
+$loader = new Twig_Loader_Filesystem('../Views/');
+$twig = new Twig_Environment($loader, array(
+    'cache' => 'Twig-1.24.1/lib/Twig/cache',
+));
+*/
+
 # Reports uncaught exceptions
 function exception_error_handler($errno, $errstr, $errfile, $errline)
 {
@@ -40,13 +50,21 @@ function footer() {
     }
 }
 
+function Printable($item) {
+    $item = str_replace("\n", "<br>", $item);
+    $item = str_replace("  ", "&nbsp&nbsp", $item);
+    return $item;
+}
+
 function GetTag($tagvalue, &$values) {
+    // Variable substitution
     if(isset($values[$tagvalue]))
         return $values[$tagvalue];
     $trimmed = trim($tagvalue);
     if(isset($values[$trimmed]))
         return $values[$trimmed];
 
+    // Variable setting
     if(strpos($tagvalue,"!") !== false) {
         $start = strpos($tagvalue,"!") + 1;
         $mid = strpos($tagvalue, "=");
@@ -54,6 +72,26 @@ function GetTag($tagvalue, &$values) {
         $name = trim(substr($tagvalue, $start, $mid - $start));
         $value = trim(substr($tagvalue, $mid + 1, $end - $mid));
         $values[$name] = $value;
+    }
+
+    // Loops
+    global $looping_over;
+    global $looping;
+    global $loop_template;
+    if(strpos($tagvalue,"loop-over") !== false) {
+        $mid = strpos($tagvalue, ":");
+        $end = strlen($tagvalue);
+        $itemname = trim(substr($tagvalue, $mid + 1, $end - $mid));
+        $looping = true;
+        $looping_over = $values[$itemname];
+    }
+    if(strpos($tagvalue,"end-loop") !== false) {
+        $ret = "";
+        $looping = false;
+        foreach($looping_over as $item) {
+            $ret .= render_internal($loop_template, $item);
+        }
+        return $ret;
     }
 
     return "";
@@ -75,6 +113,8 @@ function render_internal($string, &$values) {
         return render_file_to_string($template, $values);
     }
 
+    global $looping;
+    global $loop_template;
     $parts = array();
     $position = 0;
     while(true) {
@@ -86,17 +126,31 @@ function render_internal($string, &$values) {
         if($end === FALSE)
             break;
 
-        // Capture part of template between the last tag and this one
-        $parts[] = substr($string, $position, $start - $position);
+        // Normal processing
+        if(!$looping) {
+            // Capture part of template between the last tag and this one
+            $parts[] = substr($string, $position, $start - $position);
 
-        // Get tag text
-        $tag = substr($string, $start + 2, $end - $start - 2);
+            // Get tag text
+            $tag = substr($string, $start + 2, $end - $start - 2);
 
-        // Get tag value
-        $parts[] = GetTag($tag, $values);
+            // Get tag value
+            $parts[] = GetTag($tag, $values);
 
-        // Update string position
-        $position = $end + 2;
+            // Update string position
+            $position = $end + 2;
+        } else {
+            // Loop handling
+
+            $end = strpos($string, "{{ end-loop }}", $start);
+            $loop_template = substr($string, $position, $end - $position);
+
+            // Get tag value
+            $parts[] = GetTag("{{ end-loop }}", $values);
+
+            // Update string position
+            $position = $end + 14;
+        }
     }
 
     // Get last part of template
@@ -118,10 +172,12 @@ function render_file($filename, $values) {
 // Magically renders the view with the same name as the url (eg index.php -> index.plate)
 function view($view_override = null) {
     global $view;
+    global $twig;
     if(isset($view_override)) {
         render_file($view_override, $view);
     } else {
         $url = basename($_SERVER['PHP_SELF'], '.php');
         render_file($url, $view);
+        //echo $twig->render($url, $view);
     }
 }

@@ -100,10 +100,4 @@ class util {
     static function GetUserID() {
         return self::GetUser()->id;
     }
-
-    static function Printable($item) {
-        $item = str_replace("\n", "<br>", $item);
-        $item = str_replace("  ", "&nbsp&nbsp", $item);
-        return $item;
-    }
 }

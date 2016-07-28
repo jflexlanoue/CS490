@@ -9,13 +9,14 @@
     <br>
     <form action = "question_creation.php" method="POST">
         <label for="question">Question</label><br>
-        <textarea name="question" value="question" rows="8" cols="40" placeholder="Enter question..." autofocus></textarea><br><br>
-        <label for="answer">Answer</label><br>
-        <textarea name = "answer" value="answer" rows="8" cols="40" placeholder="Enter answer..."></textarea><br><br>
-        <label for="points">Points</label><br>
-        <input type="text" name="points" placeholder="Enter point value..."><br><br>
-        <input type = "submit" name="btn" value="Add" ><br><br>
+        <textarea name="question" value="question" rows="8" cols="40" placeholder="Enter question..." autofocus>{{ medel["question"] }}</textarea>
+        <label for="answer">Answer</label><
+        <textarea name = "answer" value="answer" rows="8" cols="40" placeholder="Enter answer...">{{ medel["answer"] }}</textarea>
+        <label for="points">Points</label>
+        <input type="text" name="points" placeholder="Enter point value..." value="{{ medel["points"] }}">
+        <input type = "submit" name="btn" value="Add" >
     </form>
+
     <h2>Questions/Answers Bank</h2>
 
     <form name="checkForm" action="question_deletion.php" method="post">
@@ -34,7 +35,18 @@
                 <td><strong><center>Answer</center></strong></td>
                 <td><strong><center>Points</center></strong</td>
             </tr>
-            {{ items }}
+
+            {{ loop-over: itemarray }}
+            <tr>
+                <td><input type="checkbox" name="{{id}}"></td>
+                <td><a class="button" href="question_creation.php?edit={{id}}">Edit</a></td>
+                <td>{{id}}</td>
+                <td>{{question}}</td>
+                <td>{{answer}}</td>
+                <td>{{points}}</td>
+            </tr>
+            {{ end-loop }}
+
         </table>
         <input type="submit" name="delete" value="Delete"">
     </form>
