@@ -65,7 +65,9 @@ if(!$creation) {
     foreach ($exam["ownExamquestion"] as $item => $value) {
         $exam_question_ids[] = $value["question_id"];
         $exam_question_point_overrides[] = $value["points"];  // TODO Display this
+
     }
+
 } else {
     $exam = array();
     $exam["title"] = "";
