@@ -35,7 +35,6 @@ foreach ( $resultsRetrieval['result'] as $q ) {
     $item["exam_title"] = exam_by_id($q['exam_id'])["title"];
     $item["question"] = question_by_id($q['question_id'])["question"];
     $item["student_answer"] = $q['student_answer'];
-    $item["instructor_only"] = util::IsInstructor() ? "" : "display:none";
 
     if(util::IsInstructor() || exam_by_id($q["exam_id"])["released"] == 1) {
         $item["score"] = $q['score'];
@@ -50,6 +49,7 @@ foreach ( $resultsRetrieval['result'] as $q ) {
 
 $view["exams"] = $exams;
 $view["title"] = "Results";
+$view["instructor"] = util::IsInstructor();
 
 if(util::IsInstructor())
     view("results_instructor");

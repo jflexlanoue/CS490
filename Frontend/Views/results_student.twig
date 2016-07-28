@@ -7,7 +7,9 @@
             <p class="card-header-title">
                 {{e.exam_title}}
             </p>
-            <a class="card-header-icon" style="{{instructor_only}}">Edit</a>
+            {% if instructor %}
+                <a class="card-header-icon">Edit</a>
+            {% endif %}
         </header>
         <div class="card-content">
             <div class="content">
