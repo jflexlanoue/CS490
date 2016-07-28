@@ -1,0 +1,14 @@
+{% extends "student_template.twig" %}
+
+{% block student %}
+<div style="text-align: center;">
+    <h1>Available Exams</h1>
+
+    {% for exam in exams %}
+    <div>
+        <a href="take_exam.php?id={{ exam.id }}">Exam: {{ exam.title }}</a>
+        <p>Questions: {{ exam.questioncount }}</p>
+    </div>
+    {% endfor %}
+</div>
+{% endblock %}
