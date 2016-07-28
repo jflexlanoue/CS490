@@ -42,7 +42,9 @@
                 <td><input name="sharedquestion{{q["id"]}}" type="checkbox" {% if q["checked"] %} checked="checked" {% endif %}></td>
                 <td>{{q.question}}</td>
                 <td>{{q.answer}}</td>
-                <td>{{q.points}}</td>
+
+                {# This should be disabled for questions that aren't selected #}
+                <td><input name="pointoverride{{ q["id"] }}" type="number" value="{{q.points}}" min="0"></td>
             </tr>
             {% else %}
                 <tr>
