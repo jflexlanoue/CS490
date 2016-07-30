@@ -2,22 +2,23 @@
 
 {% block student %}
 <div style="text-align: center;">
-    <h1>Exam: {{ exam.title }}</h1>
-    Questions: {{ exam.questioncount }}
+    <h1><strong>Exam: </strong>{{ exam.title }}</h1>
+    <strong>Questions: </strong>{{ exam.questioncount }}<br><br>
 
     <form action = "submit_results.php" method="POST">
         <input type="hidden" name="examid" value="{{ exam.id }}">
 
         {% for question in exam.ownExamquestion %}
-            <label for="question">Question</label>
+            <label for="question"><strong>Question: </strong></label>
             <div class="test_question">{{ question.question.question }}</div>
+            <label for="points"><strong>Points: </strong>{{ question.question.points }} </label><br>
 
             {# TODO don't leak question IDs? #}
-            <label for="answer">Answer</label>
-            <textarea name="answer{{ question.question_id }}" rows="8" cols="40"  placeholder="Enter answer..."></textarea>
+            <label for="answer"><strong>Answer: </strong></label><br>
+            <textarea name="answer{{ question.question_id }}" rows="8" cols="40"  placeholder="Enter answer..."></textarea><br><br>
         {% endfor %}
 
-        <input type="submit" value="Submit" >
+        <input type="submit" value="Submit">
     </form>
 </div>
 {% endblock %}
