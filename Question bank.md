@@ -14,70 +14,46 @@ def compute(op,a,b):
 ```
 
 ## 1
-Write a child class **Car** that inherits from **Vehicle** and overrides the **Drive** method. Inside the new function, print the distance traveled denoted in miles.
+Write a function called **Car** that accepts an integer argument. The function should print the line "Vroom Vroom" in the console and not return anything.
 
-**Vechicle.java:**
-```java
-public class Vehicle
-{
-  public void Drive(int miles)
-  {
-    // throw not implemented exception
-  }
-}
 ```
 
 Solution:
 ```java
-public class Car extends Vehicle
-{
-  public void Drive(int miles)
+  public void Car(int miles)
   {
-    System.out.println(miles + " miles");
+    System.out.println("Vroom Vroom");
   }
-}
 ```
 
 ## 2
-Write an interface **IVehicle** that exposes a method called **Drive** that accepts an integer parameter named **miles**.
+Write a function which takes an integer parameter in miles and returns the value converted to kilometers as a double. 
+
 
 Solution:
 ```java
-public interface IVehicle
-{
-  public void Drive(int miles);
-}
+  public double Drive(int miles){
+    return miles * 1.6d;
+  }
 ```
 
 # 3
-Write a function named **Drive** that takes no parameters and returns no data. It should create a new **Vehicle** instance and call the **Drive** method with a value of 20;
-
-**Vechicle.java:**
-```java
-public class Vehicle
-{
-  public void Drive(int miles)
-  {
-    // Implementation details
-  }
-}
-```
+Write a function named **doNothing** that takes no parameters and returns no data.
 
 Solution:
 ```java
-public void Drive()
+public void doNothing()
 {
-  var vehicle = new Vehicle();
-  vehicle.Drive(20);
+
 }
 ```
 
 # 4
-Write a function named **ImplementationDetails** that takes no parameters, returns an int, and cannot be called by outside code. The function should return the value 52;
+Write a function named **ImplementationDetails** that takes no parameters and returns an int. The function should return the value 52;
 
 Solution:
 ```java
-private int ImplementationDetails()
+public int ImplementationDetails()
 {
   return 52;
 }
