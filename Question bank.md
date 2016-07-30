@@ -75,32 +75,43 @@ Solution:
 Student stu = new Student("John Smith", 'B');
 ```
 # 7
-Write a for-loop that prints a list of the countdown from thirty to zero by threes. Use the variable **i**, and assume that **i** is already declared as an integer.
+Write a function called MyLoop which contains a for-loop that prints a list of the countdown from thirty to zero by threes.
+
 ```java
+
+public void MyLoop(){
 for (i = 30; i >=0; i-= 3){
   System.out.println(i);
 }
+}
 ```
 # 8 
-Write a line of code to return the square root of 121. 
+Write a function that returns the square root of 121. 
 
 Solution:
 ```java
-Math.sqrt(121);
+public double Square(){
+  return Math.sqrt(121);
+}
+
 ```
 # 9 
-Write an if-else statement to determine whether or not an integer **i** is divisible by 7, printing either "**divisble**" or "**not divisible**".
+Write a function which takes in an integer and print "divisible" if it is "**divisble**" by 7 otherwhise it should print "**not divisible**"
+
 
 Solution:
 ```java
+
+public void Div(int i){
 if (i % 7 == 0)
   System.out.println("divisible");
 else
   System.out.println("not divisible");
+}
 ```
 
 # 10 
-Write a method named **skipElement** that accepts an array **arr** and prints in a single line every other element, starting with the first element.
+Write a method named **skipElement** that accepts an array **arr** and prints, in a single line, every other element, starting with the first element.
 ```java
 public static void skipElement (int[] arr){
   for (int i=0; i<arr.length; i+=2)
