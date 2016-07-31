@@ -9,11 +9,14 @@
     </div>
 
     <form action = "question_creation.php" method="POST">
-        <label for="question">Question</label>
-        <textarea name="question" value="question" rows="8" cols="40" placeholder="Enter question..." autofocus>{{ model["question"] }}</textarea>
+        <label for="question">Question</label><br>
+        <textarea name="question" value="question" rows="8" cols="40" placeholder="Enter question..." autofocus>{{ model["question"] }}</textarea><br>
 
-        <label for="answer">Answer</label>
-        <textarea name = "answer" value="answer" rows="8" cols="40" placeholder="Enter answer...">{{ model["answer"] }}</textarea>
+        <label for="answer">Answer</label><br>
+        <textarea name = "answer" value="answer" rows="8" cols="40" placeholder="Enter answer...">{{ model["answer"] }}</textarea><br>
+
+        <label for="answer">Test Cases</label><br>
+        <textarea name = "testcases" value="testcases" rows="4" cols="40" placeholder="Enter test cases... (comma separated list of test cases; each test case is a semicolon separated list)">{{ model["testCases"] }}</textarea><br>
 
         <label for="points">Points</label>
         <input type="text" name="points" placeholder="Enter point value..." value="{{ model["points"] }}">
@@ -36,7 +39,8 @@
                 <td><strong><center>ID</center></strong></td>
                 <td><strong><center>Question</center></strong></td>
                 <td><strong><center>Answer</center></strong></td>
-                <td><strong><center>Points</center></strong</td>
+                {# <td><strong><center>Test Cases</center></strong></td>   note: see below #}
+                <td><strong><center>Points</center></strong></td>
             </tr>
 
             {% for i in itemarray %}
@@ -51,6 +55,7 @@
                 <td>{{i.id}}</td>
                 <td>{{i.question}}</td>
                 <td>{{i.answer}}</td>
+                {# <td>{{i.testcases|join(',')}}</td>   note: failed to convert array to string #}
                 <td>{{i.points}}</td>
             </tr>
             {% endfor  %}
