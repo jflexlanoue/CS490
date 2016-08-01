@@ -1,49 +1,48 @@
 {% extends "instructor_template.twig" %}
 
 {% block instructor %}
-<center>
-{% if instructor %}            
-    <a href="feedback_edit.php" class="card-header-icon">Edit</a>
-{% endif %}
-</center>
     {% for e in exams %}
-    <div class="card is-fullwidth">
-        <header class="card-header">
-            <p class="card-header-title">
-                {{e.exam_title}}
-            </p>
-        </header>
-        <div class="card-content">
-            <div class="content">
-                <article class="message is-primary">
-                    <div class="message-header">
-                        Question
-                    </div>
-                    <div class="message-body">
-                        {{e.question}}
-                    </div>
-                </article>
-                <article class="message">
-                    <div class="message-header">
-                        Student Answer
-                    </div>
-                    <div class="message-body">
-                        {{e.student_answer}}
-                    </div>
-                </article>
-                <article class="message">
-                    <div class="message-header">
-                        Feedback
-                    </div>
-                    <div class="message-body">
-                        Score: {{e.score}}
-                        <br>
-                        {{e.feedback}}
-                    </div>
-                </article>
+        <div class="card is-fullwidth">
+            <header class="card-header">
+                <p class="card-header-title">
+                    {{e.exam_title}}
+                </p>
+                {% if instructor %}
+                    <a class="card-header-icon">Edit</a>
+                {% endif %}
+            </header>
+            <div class="card-content">
+                <div class="content">
+                    <article class="message is-primary">
+                        <div class="message-header">
+                            Question
+                        </div>
+                        <div class="message-body">
+                            {{e.question | printable}}
+                        </div>
+                    </article>
+                    <article class="message">
+                        <div class="message-header">
+                            Student Answer
+                        </div>
+                        <div class="message-body">
+                            {{e.student_answer | printable}}
+                        </div>
+                    </article>
+                    <article class="message">
+                        <div class="message-header">
+                            Feedback
+                        </div>
+                        <div class="message-body">
+                            Score: {{e.score}}
+                            {% for f in e.feedback %}
+                                <br>
+                                {{f | printable}}
+                            {% endfor %}
+                        </div>
+                    </article>
+                </div>
             </div>
         </div>
-    </div>
     {% endfor %}
-    </form>
 {% endblock %}
