@@ -26,8 +26,10 @@ switch ($_SERVER['REQUEST_METHOD']) {
                 }
             }
         }
-        $user = load_or_error('user', $_SESSION["userID"]);
-        $response["result"] = json_encode(scrub_user($user));
+        else {
+            $user = load_or_error('user', $_SESSION["userID"]);
+            $response["result"] = json_encode(scrub_user($user));
+        }
         break;
 
     case "POST":
