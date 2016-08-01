@@ -1,24 +1,45 @@
 {% extends "student_template.twig" %}
 
 {% block student %}
-<div style="text-align: center;">
-    <h1><strong>Exam: </strong>{{ exam.title }}</h1>
-    <strong>Questions: </strong>{{ exam.questioncount }}<br><br>
+<div>
+    <h1 class="title"><strong>Exam:</strong> {{ exam.title }}</h1>
+    <h1 class="subtitle">Questions: {{ exam.questioncount }}</h1>
 
     <form action = "submit_results.php" method="POST">
         <input type="hidden" name="examid" value="{{ exam.id }}">
 
         {% for question in exam.ownExamquestion %}
-            <label for="question"><strong>Question: </strong></label>
-            <div class="test_question">{{ question.question.question }}</div>
-            <label for="points"><strong>Points: </strong>{{ question.question.points }} </label><br>
+            <div class="card is-fullwidth">
+                <header class="card-header">
+                    <p class="card-header-title">
+                        <label for="question"><strong>Question</strong>
+                            {% if question.question.points %}
+                                {# TODO: Handle point overrides #}
+                                ({{ question.question.points }} points)
+                            {% endif %}
+                        </label>
+                    </p>
+                </header>
+                <div class="card-content">
+                    <div class="content">
+                        <p class="test_question">
+                            <code>
+                                {{ question.question.question | printable }}
+                            </code>
+                        </p>
 
-            {# TODO don't leak question IDs? #}
-            <label for="answer"><strong>Answer: </strong></label><br>
-            <textarea name="answer{{ question.question_id }}" rows="8" cols="40"  placeholder="Enter answer..."></textarea><br><br>
+
+                        <label for="answer"><strong>Your answer: </strong></label><br>
+                        <textarea
+                                name="answer{{ question.question_id }}"
+                                class="textarea"
+                                placeholder="Enter answer..."></textarea>
+                    </div>
+                </div>
+            </div>
         {% endfor %}
 
-        <input type="submit" value="Submit">
+        <input class="button is-primary" type="submit" value="Submit">
     </form>
 </div>
 {% endblock %}
