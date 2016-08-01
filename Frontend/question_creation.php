@@ -10,6 +10,21 @@ if (isset($_POST['delete'])) {
 }
 
 if (isset($_POST['question'])) {
+
+    $testcaseindex = $_POST["testcaseindex"];
+
+    print_r($_POST);
+    $testcases = array();
+    for($i = 0; $i <= (int)$testcaseindex; $i++) {
+        if(!isset($_POST["testcase" . $i]))
+            continue;
+        $testcases[] = ($_POST["testcase" . $i]);
+        unset($_POST["testcase" . $i]);
+    }
+
+    $_POST["testcases"] = implode(";", $testcases);
+    print_r($_POST);
+
     if ($_POST['question'] == "") {
         $view["message"] = 'Question cannot be left blank.';
         $view["model"] = $_POST; // Repopulate inputs
@@ -17,6 +32,7 @@ if (isset($_POST['question'])) {
         $view["message"] = 'Answer cannot be left blank.';
         $view["model"] = $_POST; // Repopulate inputs
     } else if($_POST["id"] == "") {
+        // TODO: Don't pass POST directly
         $response = util::ForwardPostRequest("question.php", $_POST);
         if($response['success']){
             $view["message"] = 'Question and answer added successfully.';
@@ -24,6 +40,7 @@ if (isset($_POST['question'])) {
             $view["message"] = $response['error'];
         }
     } else {
+        // TODO: Don't pass POST directly
         $response = util::ForwardPatchRequest("question.php", $_POST);
         if($response['success']){
             $view["message"] = 'Question and answer added successfully.';
@@ -38,10 +55,10 @@ if (isset($_GET['edit'])) {
     $view["title"] = "Edit Question";
     $view["model"] = util::ForwardGetRequest("question.php", array("id" => $_GET["edit"]))["result"];
     $view["testcases"] = explode(';', json_decode($view["model"]["testcase_json"]));
-    $view["testcase_count"] = count($view["testcases"]);
+    $view["testcase_index"] = count($view["testcases"]) - 1;
 } else {
     $view["title"] = "Create Question";
-    $view["testcase_count"] = 1;
+    $view["testcase_index"] = 0;
 }
 
 $QuestionBank = util::ForwardGETRequest("question.php", array());

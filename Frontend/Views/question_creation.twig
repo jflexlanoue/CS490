@@ -2,13 +2,13 @@
 
 {% block instructor %}
 <script>
-var testcases = {{ testcase_count }};
 function NewTestCase() {
-    var idx = ++testcases;
+    var count = document.getElementById("testcaseindex");
+    var idx = ++count.value;
     var btn = document.getElementById("testcases");
 
     var div = document.createElement('div');
-    div.innerHTML = "<p class=\"control\" id=\"blankTestCase\"> \
+    div.innerHTML = "<p class=\"control\"> \
             <textarea class=\"textarea\" name=\"testcase" + idx + "\" value=\"testcase" + idx + "\" \
     placeholder=\"Enter test cases... (comma separated list of test cases; each test case is a semicolon separated list)\">{{ case }}</textarea> \
             </p>\"";
@@ -39,7 +39,7 @@ function NewTestCase() {
         <div id="testcases">
             {% for case in testcases %}
             <p class="control">
-                <textarea class="textarea" name="testcase{{ loop.index }}" value="testcase{{ loop.index }}"
+                <textarea class="textarea" name="testcase{{ loop.index0 }}" value="testcase{{ loop.index0 }}"
                           placeholder="Enter test cases... (comma separated list of test cases; each test case is a semicolon separated list)">{{ case }}</textarea>
             </p>
             {% else %}
@@ -50,6 +50,7 @@ function NewTestCase() {
             {% endfor %}
         </div>
 
+        <input type="hidden" id="testcaseindex" name="testcaseindex" value="{{ testcase_index }}">
         <a class="button" href="#" id="newTestCaseBtn" onclick="NewTestCase();">Add Test Case</a>
 
         <label class="label" for="points">Points</label>
