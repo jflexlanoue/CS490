@@ -4,9 +4,11 @@
 <nav class="nav" style="{{menu_style}}">
     <div class="nav-left">
         <a class="nav-item" href="index.php">
-            Exam System
+            Home
         </a>
     </div>
+
+    {% block nav %}{% endblock %}
 
     <div class="nav-right nav-menu">
         <a class="nav-item" href="index.php?logout=1">

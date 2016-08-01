@@ -49,9 +49,14 @@ function ShowAllExams() {
 </script>
 
 <nav class="panel" id="exam_panel">
-    <p class="panel-heading">
-        Exams
-    </p>
+    <div class="panel-heading">
+        <span>
+            Exams
+        </span>
+        <a class="button is-pulled-right" href="exam_edit.php">
+            Create Exam
+        </a>
+    </div>
     <p class="panel-tabs" id="tabs">
         <a class="is-active" href="#" onclick="ShowAllExams()">All</a>
         <a href="#" onclick="ShowExams(true);">Released</a>

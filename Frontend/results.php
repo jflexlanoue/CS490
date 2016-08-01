@@ -33,12 +33,18 @@ $id = array();
 if(!util::IsInstructor()) {
     $id["studentID"] = util::GetUserID();
 } else {
-    if(isset($_GET["student"]) && !empty($_GET["student"]))
+    if(isset($_GET["student"]) && !empty($_GET["student"])) {
         $id["studentID"] = $_GET["student"];
-    if(isset($_GET["exam"]) && !empty($_GET["exam"]))
+        $view["student_filter"] = $id["studentID"];
+    }
+    if(isset($_GET["exam"]) && !empty($_GET["exam"])) {
         $id["examID"] = $_GET["exam"];
-    if(isset($_GET["question"]) && !empty($_GET["question"]))
+        $view["exam_filter"] = $id["examID"];
+    }
+    if(isset($_GET["question"]) && !empty($_GET["question"])) {
         $id["questionID"] = $_GET["question"];
+        $view["question_filter"] = $id["questionID"];
+    }
 }
 $resultsRetrieval = util::ForwardGETRequest("result.php", $id);
 

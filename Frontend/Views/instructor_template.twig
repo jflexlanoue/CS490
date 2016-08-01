@@ -1,16 +1,31 @@
 {% extends "sitenav.twig" %}
 
+{% block nav %}
+    <div class="nav-center is-hidden-desktop">
+        <a class="nav-item" href="index.php">
+            Exams
+        </a>
+        <a class="nav-item" href="question_creation.php">
+            Question Bank
+        </a>
+        <a class="nav-item" href="results.php">
+            Results
+        </a>
+    </div>
+{% endblock %}
+
 {% block content %}
 <div class="container">
     <div class="columns">
-        <div class="column is-one-quarter">
+       <div class="column is-narrow is-hidden-touch">
             <aside class="menu">
                 <p class="menu-label">
                     Exam Management
                 </p>
                 <ul class="menu-list">
-                    <li><a href="question_creation.php">Question Bank</a></li>
+                    <li><a href="index.php">Exams</a></li>
                     <li><a href="exam_edit.php">Create Exam</a></li>
+                    <li><a href="question_creation.php">Question Bank</a></li>
                 </ul>
                 <p class="menu-label">
                     Results
