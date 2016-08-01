@@ -1,7 +1,6 @@
 <?php
 include("Util/Garyutil.class.php");
 include("Util/htmlutil.php");
-
 $questioncache = array();
 function question_by_id($id) {
     global $questioncache;
@@ -10,7 +9,6 @@ function question_by_id($id) {
     }
     return $questioncache[$id];
 }
-
 $examcache = array();
 function exam_by_id($id) {
     global $examcache;
@@ -19,7 +17,6 @@ function exam_by_id($id) {
     }
     return $examcache[$id];
 }
-
 $studentcache = array();
 function student_by_id($id) {
     global $studentcache;
@@ -28,7 +25,6 @@ function student_by_id($id) {
     }
     return $studentcache[$id];
 }
-
 $id = array();
 if(!util::IsInstructor()) {
     $id["studentID"] = util::GetUserID();
@@ -47,18 +43,14 @@ if(!util::IsInstructor()) {
     }
 }
 $resultsRetrieval = util::ForwardGETRequest("result.php", $id);
-
 $exams = array();
 foreach ( $resultsRetrieval['result'] as $q ) {
     $item = array();
-
     $item["exam_title"] = exam_by_id($q['exam_id'])["title"];
     $item["exam_id"] = $q['exam_id'];
     $item["question"] = question_by_id($q['question_id'])["question"];
     $item["student"] = student_by_id($q['student_id']);
-
     $item["student_answer"] = $q['student_answer'];
-
     if(util::IsInstructor() || exam_by_id($q["exam_id"])["released"] == 1) {
         $item["score"] = $q['score'];
         $feedback = json_decode($q['feedback']);
@@ -67,30 +59,14 @@ foreach ( $resultsRetrieval['result'] as $q ) {
         $item["score"] = "N/A";
         $item["feedback"] = "Exam not released";
     }
-
     $exams[] = $item;
 }
-
 $view["exams"] = $exams;
 $view["exam_list"] = $examcache;
 $view["question_list"] = $questioncache;
 $view["student_list"] = $studentcache;
 $view["title"] = "Results";
 $view["instructor"] = util::IsInstructor();
-
-if ($_SERVER['REQUEST_METHOD'] == 'POST')){
-// if(isset($_POST["submitchanges"])){
-    $exam_edit = array();
-    $exam_edit["score"] = $_POST["score"];
-    $exam_edit["feedback"] = $_POST["feedback"];
-    $exam_edit["id"] = $_POST["id"];
-
-    $res = util::ForwardPatchRequest("result.php", $exam_edit);
-    if(!$res['success']) {
-        die($res["error"]);
-    }
-}
-
 if(util::IsInstructor())
     view("results_instructor");
 else
