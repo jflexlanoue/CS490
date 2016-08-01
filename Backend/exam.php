@@ -1,8 +1,6 @@
 <?php
 require 'common.php';
 
-// TODO: https://github.com/jflexlanoue/CS490/issues/13
-
 switch ($_SERVER['REQUEST_METHOD']) {
     case "GET":
         if (isset($_REQUEST["id"])) {
