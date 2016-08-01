@@ -1,3 +1,12 @@
 .exam {
     margin: 10px;
 }
+
+code {
+    color: #000;
+    font-family: Consolas,Menlo,Monaco,Lucida Console,Liberation Mono,DejaVu Sans Mono,Bitstream Vera Sans Mono,Courier New,monospace,serif;
+    margin-bottom: 10px;
+    max-height: 600px;
+    overflow: auto;
+    width: auto;
+}

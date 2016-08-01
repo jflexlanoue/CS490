@@ -18,7 +18,7 @@
                         Question
                     </div>
                     <div class="message-body">
-                        {{e.question}}
+                        {{e.question | printable}}
                     </div>
                 </article>
                 <article class="message">
@@ -26,7 +26,7 @@
                         Student Answer
                     </div>
                     <div class="message-body">
-                        {{e.student_answer}}
+                        {{e.student_answer | printable}}
                     </div>
                 </article>
                 <article class="message">
@@ -35,8 +35,10 @@
                     </div>
                     <div class="message-body">
                         Score: {{e.score}}
-                        <br>
-                        {{e.feedback}}
+                        {% for f in e.feedback %}
+                            <br>
+                            {{f | printable}}
+                        {% endfor %}
                     </div>
                 </article>
             </div>

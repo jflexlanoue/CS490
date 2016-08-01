@@ -29,10 +29,22 @@ $cwd = getcwd();
 $view = array();
 
 function Printable($item) {
+    $item = trim($item);
+    $item = str_replace("&lt;br/&gt;", "<br>", $item);
     $item = str_replace("\n", "<br>", $item);
+    $item = str_replace("\t", "&nbsp&nbsp", $item);
+    $item = str_replace("\t", "&nbsp&nbsp", $item);
+    $item = str_replace("\u001a", "", $item);
+    $item = str_replace("\u0000", "", $item);
+    $item = str_replace("", "", $item);
     $item = str_replace("  ", "&nbsp&nbsp", $item);
     return $item;
 }
+
+$filter = new Twig_SimpleFilter('printable', function ($string) {
+    return Printable($string);
+}, array('pre_escape' => 'html', 'is_safe' => array('html')));
+$twig->addFilter($filter);
 
 // Magically renders the view with the same name as the url (eg index.php -> index.plate)
 function view($view_override = null) {

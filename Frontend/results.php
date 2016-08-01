@@ -38,7 +38,8 @@ foreach ( $resultsRetrieval['result'] as $q ) {
 
     if(util::IsInstructor() || exam_by_id($q["exam_id"])["released"] == 1) {
         $item["score"] = $q['score'];
-        $item["feedback"] = $q['feedback'];
+        $feedback = json_decode($q['feedback']);
+        $item["feedback"] = $feedback;
     } else{
         $item["score"] = "N/A";
         $item["feedback"] = "Exam not released";
