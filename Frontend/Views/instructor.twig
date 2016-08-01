@@ -1,19 +1,65 @@
 {% extends "instructor_template.twig" %}
 
 {% block instructor %}
-<nav class="panel">
+
+<script>
+function SetTab(num) {
+    var tabs = document.getElementById("tabs").childNodes;
+    var at = 0;
+    for (var i = 0; i < tabs.length; i++) {
+        if(tabs[i].nodeType != 1)
+            continue;
+        tabs[i].className = at == num ? "is-active" : "";
+        at++;
+    }
+}
+
+function ShowExams(showreleased) {
+    if(showreleased) {
+        SetTab(1);
+    } else {
+        SetTab(2);
+    }
+
+    var released = document.getElementsByClassName('released');
+    var unreleased = document.getElementsByClassName('unreleased');
+
+    for (var i = 0; i < released.length; i++) {
+        released[i].style.display = showreleased ? "block" : "none";
+    }
+
+    for (var i = 0; i < unreleased.length; i++) {
+        unreleased[i].style.display = showreleased ? "none" : "block";
+    }
+}
+function ShowAllExams() {
+    SetTab(0);
+
+    var released = document.getElementsByClassName('released');
+    var unreleased = document.getElementsByClassName('unreleased');
+
+    for (var i = 0; i < released.length; i++) {
+        released[i].style.display = "block";
+    }
+
+    for (var i = 0; i < unreleased.length; i++) {
+        unreleased[i].style.display = "block";
+    }
+}
+</script>
+
+<nav class="panel" id="exam_panel">
     <p class="panel-heading">
         Exams
     </p>
-    <p class="panel-tabs">
-        <a class="is-active" href="#">All</a>
-        <a href="#">Released</a>
-        <a href="#">Unreleased</a>
-        <a href="#">In-Progress</a>
+    <p class="panel-tabs" id="tabs">
+        <a class="is-active" href="#" onclick="ShowAllExams()">All</a>
+        <a href="#" onclick="ShowExams(true);">Released</a>
+        <a href="#" onclick="ShowExams(false);">Unreleased</a>
     </p>
 
     {% for exam in exams %}
-        <a class="panel-block is-active" href="exam_edit.php?id={{exam.id}}">
+        <a class="panel-block is-active {% if exam.released %} released {% else %} unreleased {% endif %}" href="exam_edit.php?id={{exam.id}}">
                       <span class="panel-icon">
                         <i class="fa fa-book"></i>
                       </span>
@@ -22,6 +68,5 @@
     {% else %}
     No exams have been found.
     {% endfor %}
-
 </nav>
 {% endblock %}
