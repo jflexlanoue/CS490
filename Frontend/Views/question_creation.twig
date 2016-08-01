@@ -1,7 +1,7 @@
 {% extends "instructor_template.twig" %}
 
 {% block instructor %}
-    <h1 class="title">Question Creation</h1>
+    <h1 class="title">Create Question</h1>
 
     <div id="message">
         {{ message }}
@@ -50,7 +50,9 @@
         <input type="hidden" name="id" value="{{ model["id"] }}">
     </form>
 
-    <h2>Questions/Answers Bank</h2>
+    <hr>
+    <section>
+    <h2 class="subtitle">Questions/Answers Bank</h2>
 
         <table class="table">
             <tr>
@@ -89,5 +91,5 @@
             {% endfor  %}
 
         </table>
-
+    </section>
 {% endblock %}
