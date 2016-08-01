@@ -5,48 +5,26 @@ include("Util/htmlutil.php");
 if(util::IsInstructor())
     $template = "instructor_template";
 
-function question_by_id($id) {
-    global $questioncache;
-    if(!isset($questioncache[$id])) {
-        $questioncache[$id] = util::ForwardGETRequest("question.php", array("id" => $id))["result"];
-    }
-    return $questioncache[$id];
-}
+$id["id"] = $_GET["id"];
 
-function exam_by_id($id) {
-    global $examcache;
-    if(!isset($examcache[$id])) {
-        $examcache[$id] = util::ForwardGETRequest("exam.php", array("id" => $id))["result"];
-    }
-    return $examcache[$id];
-}
+$response = util::ForwardGETRequest("result.php", $id);
 
-$id = array();
+// echo json_encode($response);
 
-$resultsRetrieval = util::ForwardGETRequest("result.php", $id);
+$exam["score"] = $response["result"]["score"];
+$exam["feedback"] = $response["result"]["feedback"];
 
-$exams_edit = array();
-foreach ( $resultsRetrieval['result'] as $q ) {
-    $item = array();
+// $exam = array();
 
-    $item["exam_title"] = exam_by_id($q['exam_id'])["title"];
-    $item["question"] = question_by_id($q['question_id'])["question"];
-    $item["student_answer"] = $q['student_answer'];
+$exam["id"] = $_GET["id"];
+// $exam_edit["score"] = $_POST["points"];
+// $exam_edit["feedback"] = $_POST["feedback"];
 
-    if(util::IsInstructor() || exam_by_id($q["exam_id"])["released"] == 1) {
-        $item["score"] = $q['score'];
-        $item["feedback"] = $q['feedback'];
-    } else{
-        $item["score"] = "N/A";
-        $item["feedback"] = "Exam not released";
-    }
+// echo json_encode($exam["feedback"]);
+// $view["exam_edit"] = $exam_edit;
 
-    $exams_edit[] = $item;
-}
 
-$view["exams_edit"] = $exams_edit;
-$view["title"] = "Results";
-$view["instructor"] = util::IsInstructor();
+$view["exam"] = $exam;
 
 if(util::IsInstructor())
     view("feedback_edit");
