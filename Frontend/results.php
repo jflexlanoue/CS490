@@ -19,8 +19,16 @@ function exam_by_id($id) {
 }
 
 $id = array();
-if(!util::IsInstructor())
-    $id = array("studentID" => util::GetUserID());
+if(!util::IsInstructor()) {
+    $id["studentID"] = util::GetUserID();
+} else {
+    if(isset($_GET["student"]))
+        $id["studentID"] = $_GET["student"];
+    if(isset($_GET["exam"]))
+        $id["examID"] = $_GET["exam"];
+    if(isset($_GET["question"]))
+        $id["questionID"] = $_GET["question"];
+}
 $resultsRetrieval = util::ForwardGETRequest("result.php", $id);
 
 $exams = array();
