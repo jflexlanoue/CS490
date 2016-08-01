@@ -24,6 +24,7 @@ $twig = new Twig_Environment($loader, array(
     'cache' => false,
 ));
 
+$twig->addExtension(new Twig_Extensions_Extension_Text());
 
 $cwd = getcwd();
 $view = array();
