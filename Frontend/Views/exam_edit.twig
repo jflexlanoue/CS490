@@ -15,7 +15,7 @@
     <div>
         <form method="post" {% if create %} style="display:none" {% endif %}>
             <div>
-                <button type="submit" name="Delete" value="Delete">Delete</button>
+                <button class="button is-danger" type="submit" name="Delete" value="Delete">Delete</button>
             </div>
         </form>
     </div>
@@ -65,7 +65,7 @@
         </table>
 
         <div>
-            <button type="submit"> <h2> {% if create %} Create {% else %} Apply changes {% endif %} </h2></button>
+            <button class="button is-primary" type="submit"> {% if create %} Create {% else %} Apply changes {% endif %} </button>
         </div>
     </form>
 </center>
