@@ -37,4 +37,5 @@ if($failedLogin){
     $view["message_body"] = "The username and password you entered do not match.";
 }
 
+$view["title"] = "Exam System Login";
 view();

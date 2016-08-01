@@ -18,4 +18,5 @@ if($response["success"] == false)
 $response["result"]["questioncount"] = count($response["result"]["ownExamquestion"]);
 $view["exam"] = $response["result"];
 
+$view["title"] = "Take Exam";
 view();

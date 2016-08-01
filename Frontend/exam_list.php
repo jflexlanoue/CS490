@@ -13,4 +13,5 @@ foreach($view["exams"] as &$exam) {
     $exam["questioncount"] = count($exam["ownExamquestion"]);
 }
 
+$view["title"] = "Exam List";
 view();

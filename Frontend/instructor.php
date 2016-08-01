@@ -16,4 +16,5 @@ if(isset($_POST["action"])) {
 
 $exams = util::ForwardGetRequest("exam.php");
 $view["exams"] = $exams["result"];
+$view["title"] = "Instructor Home";
 view();
