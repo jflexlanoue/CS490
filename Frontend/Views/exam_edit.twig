@@ -1,6 +1,15 @@
 {% extends "instructor_template.twig" %}
 
 {% block instructor %}
+
+<script>
+    function toggle(id) {
+        var check = document.getElementsByName("sharedquestion" + id);
+        var override = document.getElementsByName("pointoverride" + id);
+        override[0].disabled = !check[0].checked;
+    }
+</script>
+
 <center>
     <h2> {% if create %} Create Exam {% else %} Edit Exam {% endif %} </h2>
     <div>
@@ -39,12 +48,12 @@
 
             {% for q in questions %}
             <tr>
-                <td><input name="sharedquestion{{q["id"]}}" type="checkbox" {% if q["checked"] %} checked="checked" {% endif %}></td>
+                <td><input name="sharedquestion{{q["id"]}}" type="checkbox" {% if q["checked"] %} checked="checked" {% endif %}  onchange="toggle({{ q["id"] }});"></td>
                 <td><code>{{q.question | printable}}</code></td>
                 <td><code>{{q.answer | printable}}</code></td>
 
                 {# This should be disabled for questions that aren't selected #}
-                <td><input name="pointoverride{{ q["id"] }}" type="number" value="{{q.points}}" min="0"></td>
+                <td><input name="pointoverride{{ q["id"] }}" type="number" {% if not q["checked"] %} disabled="disabled" {% endif %} value="{{q.points}}" min="0"></td>
             </tr>
             {% else %}
                 <tr>
