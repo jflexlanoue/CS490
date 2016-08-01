@@ -33,8 +33,10 @@ if (isset($_POST['question'])) {
     }
 }
 
+$view["title"] = "Create Question";
 if (isset($_GET['edit'])) {
     $view["editing"] = true;
+    $view["title"] = "Edit Question";
     $view["model"] = util::ForwardGetRequest("question.php", array("id" => $_GET["edit"]))["result"];
 }
 

@@ -68,11 +68,13 @@ if(!$creation) {
 
     }
 
+    $view["title"] = "Edit Exam";
 } else {
     $exam = array();
     $exam["title"] = "";
     $exam["released"] = "";
     $exam["sharedQuestion"] = array();
+    $view["title"] = "Create Exam";
 }
 
 $questionRetrieval = util::ForwardGETRequest("question.php", array());

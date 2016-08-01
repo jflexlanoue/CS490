@@ -39,7 +39,7 @@
                 <td><strong><center>ID</center></strong></td>
                 <td><strong><center>Question</center></strong></td>
                 <td><strong><center>Answer</center></strong></td>
-                {# <td><strong><center>Test Cases</center></strong></td>   note: see below #}
+                <td><strong><center>Test Cases</center></strong></td>
                 <td><strong><center>Points</center></strong></td>
             </tr>
 
@@ -49,13 +49,23 @@
                 <td>
                     <form name="checkForm" action="question_creation.php" method="post">
                         <input type="hidden" name="id" value="{{i.id}}">
-                        <button class="button" type="submit" name="delete" value="Delete">Delete</button>
+                        <button class="button is-danger" type="submit" name="delete" value="Delete">Delete</button>
                     </form>
                 </td>
                 <td>{{i.id}}</td>
                 <td>{{i.question}}</td>
                 <td>{{i.answer}}</td>
-                {# <td>{{i.testcases|join(',')}}</td>   note: failed to convert array to string #}
+                <td>
+                    {% for c in i.testcases %}
+                        <span class="icon is-small">
+                          <i class="fa fa-caret-right"></i>
+                        </span>
+                        {% for x in c %}
+                            {{ x }},
+                        {% endfor %}
+                        <br>
+                    {% endfor %}
+                </td>
                 <td>{{i.points}}</td>
             </tr>
             {% endfor  %}
