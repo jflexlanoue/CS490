@@ -26,6 +26,8 @@ switch ($_SERVER['REQUEST_METHOD']) {
     case "GET":
         if (isset($_REQUEST["id"])) {
             $response["result"] = load_or_error('question', $_REQUEST["id"]);
+            $temp = json_encode($response["result"]["testcases"]);
+            $response["result"]["testcase_json"] = $temp;
 
             // Force lazy loaded item to load
             scrub_question($response["result"]);

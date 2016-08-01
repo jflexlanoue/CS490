@@ -1,6 +1,23 @@
 {% extends "instructor_template.twig" %}
 
 {% block instructor %}
+<script>
+var testcases = {{ testcase_count }};
+function NewTestCase() {
+    var idx = ++testcases;
+    var btn = document.getElementById("testcases");
+
+    var div = document.createElement('div');
+    div.innerHTML = "<p class=\"control\" id=\"blankTestCase\"> \
+            <textarea class=\"textarea\" name=\"testcase" + idx + "\" value=\"testcase" + idx + "\" \
+    placeholder=\"Enter test cases... (comma separated list of test cases; each test case is a semicolon separated list)\">{{ case }}</textarea> \
+            </p>\"";
+    var child = div.childNodes[0];
+
+    btn.appendChild(child);
+}
+</script>
+
     <h1 class="title">Create Question</h1>
 
     <div id="message">
@@ -19,9 +36,21 @@
         </p>
 
         <label class="label" for="answer">Test Cases</label>
-        <p class="control">
-            <textarea class="textarea" name="testcases" value="testcases" placeholder="Enter test cases... (comma separated list of test cases; each test case is a semicolon separated list)">{{ model["testCases"] }}</textarea>
-        </p>
+        <div id="testcases">
+            {% for case in testcases %}
+            <p class="control">
+                <textarea class="textarea" name="testcase{{ loop.index }}" value="testcase{{ loop.index }}"
+                          placeholder="Enter test cases... (comma separated list of test cases; each test case is a semicolon separated list)">{{ case }}</textarea>
+            </p>
+            {% else %}
+                <p class="control">
+                <textarea class="textarea" name="testcase0" value="testcase0"
+                          placeholder="Enter test cases... (comma separated list of test cases; each test case is a semicolon separated list)"></textarea>
+                </p>
+            {% endfor %}
+        </div>
+
+        <a class="button" href="#" id="newTestCaseBtn" onclick="NewTestCase();">Add Test Case</a>
 
         <label class="label" for="points">Points</label>
         <p class="control">

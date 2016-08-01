@@ -33,11 +33,15 @@ if (isset($_POST['question'])) {
     }
 }
 
-$view["title"] = "Create Question";
 if (isset($_GET['edit'])) {
     $view["editing"] = true;
     $view["title"] = "Edit Question";
     $view["model"] = util::ForwardGetRequest("question.php", array("id" => $_GET["edit"]))["result"];
+    $view["testcases"] = explode(';', json_decode($view["model"]["testcase_json"]));
+    $view["testcase_count"] = count($view["testcases"]);
+} else {
+    $view["title"] = "Create Question";
+    $view["testcase_count"] = 1;
 }
 
 $QuestionBank = util::ForwardGETRequest("question.php", array());
