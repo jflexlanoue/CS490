@@ -1,49 +1,33 @@
 {% extends "instructor_template.twig" %}
 
 {% block instructor %}
-{% if instructor %}
-    <center><a href="feedback_completion.php" leftclass="button">Apply</a></center>
-{% endif %}
-    {% for e in exams_edit %}
+<form action="results.php" method="post">
     <div class="card is-fullwidth">
         <header class="card-header">
-            <p class="card-header-title">
-                {{e.exam_title}}
-            </p>
+            <p class="card-header-title">Edit</p>
+                    <button class="button is-primary" type="submit" name="submitchanges"> Apply changes </button><br>
         </header>
         <div class="card-content">
-            <div class="content">
-                <article class="message is-primary">
-                    <div class="message-header">
-                        Question
-                    </div>
-                    <div class="message-body">
-                        {{e.question}}
-                    </div>
-                </article>
-                <article class="message">
-                    <div class="message-header">
-                        Student Answer
-                    </div>
-                    <div class="message-body">
-                        {{e.student_answer}}
-                    </div>
-                </article>
-                <article class="message">
-                    <div class="message-header">
-                        Feedback
-                    </div>
-                        <center>
-                        Points: <br><input type="text" name="points_edit" size=4 value="{{ e.score }}">
-                        {# Score: {{e.score}} #}
-                        <br>Feedback: <br>
-                        {# {{e.feedback}} #}
-                        <textarea name="feedback_edit" rows="14" cols="80">{{ e.feedback }}</textarea><br>
-                        <a href="feedback_completion.php" leftclass="button">Apply</a><br>
-                        </center>
-                </article>
+                <div class="content">
+                    <article class="message">
+                        <div class="message-header">
+                            Score
+                        </div>
+                        <div class="message-body">
+                            <input type="text" name="score" size=4 value="{{ exam.score }}">
+                        </div>
+                    </article>
+                    <article class="message">
+                        <div class="message-header">
+                            Feedback
+                        </div>
+                        <div class="message-body">
+                            <textarea name="feedback" rows="14" cols="80">{{ exam.feedback }}</textarea><br>
+                        </div>
+                        <input type="hidden" name="id" value="{{ exam.id }}">
+                    </article>
+                </div>
             </div>
-        </div>
     </div>
-    {% endfor %}
+</form>
 {% endblock %}
