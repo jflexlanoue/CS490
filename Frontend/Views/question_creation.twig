@@ -35,24 +35,23 @@
         <table>
             <tr class ="noBorder">
                 <td></td>
-                <td></td>
-                <td><strong><center>ID</center></strong></td>
                 <td><strong><center>Question</center></strong></td>
                 <td><strong><center>Answer</center></strong></td>
                 <td><strong><center>Test Cases</center></strong></td>
-                <td><strong><center>Points</center></strong></td>
             </tr>
 
             {% for i in itemarray %}
             <tr>
-                <td><a class="button" href="question_creation.php?edit={{i.id}}">Edit</a></td>
                 <td>
+                    <p># {{i.id}}</p>
+                    <p>Points: {{i.points}}</p>
+
+                    <a class="button is-fullwidth" href="question_creation.php?edit={{i.id}}">Edit</a>
                     <form name="checkForm" action="question_creation.php" method="post">
                         <input type="hidden" name="id" value="{{i.id}}">
-                        <button class="button is-danger" type="submit" name="delete" value="Delete">Delete</button>
+                        <button class="button is-fullwidth is-danger" type="submit" name="delete" value="Delete" onclick="return confirm('Are you sure?');">Delete</button>
                     </form>
                 </td>
-                <td>{{i.id}}</td>
                 <td>{{i.question}}</td>
                 <td>{{i.answer}}</td>
                 <td>
@@ -66,7 +65,6 @@
                         <br>
                     {% endfor %}
                 </td>
-                <td>{{i.points}}</td>
             </tr>
             {% endfor  %}
 
