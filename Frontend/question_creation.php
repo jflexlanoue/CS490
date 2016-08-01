@@ -13,7 +13,6 @@ if (isset($_POST['question'])) {
 
     $testcaseindex = $_POST["testcaseindex"];
 
-    print_r($_POST);
     $testcases = array();
     for($i = 0; $i <= (int)$testcaseindex; $i++) {
         if(!isset($_POST["testcase" . $i]))
@@ -23,7 +22,7 @@ if (isset($_POST['question'])) {
     }
 
     $_POST["testcases"] = implode(";", $testcases);
-    print_r($_POST);
+    $_POST["properties"] = $_POST["constraint"];
 
     if ($_POST['question'] == "") {
         $view["message"] = 'Question cannot be left blank.';
@@ -56,6 +55,7 @@ if (isset($_GET['edit'])) {
     $view["model"] = util::ForwardGetRequest("question.php", array("id" => $_GET["edit"]))["result"];
     $view["testcases"] = explode(';', json_decode($view["model"]["testcase_json"]));
     $view["testcase_index"] = count($view["testcases"]) - 1;
+    $view["constraint"] = $view["model"]["properties"][0];
 } else {
     $view["title"] = "Create Question";
     $view["testcase_index"] = 0;

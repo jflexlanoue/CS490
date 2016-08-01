@@ -60,15 +60,15 @@ function NewTestCase() {
 
         <p class="control">
             <label class="radio">
-                <input type="radio" name="constraint" value="constraint:none">
+                <input type="radio" name="constraint" value="constraint_none" {% if constraint == "constraint_none" %} checked="checked" {% endif %}>
                 No constraint
             </label>
             <label class="radio">
-                <input type="radio" name="constraint" value="constraint:recursion">
+                <input type="radio" name="constraint" value="constraint_recursion" {% if constraint == "constraint_recursion" %} checked="checked" {% endif %}>
                 Use recursion
             </label>
             <label class="radio">
-                <input type="radio" name="constraint" value="constraint:loop">
+                <input type="radio" name="constraint" value="constraint_loop" {% if constraint == "constraint_loop" %} checked="checked" {% endif %}>
                 Use loop
             </label>
         </p>
