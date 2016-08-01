@@ -10,17 +10,17 @@
     <form action = "question_creation.php" method="POST">
         <label class="label" for="question">Question</label>
         <p class="control">
-            <textarea name="question" value="question" rows="8" cols="40" placeholder="Enter question..." autofocus>{{ model["question"] }}</textarea>
+            <textarea class="textarea" name="question" value="question" rows="8" cols="40" placeholder="Enter question..." autofocus>{{ model["question"] }}</textarea>
         </p>
 
         <label class="label" for="answer">Answer</label>
         <p class="control">
-            <textarea name = "answer" value="answer" rows="8" cols="40" placeholder="Enter answer...">{{ model["answer"] }}</textarea>
+            <textarea class="textarea" name="answer" value="answer" rows="8" cols="40" placeholder="Enter answer...">{{ model["answer"] }}</textarea>
         </p>
 
         <label class="label" for="answer">Test Cases</label>
         <p class="control">
-            <textarea name = "testcases" value="testcases" rows="4" cols="40" placeholder="Enter test cases... (comma separated list of test cases; each test case is a semicolon separated list)">{{ model["testCases"] }}</textarea>
+            <textarea class="textarea" name="testcases" value="testcases" placeholder="Enter test cases... (comma separated list of test cases; each test case is a semicolon separated list)">{{ model["testCases"] }}</textarea>
         </p>
 
         <label class="label" for="points">Points</label>
