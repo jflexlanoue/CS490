@@ -1,39 +1,59 @@
 {% extends "instructor_template.twig" %}
 
 {% block instructor %}
-<center>
-    <h1>Question Creation</h1>
+    <h1 class="title">Question Creation</h1>
 
     <div id="message">
         {{ message }}
     </div>
 
     <form action = "question_creation.php" method="POST">
-        <label for="question">Question</label><br>
-        <textarea name="question" value="question" rows="8" cols="40" placeholder="Enter question..." autofocus>{{ model["question"] }}</textarea><br>
+        <label class="label" for="question">Question</label>
+        <p class="control">
+            <textarea name="question" value="question" rows="8" cols="40" placeholder="Enter question..." autofocus>{{ model["question"] }}</textarea>
+        </p>
 
-        <label for="answer">Answer</label><br>
-        <textarea name = "answer" value="answer" rows="8" cols="40" placeholder="Enter answer...">{{ model["answer"] }}</textarea><br>
+        <label class="label" for="answer">Answer</label>
+        <p class="control">
+            <textarea name = "answer" value="answer" rows="8" cols="40" placeholder="Enter answer...">{{ model["answer"] }}</textarea>
+        </p>
 
-        <label for="answer">Test Cases</label><br>
-        <textarea name = "testcases" value="testcases" rows="4" cols="40" placeholder="Enter test cases... (comma separated list of test cases; each test case is a semicolon separated list)">{{ model["testCases"] }}</textarea><br>
+        <label class="label" for="answer">Test Cases</label>
+        <p class="control">
+            <textarea name = "testcases" value="testcases" rows="4" cols="40" placeholder="Enter test cases... (comma separated list of test cases; each test case is a semicolon separated list)">{{ model["testCases"] }}</textarea>
+        </p>
 
-        <label for="points">Points</label>
-        <input type="text" name="points" placeholder="Enter point value..." value="{{ model["points"] }}">
+        <label class="label" for="points">Points</label>
+        <p class="control">
+            <input type="text" name="points" placeholder="Enter point value..." value="{{ model["points"] }}">
+        </p>
+
+        <p class="control">
+            <label class="radio">
+                <input type="radio" name="constraint" value="constraint:none">
+                No constraint
+            </label>
+            <label class="radio">
+                <input type="radio" name="constraint" value="constraint:recursion">
+                Use recursion
+            </label>
+            <label class="radio">
+                <input type="radio" name="constraint" value="constraint:loop">
+                Use loop
+            </label>
+        </p>
+
+        <p class="control">
+            <input class="button is-primary" type="submit" name="btn" value="{% if editing %} Edit {% else %} Add {% endif %}" >
+        </p>
 
         <input type="hidden" name="id" value="{{ model["id"] }}">
-        <input type = "submit" name="btn" value="{% if editing %} Edit {% else %} Add {% endif %}" >
     </form>
 
     <h2>Questions/Answers Bank</h2>
 
-        <style type="text/css">
-            tr, td {border: 1px solid black; }
-            tr.noBorder td {border: 0; }
-        </style>
-
-        <table>
-            <tr class ="noBorder">
+        <table class="table">
+            <tr>
                 <td></td>
                 <td><strong><center>Question</center></strong></td>
                 <td><strong><center>Answer</center></strong></td>
@@ -69,7 +89,5 @@
             {% endfor  %}
 
         </table>
-
-</center>
 
 {% endblock %}

@@ -11,7 +11,7 @@
 </script>
 
 <center>
-    <h2> {% if create %} Create Exam {% else %} Edit Exam {% endif %} </h2>
+    <h1 class="title"> {% if create %} Create Exam {% else %} Edit Exam {% endif %} </h1>
     <div>
         <form method="post" {% if create %} style="display:none" {% endif %}>
             <div>
@@ -19,11 +19,6 @@
             </div>
         </form>
     </div>
-
-    <style type="text/css">
-        tr, td {border: 1px solid black; }
-        tr.noBorder td {border: 0; }
-    </style>
 
     <form method="post">
         {% if create == false %}
@@ -38,8 +33,8 @@
             <input name="released" {% if exam["released"]  %} checked="checked" {% endif %} type="checkbox">
         </div>
 
-        <table>
-            <tr class ="noBorder">
+        <table class="table">
+            <tr>
                 <td><strong><Center>Included</Center></strong></td>
                 <td><strong><Center>Question</Center></strong></td>
                 <td><strong><Center>Answer</Center></strong></td>
