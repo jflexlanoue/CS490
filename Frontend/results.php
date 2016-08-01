@@ -2,11 +2,6 @@
 include("Util/Garyutil.class.php");
 include("Util/htmlutil.php");
 
-if(util::IsInstructor())
-    $template = "instructor_template";
-else
-    $template = "student_template";
-
 function question_by_id($id) {
     global $questioncache;
     if(!isset($questioncache[$id])) {

@@ -3,8 +3,6 @@ include("Util/Garyutil.class.php");
 include("Util/htmlutil.php");
 util::VerifyRole('instructor');
 
-$template = "instructor_template";
-
 if(isset($_GET["id"]))
     $exam_id = $_GET["id"];
 $creation = !isset($exam_id);
