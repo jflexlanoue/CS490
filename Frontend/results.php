@@ -78,6 +78,19 @@ $view["student_list"] = $studentcache;
 $view["title"] = "Results";
 $view["instructor"] = util::IsInstructor();
 
+if ($_SERVER['REQUEST_METHOD'] == 'POST')){
+// if(isset($_POST["submitchanges"])){
+    $exam_edit = array();
+    $exam_edit["score"] = $_POST["score"];
+    $exam_edit["feedback"] = $_POST["feedback"];
+    $exam_edit["id"] = $_POST["id"];
+
+    $res = util::ForwardPatchRequest("result.php", $exam_edit);
+    if(!$res['success']) {
+        die($res["error"]);
+    }
+}
+
 if(util::IsInstructor())
     view("results_instructor");
 else
