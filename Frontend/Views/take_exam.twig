@@ -39,7 +39,16 @@
             </div>
         {% endfor %}
 
-        <input class="button is-primary" type="submit" value="Submit">
+        <script>
+            function SubmitExam() {
+                var btn = document.getElementById("submitbutton");
+                btn.className += " is-disabled";
+            }
+        </script>
+
+        <p class="control">
+            <input class="button is-primary" id="submitbutton" type="submit" value="Submit" onclick="SubmitExam();">
+        </p>
     </form>
 </div>
 {% endblock %}
