@@ -1,6 +1,7 @@
 <?php
 require 'common.php';
 
+$response["is_instructor"] = is_instructor();
 if (session_status() == PHP_SESSION_ACTIVE) {
     if(!isset($_SESSION["username"])) {
         Error("Invalid session");
