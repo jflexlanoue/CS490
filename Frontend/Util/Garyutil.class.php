@@ -6,7 +6,7 @@ class util {
 
     const UTIL_BASEURL = "https://web.njit.edu/~jl366/?p=";
 
-    static function httpPost($url, $data, $usePOST = true) {
+    static function httpPost($url, $data, $usePOST = true, $async = false) {
         if (isset($_SESSION["cookies"]) && isset($_SESSION["cookies"]["PHPSESSID"])) {
             $sessid = $_SESSION["cookies"]["PHPSESSID"];
         }
@@ -30,23 +30,31 @@ class util {
         if (isset($sessid)) {
             curl_setopt($curl, CURLOPT_HTTPHEADER, array("Cookie: PHPSESSID=" . $sessid));
         }
-        $response = curl_exec($curl);
-        if (curl_error($curl)) {
-            echo curl_error($curl);
-        }
-        curl_close($curl);
-        list($header, $body) = explode("\r\n\r\n", $response, 2);
-        preg_match_all('/^Set-Cookie:\s*([^\r\n]*)/mi', $header, $ms);
-        
-        $cookies = array();
-        if (count($ms[1]) > 0) {
-            foreach ($ms[1] as $m) {
-                list($name, $value) = explode('=', $m, 2);
-                $cookies[$name] = $value;
+        if($async) {
+            $mh = curl_multi_init();
+            curl_multi_add_handle($mh,$curl);
+            $running = 'idc';
+            curl_multi_exec($mh,$running);
+            $body = $mh;
+        } else {
+            $response = curl_exec($curl);
+            if (curl_error($curl)) {
+                echo curl_error($curl);
             }
-            $_SESSION["cookies"] = $cookies;
+            curl_close($curl);
+            list($header, $body) = explode("\r\n\r\n", $response, 2);
+            preg_match_all('/^Set-Cookie:\s*([^\r\n]*)/mi', $header, $ms);
+
+            $cookies = array();
+            if (count($ms[1]) > 0) {
+                foreach ($ms[1] as $m) {
+                    list($name, $value) = explode('=', $m, 2);
+                    $cookies[$name] = $value;
+                }
+                $_SESSION["cookies"] = $cookies;
+            }
         }
-        
+
         return $body;
     }
 
