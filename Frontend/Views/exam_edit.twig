@@ -29,16 +29,6 @@
         </label>
     </p>
 
-    {% if not create %}
-    <p class="control">
-        <form method="post">
-            <div>
-                <button class="button is-danger" type="submit" name="Delete" value="Delete" onclick="return confirm('Are you sure?');">Delete</button>
-            </div>
-        </form>
-    </p>
-    {% endif %}
-
     <hr>
     <h1 class="subtitle">Questions</h1>
 
@@ -72,4 +62,14 @@
         <button class="button is-primary" type="submit"> {% if create %} Create {% else %} Apply changes {% endif %} </button>
     </div>
 </form>
+
+{% if not create %}
+    <p class="control">
+    <form method="post">
+        <div>
+            <button class="button is-danger" type="submit" name="Delete" value="Delete" onclick="return confirm('Are you sure?');">Delete</button>
+        </div>
+    </form>
+    </p>
+{% endif %}
 {% endblock %}
