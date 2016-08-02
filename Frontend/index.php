@@ -7,6 +7,7 @@ include("Util/htmlutil.php");
 $failedLogin = false;
 
 if(isset($_GET['logout'])){
+    $response = util::ForwardPostRequest("backend_login.php", array("logout" => true));
     $_SESSION = array();
     session_destroy();
 }

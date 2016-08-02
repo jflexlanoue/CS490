@@ -25,8 +25,7 @@ switch ($_SERVER['REQUEST_METHOD']) {
                     $response["result"] = $result;
                 }
             }
-        }
-        else {
+        } else {
             $user = load_or_error('user', $_SESSION["userID"]);
             $response["result"] = json_encode(scrub_user($user));
         }

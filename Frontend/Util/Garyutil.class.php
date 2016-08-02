@@ -94,7 +94,11 @@ class util {
     }
 
     static function GetUser() {
-        return json_decode(util::ForwardGetRequest("user.php")["result"]);
+        $res = util::ForwardGetRequest("user.php");
+        if(!isset($res["result"])) {
+            print_r($res);
+        }
+        return json_decode($res["result"]);
     }
 
     static function GetUserID() {
