@@ -2,20 +2,19 @@
     margin: 10px;
 }
 
-code {
-    color: #000;
-    background: transparent;
-    font-family: Consolas,Menlo,Monaco,Lucida Console,Liberation Mono,DejaVu Sans Mono,Bitstream Vera Sans Mono,Courier New,monospace,serif;
-    margin-bottom: 10px;
-    max-height: 600px;
-    overflow: auto;
-    width: auto;
-}
-
 .editor {
     position: absolute;
     top: 0;
     right: 0;
     bottom: 0;
     left: 0;
+}
+
+/* Clear Bulma-PrismJS conflict */
+.number {
+    background-color: unset;
+    border-radius: unset;
+    display: unset;
+    font-size: unset;
+    vertical-align: unset;
 }
