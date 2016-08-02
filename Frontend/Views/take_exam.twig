@@ -1,6 +1,8 @@
 {% extends "student_template.twig" %}
 
 {% block student %}
+<script src="https://cdnjs.cloudflare.com/ajax/libs/ace/1.2.4/ace.js"></script>
+
 <div>
     <h1 class="title"><strong>Exam:</strong> {{ exam.title }}</h1>
     <h1 class="subtitle">Questions: {{ exam.questioncount }}</h1>
@@ -29,11 +31,30 @@
                         </p>
 
 
-                        <label for="answer"><strong>Your answer: </strong></label><br>
+                        <label for="answer"><strong>Your answer: </strong></label>
                         <textarea
                                 name="answer{{ question.question_id }}"
+                                id="answer{{ question.question_id }}"
                                 class="textarea"
                                 placeholder="Enter answer..."></textarea>
+                        <div id="editor{{ loop.index }}" class="editor is-fullwidth"></div>
+
+                        <script>
+                            (function() {
+                                var editor = ace.edit("editor{{ loop.index }}");
+                                editor.setTheme("ace/theme/xcode");
+                                editor.getSession().setMode("ace/mode/java");
+
+                                document.getElementById("editor{{ loop.index }}")
+                                        .style.height = "200px";
+                                var textarea = document.getElementById("answer{{ question.question_id }}");
+                                textarea.style.display = "none";
+                                editor.getSession().setValue(textarea.value);
+                                editor.getSession().on('change', function(){
+                                    textarea.value = (editor.getSession().getValue());
+                                });
+                            })();
+                        </script>
                     </div>
                 </div>
             </div>
