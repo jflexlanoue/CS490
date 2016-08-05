@@ -13,7 +13,11 @@ $examcache = array();
 function exam_by_id($id) {
     global $examcache;
     if(!isset($examcache[$id])) {
-        $examcache[$id] = util::ForwardGETRequest("exam.php", array("id" => $id))["result"];
+        $res = $examcache[$id] = util::ForwardGETRequest("exam.php", array("id" => $id));
+        if(isset($res["result"]))
+            $examcache[$id] = util::ForwardGETRequest("exam.php", array("id" => $id))["result"];
+        else
+            $examcache[$id] = array("title" => "[deleted exam]");
     }
     return $examcache[$id];
 }
