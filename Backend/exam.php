@@ -88,6 +88,13 @@ switch ($_SERVER['REQUEST_METHOD']) {
         verify_params(['id']);
 
         $exam = load_or_error('exam', $_REQUEST["id"]);
+
+        $results = R::find('result', "exam_id=:examid", array("examid" => $_REQUEST["id"]));
+
+        foreach ($results as $result) {
+            R::trash($result);
+        }
+
         R::trash($exam);
         break;
 }
