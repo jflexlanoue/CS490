@@ -1,0 +1,135 @@
+{% extends "instructor_template.twig" %}
+
+{% block instructor %}
+    <script>
+        function CreateFilter() {
+            var filter = "?"
+            var exam = document.getElementById("exam_filter");
+            var exam_id = exam.options[exam.selectedIndex].value;
+            if(exam_id != "")
+                filter += "exam=" + exam_id + "&";
+
+            var question = document.getElementById("question_filter");
+            var question_id = question.options[question.selectedIndex].value;
+            if(question_id != "")
+                filter += "question=" + question_id + "&";
+
+            var student = document.getElementById("student_filter");
+            var student_id = student.options[student.selectedIndex].value;
+            if(student_id != "")
+                filter += "student=" + student_id + "&";
+
+            document.location = filter;
+        }
+    </script>
+
+    <nav class="level">
+        <div class="level-left">
+            <div class="level-item">
+                <p class="subtitle is-5">
+                    <strong>Exam</strong>
+                </p>
+            </div>
+            <div class="level-item">
+                <p class="control">
+                    <select class="input" id="exam_filter">
+                        <option value="">Show All</option>
+                        {% for f in exam_list %}
+                            <option value="{{ f.id }}" {% if f.id == exam_filter %} selected {% endif %}>{{f.title |  truncate(35)}}</option>
+                        {% endfor %}
+                    </select>
+                </p>
+            </div>
+            <div class="level-item">
+                <p class="subtitle is-5">
+                    <strong>Question</strong>
+                </p>
+            </div>
+            <div class="level-item">
+                <p class="control">
+                    <select class="input" id="question_filter">
+                        <option value="">Show All</option>
+                        {% for f in question_list %}
+                            <option value="{{ f.id }}" {% if f.id == question_filter %} selected {% endif %}>{{f.question | truncate(35)}}</option>
+                        {% endfor %}
+                    </select>
+                </p>
+            </div>
+            <div class="level-item">
+                <p class="subtitle is-5">
+                    <strong>Student</strong>
+                </p>
+            </div>
+            <div class="level-item">
+                <p class="control">
+                    <select class="input" id="student_filter">
+                        <option value="">Show All</option>
+                        {% for f in student_list %}
+                            <option value="{{ f.id }}" {% if f.id == student_filter %} selected {% endif %}>{{f.username}}</option>
+                        {% endfor %}
+                    </select>
+                </p>
+            </div>
+            <div class="level-item">
+                <p class="control">
+                    <a class="button" onclick="CreateFilter();">
+                        Filter
+                    </a>
+                </p>
+            </div>
+        </div>
+
+        <!-- Right side -->
+        <div class="level-right">
+            <a href="results.php" class="level-item"><strong>Reset Filters</strong></a>
+        </div>
+    </nav>
+
+    {% for e in exams %}
+        <div class="card is-fullwidth">
+            <header class="card-header">
+                <p class="card-header-title">
+                    {{e.exam_title}} - {{ e.student.username }}
+                </p>
+                {% if instructor %}
+                    <a class="card-header-icon" 
+                    href="feedback_edit.php?id={{e.id}}">Edit</a>
+                {% endif %}
+            </header>
+            <div class="card-content">
+                <div class="content">
+                    <article class="message is-primary">
+                        <div class="message-header">
+                            Question
+                        </div>
+                        <div class="message-body">
+                            {{e.question | printable}}
+                        </div>
+                    </article>
+                    <article class="message">
+                        <div class="message-header">
+                            Student Answer
+                        </div>
+                        <div class="message-body">
+                            <pre><code class="language-java">{{e.student_answer}}</code></pre>
+                        </div>
+                    </article>
+                    <article class="message">
+                        <div class="message-header">
+                            Feedback
+                        </div>
+                        <div class="message-body">
+                            Score: {{e.score}}
+                            {% for f in e.feedback %}
+                                <br>
+                                {{f | printable}}
+                            {% endfor %}
+                        </div>
+                    </article>
+                </div>
+            </div>
+        </div>
+    {% else %}
+        No results found
+    {% endfor %}
+{% endblock %}

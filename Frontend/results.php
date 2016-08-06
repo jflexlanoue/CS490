@@ -1,6 +1,11 @@
 <?php
 include("Util/Garyutil.class.php");
 include("Util/htmlutil.php");
+
+if (isset($_POST['submitchanges'])){
+        util::ForwardPatchRequest("result.php", $_POST);
+}
+
 $questioncache = array();
 function question_by_id($id) {
     global $questioncache;
@@ -51,7 +56,7 @@ $exams = array();
 foreach ( $resultsRetrieval['result'] as $q ) {
     $item = array();
     $item["exam_title"] = exam_by_id($q['exam_id'])["title"];
-    $item["exam_id"] = $q['exam_id'];
+    $item["id"] = $q['id'];
     $item["question"] = question_by_id($q['question_id'])["question"];
     $item["student"] = student_by_id($q['student_id']);
     $item["student_answer"] = $q['student_answer'];
@@ -65,6 +70,7 @@ foreach ( $resultsRetrieval['result'] as $q ) {
     }
     $exams[] = $item;
 }
+
 $view["exams"] = $exams;
 $view["exam_list"] = $examcache;
 $view["question_list"] = $questioncache;
