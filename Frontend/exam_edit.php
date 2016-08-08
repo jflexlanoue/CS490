@@ -27,10 +27,10 @@ if($_SERVER['REQUEST_METHOD'] === "POST") {
     $exam["released"] = isset($_POST["released"]);
     $exam["questionIDs"] = array();
 
-    // TODO Edit point overrides
     foreach ($_POST as $key => $value) {
         if(substr($key, 0, 14) === "sharedquestion" && $value === "on") {
             $question_id = (int)substr($key, 14);
+            $question_id = $question_id.":".$_POST["pointoverride".$question_id];
             array_push($exam["questionIDs"], $question_id);
         }
     }
