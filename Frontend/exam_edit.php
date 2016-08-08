@@ -2,7 +2,6 @@
 include("Util/Garyutil.class.php");
 include("Util/htmlutil.php");
 util::VerifyRole('instructor');
-
 if(isset($_GET["id"]))
     $exam_id = $_GET["id"];
 $creation = !isset($exam_id);
@@ -26,14 +25,34 @@ if($_SERVER['REQUEST_METHOD'] === "POST") {
     $exam["title"] = $_POST["name"];
     $exam["released"] = isset($_POST["released"]);
     $exam["questionIDs"] = array();
+    $question["qID"] = array();
+    $points["updatedPoints"] = array();
 
     foreach ($_POST as $key => $value) {
         if(substr($key, 0, 14) === "sharedquestion" && $value === "on") {
             $question_id = (int)substr($key, 14);
+            $updatedPoints = $_POST["pointoverride".$question_id];
+            $qID = $question_id;
             $question_id = $question_id.":".$_POST["pointoverride".$question_id];
             array_push($exam["questionIDs"], $question_id);
+            array_push($question["qID"], $qID);
+            array_push($points["updatedPoints"], $updatedPoints);
         }
     }
+
+    $examUpdate = util::ForwardGETRequest("question.php");
+    foreach ($examUpdate['result'] as $eq){
+        for ($i=0; $i<count($question["qID"]); $i++){
+            $questID = $eq['id'];
+            if ($question["qID"][$i]==$questID){
+                $id = $question["qID"][$i];
+                $pts = $points["updatedPoints"][$i];
+                util::ForwardPatchRequest("question.php", array("id" => $id, "points" => $pts));
+            }
+            
+        }
+    }
+
 
     if(count($exam["questionIDs"]) == 0) {
         $exam["questionIDs"] = "-1";
@@ -50,7 +69,8 @@ if($_SERVER['REQUEST_METHOD'] === "POST") {
         die($res["error"]);
     }
 
-    util::Redirect('instructor.php');
+    if($creation)
+        util::Redirect('instructor.php');
 }
 
 $exam_question_ids = array();
@@ -62,7 +82,7 @@ if(!$creation) {
     $exam = $exam["result"];
     foreach ($exam["ownExamquestion"] as $item => $value) {
         $exam_question_ids[] = $value["question_id"];
-        $exam_question_point_overrides[] = $value["points"];  // TODO Display this
+        $exam_question_point_overrides[] = $value["points"];
 
     }
 
