@@ -92,7 +92,8 @@
                     {{e.exam_title}} - {{ e.student.username }}
                 </p>
                 {% if instructor %}
-                    <a class="card-header-icon" href="feedback_edit.php?id={{ e.exam_id }}">Edit</a>
+                    <a class="card-header-icon" 
+                    href="feedback_edit.php?id={{e.id}}">Edit</a>
                 {% endif %}
             </header>
             <div class="card-content">
