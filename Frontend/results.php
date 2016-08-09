@@ -60,7 +60,7 @@ foreach ( $resultsRetrieval['result'] as $q ) {
     $item["question"] = question_by_id($q['question_id'])["question"];
     $item["student"] = student_by_id($q['student_id']);
     $item["student_answer"] = $q['student_answer'];
-    if(util::IsInstructor() || exam_by_id($q["exam_id"])["released"] == 1) {
+    if(util::IsInstructor() || isset(exam_by_id($q["exam_id"])["released"]) ) {
         $item["score"] = $q['score'];
         $feedback = json_decode($q['feedback']);
         $item["feedback"] = $feedback;
